@@ -12,7 +12,7 @@ const Navbar = () => {
   const [shop, setShop] = useState(false);
 
   return (
-    <div>
+    <div className="relative">
       <div className="min-h-[750px] relative">
         {/* Image Container with Overlay */}
         <div
@@ -237,6 +237,9 @@ const Navbar = () => {
             <img src="https://i.ibb.co.com/Z24Rbv5/Ellipse-12-1.png" alt="" />
           </div>
         </div>
+      </div>
+      <div>
+        
       </div>
     </div>
   );
