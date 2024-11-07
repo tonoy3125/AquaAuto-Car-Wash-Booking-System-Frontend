@@ -61,8 +61,8 @@ const HomePageNavbar = () => {
               </div>
             </div>
           </div>
-          <div className="HomePage pt-5 pb-3 pr-3 container mx-auto">
-            <div className="HomePage-start ml-5 md:ml-0">
+          <div className="navbar pt-5 pb-3 pr-3 container mx-auto">
+            <div className="navbar-start ml-5 md:ml-0">
               <div className="dropdown font-poppins top-0 z-50">
                 <div className="drawer lg:hidden">
                   <input
@@ -151,7 +151,7 @@ const HomePageNavbar = () => {
                 </span>
               </NavLink>
             </div>
-            <div className="HomePage-center font-poppins hidden lg:flex">
+            <div className="navbar-center font-poppins hidden lg:flex">
               <ul className=" flex items-center gap-7">
                 {/* <NavLink to="/">
               <li className="hover:text-[#0E82FD] font-medium text-[#1F2937]">
@@ -191,7 +191,7 @@ const HomePageNavbar = () => {
                 </NavLink>
               </ul>
             </div>
-            <div className="HomePage-end gap-3 md:gap-5 mr-0 sm:mr-1 md:mr-4 lg:mr-0">
+            <div className="navbar-end gap-3 md:gap-5 mr-0 sm:mr-1 md:mr-4 lg:mr-0">
               <span>
                 <FaRegCircleUser className="text-2xl text-white lg:text-[#015496]" />
               </span>
