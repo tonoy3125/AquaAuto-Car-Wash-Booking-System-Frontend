@@ -193,13 +193,13 @@ const HomePageNavbar = () => {
             </div>
             <div className="navbar-end gap-3 md:gap-5 mr-0 sm:mr-1 md:mr-4 lg:mr-0">
               <span>
-                <FaRegCircleUser className="text-2xl text-white lg:text-[#015496]" />
+                <FaRegCircleUser className="text-2xl text-white lg:text-white" />
               </span>
               <span>
-                <FaCartPlus className="text-2xl text-white lg:text-[#015496]" />
+                <FaCartPlus className="text-2xl text-white lg:text-white" />
               </span>
               <span>
-                <MdNotificationsActive className="text-2xl text-white lg:text-[#015496]" />
+                <MdNotificationsActive className="text-2xl text-white lg:text-white" />
               </span>
             </div>
           </div>
