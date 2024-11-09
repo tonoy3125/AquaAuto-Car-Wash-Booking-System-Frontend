@@ -192,9 +192,11 @@ const HomePageNavbar = () => {
               </ul>
             </div>
             <div className="navbar-end gap-3 md:gap-5 mr-0 sm:mr-1 md:mr-4 lg:mr-0">
-              <span>
-                <FaRegCircleUser className="text-2xl text-white lg:text-white" />
-              </span>
+              <NavLink to="/login">
+                <span>
+                  <FaRegCircleUser className="text-2xl text-white lg:text-white" />
+                </span>
+              </NavLink>
               <span>
                 <FaCartPlus className="text-2xl text-white lg:text-white" />
               </span>

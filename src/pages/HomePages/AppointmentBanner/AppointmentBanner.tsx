@@ -1,6 +1,6 @@
 const AppointmentBanner = () => {
   return (
-    <div className="w-full pb-56 relative">
+    <div className="w-full pb-16 md:pb-56 relative">
       <div className="border relative">
         <img
           className="w-full h-[70vh] lg:h-[30vh]  object-cover"
