@@ -1,29 +1,55 @@
-import { Link } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 import "./Login.css";
+import { Player } from "@lottiefiles/react-lottie-player";
 const Login = () => {
   return (
-    <div className="w-full flex items-center gap-40">
-      <div className="relative w-[50%] h-[911px]">
+    <div className="w-full flex flex-col lg:flex-row items-center gap-10 md:gap-16 lg:gap-40">
+      <div className="relative lg:w-[50%] lg:h-[911px]">
         <img
           className="w-full h-full"
           src="https://i.ibb.co/BwwfvMk/side-view-cropped-unrecognizable-business-people-working-common-desk-1.jpg"
           alt=""
         />
         <div className="absolute top-0 left-0 w-full h-full bg-[#0d6efd] bg-opacity-40"></div>
-        <div className="absolute inset-0 left-40 flex flex-col justify-center items-start w-[730px] ">
-          <h3 className="font-poppins font-bold text-3xl md:text-5xl text-white  mb-6">
+
+        <div className="absolute inset-0 md:left-7 lg:left-40 flex flex-col justify-center items-center md:items-start lg:w-[730px] px-2 md:px-0 mt-12 sm:mt-10 semi-sm:mt-5 md:mt-0">
+          <h3 className="font-poppins font-bold text-3xl md:text-5xl text-white text-center md:text-start mb-6">
             Welcome back!
           </h3>
           <p
-            className="font-poppins semi-sm:text-sm md:text-xl text-white  mb-4"
+            className="font-poppins semi-sm:text-sm md:text-xl text-white text-center md:text-start  mb-4"
             style={{ letterSpacing: ".4px" }}
           >
             We are glad to see you again! Get access to your Orders, Wishlist
             and Recommendations.
           </p>
         </div>
+        <div className="absolute inset-0 md:top-5 lg:top-10 lg:left-36">
+          <Link
+            to="/"
+            className="flex items-center justify-center md:justify-start normal-case  md:pl-7 lg:pl-0"
+          >
+            <Player
+              className="xs:w-20 sm:w-20 semi-sm:w-28"
+              autoplay
+              loop
+              src="https://lottie.host/3062c462-5ba9-4514-be8a-5596b6e7d13b/A35r1DKuEc.json"
+            ></Player>
+            <span
+              className="text-black font-semibold hover:"
+              style={{
+                whiteSpace: "nowrap",
+                letterSpacing: "0.2em",
+              }}
+            >
+              <span className=" xs:text-base sm:text-lg semi-sm:text-xl md:text-xl lg:text-2xl font-barlow font-bold text-[#fff]">
+                AquaAuto
+              </span>
+            </span>
+          </Link>
+        </div>
       </div>
-      <div>
+      <div className="pb-10 lg:pb-0">
         <h3 className="font-poppins font-bold text-3xl md:text-3xl text-black mb-6">
           Log In
         </h3>
