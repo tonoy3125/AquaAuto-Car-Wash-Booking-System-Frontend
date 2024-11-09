@@ -169,7 +169,7 @@ const Register = () => {
             style={{ letterSpacing: ".4px" }}
           >
             <span className="text-[#4c4d4d]">Already have an account? </span>
-            <Link to="/register">
+            <Link to="/login">
               <span className="text-[#0D6EFD] cursor-pointer underline">
                 {" "}
                 Log In

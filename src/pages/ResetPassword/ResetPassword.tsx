@@ -1,10 +1,7 @@
-import { Link } from "react-router-dom";
-import "./Login.css";
 import { Player } from "@lottiefiles/react-lottie-player";
-import { useState } from "react";
-import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
-const Login = () => {
-  const [showPassword, setShowPassword] = useState(false);
+import { Link } from "react-router-dom";
+
+const ResetPassword = () => {
   return (
     <div className="w-full flex flex-col lg:flex-row items-center gap-10 md:gap-16 lg:gap-40">
       <div className="relative lg:w-[50%] lg:h-[911px]">
@@ -17,14 +14,13 @@ const Login = () => {
 
         <div className="absolute inset-0 md:left-7 lg:left-40 flex flex-col justify-center items-center md:items-start lg:w-[730px] px-2 md:px-0 mt-12 sm:mt-10 semi-sm:mt-5 md:mt-0">
           <h3 className="font-poppins font-bold text-3xl md:text-5xl text-white text-center md:text-start mb-6">
-            Welcome back!
+            Don't worry,
           </h3>
           <p
             className="font-poppins semi-sm:text-sm md:text-xl text-white text-center md:text-start  mb-4"
             style={{ letterSpacing: ".4px" }}
           >
-            We are glad to see you again! Get access to your Orders, Wishlist
-            and Recommendations.
+            We are here help you to recover your password.
           </p>
         </div>
         <div className="absolute inset-0 md:top-5 lg:top-10 lg:left-36">
@@ -52,11 +48,14 @@ const Login = () => {
           </Link>
         </div>
       </div>
-      <div className="pb-10 lg:pb-0">
+      <div className="pb-10 lg:pb-0 px-3 semi-sm:px-4 md:px-0">
         <h3 className="font-poppins font-bold text-3xl md:text-3xl text-black mb-6">
-          Log In
+          Reset Password
         </h3>
         <form>
+          <h2 className="text-base font-normal text-[#4c4d4d] mb-7  font-poppins">
+            Enter the email address associated with your account.
+          </h2>
           <div className="mb-5">
             <h2 className="text-base font-normal text-[#4c4d4d] mb-3  font-poppins">
               Email Address
@@ -71,68 +70,22 @@ const Login = () => {
               // })}
             />
           </div>
-          <div className="mb-4 relative">
-            <h2 className="text-base font-normal text-[#4c4d4d] mb-3  font-poppins">
-              Password
-            </h2>
-            <input
-              className="pt-3 pb-3 pl-3 w-[295px] sm:w-[350px] semi-sm:w-[390px] md:w-[630px] mx-auto border-[#dae1e3] border-[1px] bg-[#fff] text-[#1D1D1F] font-poppins rounded-lg focus:outline focus:outline-1 focus:outline-[#0d6efd] transition-all duration-700 ease-in-out"
-              type={showPassword ? "text" : "password"}
-              id=""
-              placeholder="Enter Password"
-              // {...register("email", {
-              //   required: "Email is Required",
-              // })}
-            />
-            <span
-              className="absolute right-4 md:right-3 top-[52px] rtl:left-0 rtl:right-auto "
-              onClick={() => {
-                setShowPassword(!showPassword);
-              }}
-            >
-              {showPassword ? (
-                <AiOutlineEyeInvisible className="text-xl"></AiOutlineEyeInvisible>
-              ) : (
-                <AiOutlineEye className="text-xl"></AiOutlineEye>
-              )}
-            </span>
-          </div>
-          <div className="flex xs:flex-col sm:flex-row sm:items-center justify-between">
-            <div className="checkbox-container">
-              <input type="checkbox" id="rememberMe" />
-              <label className="custom-checkbox" htmlFor="rememberMe"></label>
-              <label
-                className="checkbox-label"
-                htmlFor="rememberMe"
-                style={{ letterSpacing: ".4px" }}
-              >
-                Remember password
-              </label>
-            </div>
-            <Link to="/reset-password">
-              <p
-                className="text-[#0D6EFD] hover:text-[#0257d5] text-end sm:text-center font-poppins text-base mt-3 underline"
-                style={{ letterSpacing: ".4px" }}
-              >
-                Forgot password?
-              </p>
-            </Link>
-          </div>
+
           <input
-            className="w-full py-3 bg-[#0d6efd] hover:bg-[#0257d5] text-base font-poppins text-[#fff] font-medium rounded-lg border border-[#43b9b2] mt-7 cursor-pointer"
+            className="w-[295px] sm:w-[350px] semi-sm:w-[390px] md:w-[630px] mx-auto py-3 bg-[#0d6efd] hover:bg-[#0257d5] text-base font-poppins text-[#fff] font-medium rounded-lg border border-[#43b9b2] mt-5 cursor-pointer"
             style={{ letterSpacing: ".3px" }}
             type="button"
-            value="Login"
+            value="Continue"
           />
           <p
             className=" text-center font-poppins text-base mt-6"
             style={{ letterSpacing: ".4px" }}
           >
-            <span className="text-[#4c4d4d]">Don't have an account? </span>
-            <Link to="/register">
+            <span className="text-[#4c4d4d]">Return to </span>
+            <Link to="/login">
               <span className="text-[#0D6EFD] cursor-pointer underline">
                 {" "}
-                Sign Up
+                Log in
               </span>
             </Link>
           </p>
@@ -142,4 +95,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default ResetPassword;
