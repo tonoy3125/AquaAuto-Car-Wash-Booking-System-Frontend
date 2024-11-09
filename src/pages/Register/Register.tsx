@@ -1,10 +1,51 @@
+import { useSignUpMutation } from "@/redux/features/auth/authApi";
 import { Player } from "@lottiefiles/react-lottie-player";
 import { useState } from "react";
+import { FieldValues, useForm } from "react-hook-form";
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { toast } from "sonner";
 
 const Register = () => {
   const [showRegisterPassword, setShowRegisterPassword] = useState(false);
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    reset,
+  } = useForm();
+  const navigate = useNavigate();
+  const [signUp] = useSignUpMutation();
+
+  const onSubmit = async (data: FieldValues) => {
+    console.log(data);
+    const toastId = toast.loading("Creating Account...");
+    try {
+      const userInfo = {
+        name: data?.name,
+        email: data?.email,
+        password: data?.password,
+        phone: data?.phone,
+        role: "user",
+        address: data?.address,
+      };
+      console.log(userInfo);
+      const res = await signUp(userInfo).unwrap();
+      console.log(res);
+      toast.success(res.message || "User Register Successfully!!!", {
+        id: toastId,
+        duration: 3000,
+      });
+      reset();
+      navigate("/login");
+    } catch (error: any) {
+      toast.error(error?.data?.message || "Something went wrong!", {
+        id: toastId,
+        duration: 3000,
+      });
+    }
+  };
+
   return (
     <div className="w-full flex flex-col lg:flex-row items-center gap-10 md:gap-16 lg:gap-40">
       <div className="relative lg:w-[50%] lg:h-[911px]">
@@ -56,7 +97,7 @@ const Register = () => {
         <h3 className="font-poppins font-bold text-3xl md:text-3xl text-black mb-6">
           Sign Up
         </h3>
-        <form>
+        <form onSubmit={handleSubmit(onSubmit)}>
           <div className="mb-5">
             <h2 className="text-base font-normal text-[#4c4d4d] mb-3  font-poppins">
               Name
@@ -66,10 +107,15 @@ const Register = () => {
               type="name"
               id=""
               placeholder="Enter Your Name"
-              // {...register("email", {
-              //   required: "Email is Required",
-              // })}
+              {...register("name", {
+                required: "Name is Required",
+              })}
             />
+            {errors.name && (
+              <p className="text-red-500 text-sm font-poppins font-medium pt-2">
+                {String(errors.name.message)}
+              </p>
+            )}
           </div>
           <div className="mb-5">
             <h2 className="text-base font-normal text-[#4c4d4d] mb-3  font-poppins">
@@ -80,10 +126,15 @@ const Register = () => {
               type="email"
               id=""
               placeholder="Enter Your Email"
-              // {...register("email", {
-              //   required: "Email is Required",
-              // })}
+              {...register("email", {
+                required: "Email is Required",
+              })}
             />
+            {errors.email && (
+              <p className="text-red-500 text-sm font-poppins font-medium pt-2">
+                {String(errors.email.message)}
+              </p>
+            )}
           </div>
           <div className="mb-4 relative">
             <h2 className="text-base font-normal text-[#4c4d4d] mb-3  font-poppins">
@@ -94,9 +145,9 @@ const Register = () => {
               type={showRegisterPassword ? "text" : "password"}
               id=""
               placeholder="Enter Password"
-              // {...register("email", {
-              //   required: "Email is Required",
-              // })}
+              {...register("password", {
+                required: "Password is Required",
+              })}
             />
             <span
               className="absolute right-4 md:right-3 top-[52px] rtl:left-0 rtl:right-auto "
@@ -110,6 +161,11 @@ const Register = () => {
                 <AiOutlineEye className="text-xl"></AiOutlineEye>
               )}
             </span>
+            {errors.password && (
+              <p className="text-red-500 text-sm font-poppins font-medium pt-2">
+                {String(errors.password.message)}
+              </p>
+            )}
           </div>
           <div className="mb-5">
             <h2 className="text-base font-normal text-[#4c4d4d] mb-3  font-poppins">
@@ -120,10 +176,15 @@ const Register = () => {
               type="tel"
               id=""
               placeholder="Enter Your Phone"
-              // {...register("email", {
-              //   required: "Email is Required",
-              // })}
+              {...register("phone", {
+                required: "Phone is Required",
+              })}
             />
+            {errors.phone && (
+              <p className="text-red-500 text-sm font-poppins font-medium pt-2">
+                {String(errors.phone.message)}
+              </p>
+            )}
           </div>
           <div className="mb-5">
             <h2 className="text-base font-normal text-[#4c4d4d] mb-3  font-poppins">
@@ -134,34 +195,20 @@ const Register = () => {
               type="text"
               id=""
               placeholder="Enter Your Address"
-              // {...register("email", {
-              //   required: "Email is Required",
-              // })}
+              {...register("address", {
+                required: "Address is Required",
+              })}
             />
-          </div>
-          <div className="flex xs:flex-col sm:flex-row sm:items-center justify-between">
-            <div className="checkbox-container">
-              <input type="checkbox" id="rememberMe" />
-              <label className="custom-checkbox" htmlFor="rememberMe"></label>
-              <label
-                className="checkbox-label"
-                htmlFor="rememberMe"
-                style={{ letterSpacing: ".4px" }}
-              >
-                Remember password
-              </label>
-            </div>
-            <p
-              className="text-[#0D6EFD] hover:text-[#0257d5] text-end sm:text-center font-poppins text-base mt-3 underline"
-              style={{ letterSpacing: ".4px" }}
-            >
-              Forgot password?
-            </p>
+            {errors.address && (
+              <p className="text-red-500 text-sm font-poppins font-medium pt-2">
+                {String(errors.address.message)}
+              </p>
+            )}
           </div>
           <input
-            className="w-full py-3 bg-[#0d6efd] hover:bg-[#0257d5] text-base font-poppins text-[#fff] font-medium rounded-lg border border-[#43b9b2] mt-7 cursor-pointer"
+            className="w-full py-3 bg-[#0d6efd] hover:bg-[#0257d5] text-base font-poppins text-[#fff] font-medium rounded-lg border border-[#43b9b2] mt-5 cursor-pointer"
             style={{ letterSpacing: ".3px" }}
-            type="button"
+            type="submit"
             value="Sign up"
           />
           <p
