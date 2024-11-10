@@ -1,10 +1,54 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import "./Login.css";
 import { Player } from "@lottiefiles/react-lottie-player";
 import { useState } from "react";
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
+import { useLoginMutation } from "@/redux/features/auth/authApi";
+import { FieldValues, useForm } from "react-hook-form";
+import { useAppDispatch } from "@/redux/hooks";
+import { verifyToken } from "@/utils/verifyToken";
+import { setUser } from "@/redux/features/auth/authSlice";
+import { toast } from "sonner";
 const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
+  const navigate = useNavigate();
+  const dispatch = useAppDispatch();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
+  const [login] = useLoginMutation();
+
+  const onSubmit = async (data: FieldValues) => {
+    console.log(data);
+    const toastId = toast.loading("Logging In...");
+    try {
+      const userInfo = {
+        email: data?.email,
+        password: data?.password,
+      };
+      console.log(userInfo);
+      const res = await login(userInfo).unwrap();
+      console.log(res);
+      const user = verifyToken(res.accessToken);
+      // console.log(user);
+      dispatch(
+        setUser({ user: { user, id: res.data._id }, token: res.accessToken })
+      );
+      toast.success(res.message || "Logged In Successfully!j", {
+        id: toastId,
+        duration: 3000,
+      });
+      // navigate("/account");
+    } catch (error: any) {
+      toast.error(error?.data?.message || "Something went wrong!", {
+        id: toastId,
+        duration: 3000,
+      });
+    }
+  };
+
   return (
     <div className="w-full flex flex-col lg:flex-row items-center gap-10 md:gap-16 lg:gap-40">
       <div className="relative lg:w-[50%] lg:h-[911px]">
@@ -56,7 +100,7 @@ const Login = () => {
         <h3 className="font-poppins font-bold text-3xl md:text-3xl text-black mb-6">
           Log In
         </h3>
-        <form>
+        <form onSubmit={handleSubmit(onSubmit)}>
           <div className="mb-5">
             <h2 className="text-base font-normal text-[#4c4d4d] mb-3  font-poppins">
               Email Address
@@ -66,9 +110,9 @@ const Login = () => {
               type="email"
               id=""
               placeholder="Enter Your Email"
-              // {...register("email", {
-              //   required: "Email is Required",
-              // })}
+              {...register("email", {
+                required: "Email is Required",
+              })}
             />
           </div>
           <div className="mb-4 relative">
@@ -80,9 +124,9 @@ const Login = () => {
               type={showPassword ? "text" : "password"}
               id=""
               placeholder="Enter Password"
-              // {...register("email", {
-              //   required: "Email is Required",
-              // })}
+              {...register("password", {
+                required: "Password is Required",
+              })}
             />
             <span
               className="absolute right-4 md:right-3 top-[52px] rtl:left-0 rtl:right-auto "
@@ -121,7 +165,7 @@ const Login = () => {
           <input
             className="w-full py-3 bg-[#0d6efd] hover:bg-[#0257d5] text-base font-poppins text-[#fff] font-medium rounded-lg border border-[#43b9b2] mt-7 cursor-pointer"
             style={{ letterSpacing: ".3px" }}
-            type="button"
+            type="submit"
             value="Login"
           />
           <p
