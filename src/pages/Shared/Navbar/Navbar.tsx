@@ -1,10 +1,14 @@
+import { selectCurrentUser } from "@/redux/features/auth/authSlice";
+import { useAppSelector } from "@/redux/hooks";
+import { TUserPayload } from "@/types";
 import { Player } from "@lottiefiles/react-lottie-player";
 import { AiOutlineMenu } from "react-icons/ai";
 import { FaCartPlus, FaRegCircleUser } from "react-icons/fa6";
 import { MdNotificationsActive } from "react-icons/md";
-import { NavLink } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 
 const Navbar = () => {
+  const user = useAppSelector(selectCurrentUser) as TUserPayload | null;
   return (
     <div className="navbar pt-5 pb-3 pr-3 container mx-auto">
       <div className="navbar-start ml-5 md:ml-0">
@@ -130,11 +134,15 @@ const Navbar = () => {
         </ul>
       </div>
       <div className="navbar-end gap-2 sm:gap-3 md:gap-5 mr-0 sm:mr-1 md:mr-4 lg:mr-0">
-        <NavLink to="/login">
-          <span>
-            <FaRegCircleUser className="text-2xl text-[#1F2937]" />
-          </span>
-        </NavLink>
+        {user ? (
+          <Link to="/account">
+            <FaRegCircleUser className="text-2xl " />
+          </Link>
+        ) : (
+          <Link to="/login">
+            <FaRegCircleUser className="text-2xl " />
+          </Link>
+        )}
         <span>
           <FaCartPlus className="text-2xl text-[#1F2937]" />
         </span>

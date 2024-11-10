@@ -1,12 +1,16 @@
 import { AiOutlineMenu } from "react-icons/ai";
-import { NavLink } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 import { MdNotificationsActive } from "react-icons/md";
 import { Player } from "@lottiefiles/react-lottie-player";
 import { FaCartPlus, FaRegCircleUser } from "react-icons/fa6";
 import { IoMailUnreadOutline } from "react-icons/io5";
 import { CiFacebook, CiLinkedin, CiTwitter, CiYoutube } from "react-icons/ci";
+import { useAppSelector } from "@/redux/hooks";
+import { selectCurrentUser } from "@/redux/features/auth/authSlice";
+import { TUserPayload } from "@/types";
 
 const HomePageNavbar = () => {
+  const user = useAppSelector(selectCurrentUser) as TUserPayload | null;
   return (
     <div className="relative ">
       <div className="min-h-[750px] relative">
@@ -192,11 +196,15 @@ const HomePageNavbar = () => {
               </ul>
             </div>
             <div className="navbar-end gap-3 md:gap-5 mr-0 sm:mr-1 md:mr-4 lg:mr-0">
-              <NavLink to="/login">
-                <span>
-                  <FaRegCircleUser className="text-2xl text-white lg:text-white" />
-                </span>
-              </NavLink>
+              {user ? (
+                <Link to="/account">
+                  <FaRegCircleUser className="text-2xl text-white " />
+                </Link>
+              ) : (
+                <Link to="/login">
+                  <FaRegCircleUser className="text-2xl text-white " />
+                </Link>
+              )}
               <span>
                 <FaCartPlus className="text-2xl text-white lg:text-white" />
               </span>
