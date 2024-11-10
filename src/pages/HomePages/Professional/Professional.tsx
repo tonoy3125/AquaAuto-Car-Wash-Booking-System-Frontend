@@ -7,20 +7,20 @@ import { MdOutlineArrowLeft, MdOutlineArrowRight } from "react-icons/md";
 
 const Professional = () => {
   return (
-    <div className="mb-20 ">
+    <div className="mb-20 lg:container lg:mx-auto">
       <div className="mx-5">
         <h3
-          className="relative text-[#E81C2E] font-barlow font-bold uppercase text-start lg:text-center pl-28 before:content-[''] before:absolute md:before:left-0 lg:before:left-[750px] before:top-1/2 before:transform before:-translate-y-1/2 before:bg-[#E81C2E] before:h-px before:w-20 before:mr-4"
+          className="relative text-[#E81C2E] font-barlow font-bold uppercase text-center md:pl-0 lg:pl-28 before:content-[''] before:absolute md:before:left-[130px] lg:before:left-[570px] before:top-1/2 before:transform before:-translate-y-1/2 before:bg-[#E81C2E] before:h-px md:before:w-20 before:mr-4"
           style={{ lineHeight: "1.2", letterSpacing: "6px" }}
         >
           We are Professional
         </h3>
-        <p className="font-poppins font-medium mt-5 text-[#626472] flex items-start lg:items-center justify-start lg:justify-center text-start lg:text-center">
+        <p className="font-poppins font-medium mt-5 text-[#626472] flex items-start lg:items-center justify-center lg:justify-center text-center">
           Strateg breed better design, but brand strategies don materialize{" "}
           <br /> on their own They require coope and more.
         </p>
       </div>
-      <div className="mt-10 max-w-5xl mx-auto custom-slider">
+      <div className="mt-10 max-w-5xl lg:mx-auto custom-slider mx-5 ">
         <ReactCompareSlider
           itemOne={
             <ReactCompareSliderImage
