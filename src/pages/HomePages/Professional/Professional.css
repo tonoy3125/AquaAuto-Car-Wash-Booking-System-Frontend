@@ -1,0 +1,31 @@
+/* Style for the custom slider line */
+.custom-slider .custom-handle {
+  width: 4px; /* Adjust width for line thickness */
+  height: 100%;
+  background-color: #e81c2e; /* Line color */
+  position: relative;
+}
+
+/* Style for the custom handle circle */
+.custom-handle-circle {
+  width: 52px; /* Size of the circular button */
+  height: 52px;
+  background-color: white;
+  border: 4px solid #e81c2e; /* Red border color */
+  border-radius: 50%; /* Make it circular */
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%); /* Center the circle */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Style for the icon inside the handle circle */
+.custom-handle-icon {
+  font-size: 16px;
+  color: #e81c2e; /* Color of the icon */
+  /* display: flex;
+  justify-content: center; */
+}
