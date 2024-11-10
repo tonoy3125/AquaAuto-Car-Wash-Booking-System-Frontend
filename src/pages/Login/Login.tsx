@@ -30,7 +30,7 @@ const Login = () => {
       };
       console.log(userInfo);
       const res = await login(userInfo).unwrap();
-      console.log(res);
+      // console.log(res);
       const user = verifyToken(res.accessToken);
       // console.log(user);
       dispatch(
@@ -40,7 +40,7 @@ const Login = () => {
         id: toastId,
         duration: 3000,
       });
-      // navigate("/account");
+      navigate("/account");
     } catch (error: any) {
       toast.error(error?.data?.message || "Something went wrong!", {
         id: toastId,
@@ -114,6 +114,11 @@ const Login = () => {
                 required: "Email is Required",
               })}
             />
+            {errors.email && (
+              <p className="text-red-500 text-sm font-poppins font-medium pt-2">
+                {String(errors.email.message)}
+              </p>
+            )}
           </div>
           <div className="mb-4 relative">
             <h2 className="text-base font-normal text-[#4c4d4d] mb-3  font-poppins">
@@ -140,6 +145,11 @@ const Login = () => {
                 <AiOutlineEye className="text-xl"></AiOutlineEye>
               )}
             </span>
+            {errors.password && (
+              <p className="text-red-500 text-sm font-poppins font-medium pt-2">
+                {String(errors.password.message)}
+              </p>
+            )}
           </div>
           <div className="flex xs:flex-col sm:flex-row sm:items-center justify-between">
             <div className="checkbox-container">

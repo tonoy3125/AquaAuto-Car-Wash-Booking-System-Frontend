@@ -5,6 +5,7 @@ import ErrorElement from "../../layout/ErrorElement/ErrorElement";
 import Login from "@/pages/Login/Login";
 import Register from "@/pages/Register/Register";
 import ResetPassword from "@/pages/ResetPassword/ResetPassword";
+import MyAccount from "@/pages/MyAccount/MyAccount";
 
 const router = createBrowserRouter([
   {
@@ -27,6 +28,10 @@ const router = createBrowserRouter([
       {
         path: "/reset-password",
         element: <ResetPassword />,
+      },
+      {
+        path: "/account",
+        element: <MyAccount />,
       },
     ],
   },
