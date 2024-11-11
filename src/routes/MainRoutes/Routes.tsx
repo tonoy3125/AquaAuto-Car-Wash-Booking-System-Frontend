@@ -6,6 +6,7 @@ import Login from "@/pages/Login/Login";
 import Register from "@/pages/Register/Register";
 import ResetPassword from "@/pages/ResetPassword/ResetPassword";
 import MyAccount from "@/pages/MyAccount/MyAccount";
+import Services from "@/pages/Services/Services";
 
 const router = createBrowserRouter([
   {
@@ -32,6 +33,10 @@ const router = createBrowserRouter([
       {
         path: "/account",
         element: <MyAccount />,
+      },
+      {
+        path: "/services",
+        element: <Services />,
       },
     ],
   },
