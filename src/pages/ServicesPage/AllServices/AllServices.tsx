@@ -6,8 +6,10 @@ import { debounce } from "lodash";
 import Spinner from "@/components/Spinner/Spinner";
 
 const AllServices = () => {
-  const [selectedService, setSelectedService] = useState("Car Wash Lift info");
-  const [hoveredService, setHoveredService] = useState(null);
+  const [selectedService, setSelectedService] = useState<string | null>(
+    "Car Wash Lift info"
+  );
+  const [hoveredService, setHoveredService] = useState<string | null>(null);
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [searchInput, setSearchInput] = useState("");
   const [searchTerm, setSearchTerm] = useState("");
@@ -40,7 +42,7 @@ const AllServices = () => {
   );
 
   useEffect(() => {
-    if (serviceData?.data?.length > 0) {
+    if (serviceData?.data?.length) {
       setSelectedService(serviceData.data[0].name);
     }
   }, [serviceData]);
@@ -229,34 +231,35 @@ const AllServices = () => {
 
             {/* Suggested Service */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-4 mt-14">
-              {serviceData?.data
-                .filter((service) => service.name !== selectedService)
-                .slice(0, 4) // Limit to four services
-                .map((suggestedService, index) => (
-                  <div key={index} className="flex items-start gap-4">
-                    <img
-                      className="w-12"
-                      src={suggestedService.icon}
-                      alt={suggestedService.name}
-                      style={{
-                        filter:
-                          "invert(33%) sepia(83%) saturate(7498%) hue-rotate(346deg) brightness(99%) contrast(107%)", // Red color filter
-                      }}
-                    />
-                    <div>
-                      <p className="font-poppins font-medium text-lg text-[#1E1E1E]">
-                        {suggestedService.name}
-                      </p>
-                      <p className="font-poppins text-base text-[#626472]">
-                        {suggestedService.description
-                          .split(" ")
-                          .slice(0, 7)
-                          .join(" ")}
-                        ...
-                      </p>
+              {serviceData?.data &&
+                serviceData?.data
+                  .filter((service) => service.name !== selectedService)
+                  .slice(0, 4) // Limit to four services
+                  .map((suggestedService, index) => (
+                    <div key={index} className="flex items-start gap-4">
+                      <img
+                        className="w-12"
+                        src={suggestedService.icon}
+                        alt={suggestedService.name}
+                        style={{
+                          filter:
+                            "invert(33%) sepia(83%) saturate(7498%) hue-rotate(346deg) brightness(99%) contrast(107%)", // Red color filter
+                        }}
+                      />
+                      <div>
+                        <p className="font-poppins font-medium text-lg text-[#1E1E1E]">
+                          {suggestedService.name}
+                        </p>
+                        <p className="font-poppins text-base text-[#626472]">
+                          {suggestedService.description
+                            .split(" ")
+                            .slice(0, 7)
+                            .join(" ")}
+                          ...
+                        </p>
+                      </div>
                     </div>
-                  </div>
-                ))}
+                  ))}
             </div>
             <div className="mt-10">
               <button className="w-full py-2 bg-[#EE3131] font-poppins font-medium text-white text-lg rounded-lg">

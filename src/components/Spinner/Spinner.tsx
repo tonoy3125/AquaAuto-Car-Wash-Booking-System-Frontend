@@ -1,5 +1,10 @@
 import "./Spinner.css";
-const Spinner = ({ name }) => {
+
+type TSpinner = {
+  name: string; // Name of the spinner (e.g., "Car Wash", "Service", etc.)
+};
+
+const Spinner = ({ name }: TSpinner) => {
   return (
     <div className="flex justify-center items-center min-h-[400px]">
       <div className="aqua-loader">
