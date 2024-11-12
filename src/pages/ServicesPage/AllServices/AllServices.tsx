@@ -8,13 +8,30 @@ import Spinner from "@/components/Spinner/Spinner";
 const AllServices = () => {
   const [selectedService, setSelectedService] = useState("Car Wash Lift info");
   const [hoveredService, setHoveredService] = useState(null);
-  const [selectedOption, setSelectedOption] = useState("Featured");
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [searchInput, setSearchInput] = useState("");
   const [searchTerm, setSearchTerm] = useState("");
+  const [sortOption, setSortOption] = useState(() => {
+    // Load the saved sort option from localStorage, default to "Featured"
+    return localStorage.getItem("selectedSortOption") || "Featured";
+  });
+
+  // Load the saved sort option label from localStorage
+  const [selectedOption, setSelectedOption] = useState(() => {
+    return localStorage.getItem("selectedSortOption") || "Featured";
+  });
+
   const queryParams: any = {
     searchTerm,
   };
+
+  // Add sorting
+  if (sortOption === "Price, low to high") {
+    queryParams.sort = "price_low_to_high";
+  } else if (sortOption === "Price, high to low") {
+    queryParams.sort = "price_high_to_low";
+  }
+
   const { data: serviceData, isLoading } = useGetAllServicesQuery(queryParams);
   console.log(serviceData);
 
@@ -28,13 +45,18 @@ const AllServices = () => {
     }
   }, [serviceData]);
 
+  useEffect(() => {
+    // Save the selected sort option to localStorage whenever it changes
+    localStorage.setItem("selectedSortOption", sortOption);
+  }, [sortOption]);
+
   const handleOptionClick = (option: SortOption) => {
     setSelectedOption(option);
     localStorage.setItem("selectedSortOption", option);
     setDropdownOpen(false);
 
     // Update sorting in parent component
-    // setSortOption(option);
+    setSortOption(option);
   };
 
   // Debounced search function
