@@ -4,6 +4,7 @@ import { MdOutlineKeyboardArrowDown } from "react-icons/md";
 import { SortOption } from "./AllService.constant";
 import { debounce } from "lodash";
 import Spinner from "@/components/Spinner/Spinner";
+import { Link } from "react-router-dom";
 
 const AllServices = () => {
   const [selectedService, setSelectedService] = useState<string | null>(
@@ -261,11 +262,13 @@ const AllServices = () => {
                     </div>
                   ))}
             </div>
-            <div className="mt-10">
-              <button className="w-full py-2 bg-[#EE3131] font-poppins font-medium text-white text-lg rounded-lg">
-                View Details
-              </button>
-            </div>
+            <Link to={`/services/${selectedServiceData?._id}`}>
+              <div className="mt-10">
+                <button className="w-full py-2 bg-[#EE3131] font-poppins font-medium text-white text-lg rounded-lg">
+                  View Details
+                </button>
+              </div>
+            </Link>
           </div>
         </div>
       )}
