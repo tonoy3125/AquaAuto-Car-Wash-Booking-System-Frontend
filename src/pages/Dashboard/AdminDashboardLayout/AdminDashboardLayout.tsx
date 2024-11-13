@@ -3,6 +3,7 @@ import { useState } from "react";
 import { MdOutlineDashboardCustomize } from "react-icons/md";
 import { RiMenuUnfold3Line } from "react-icons/ri";
 import { NavLink, Outlet } from "react-router-dom";
+import { IoMdAddCircleOutline } from "react-icons/io";
 
 const AdminDashboardLayout = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -68,9 +69,24 @@ const AdminDashboardLayout = () => {
                     }`
                   }
                 >
-                  <MdOutlineDashboardCustomize className="text-lg lg:text-xl" />
-                  <span className="text-base lg:text-lg font-semibold">
+                  <MdOutlineDashboardCustomize className="text-lg lg:text-2xl" />
+                  <span className="text-base font-poppins lg:text-lg font-semibold">
                     Admin Dashboard
+                  </span>
+                </NavLink>
+              </li>
+              <li>
+                <NavLink
+                  to="/admin/dashboard/addService"
+                  className={({ isActive }) =>
+                    `flex items-center gap-[14px] px-8 py-4 group  hover:bg-gray-100 ${
+                      isActive ? "text-blue-500 font-bold" : "text-gray-700"
+                    }`
+                  }
+                >
+                  <IoMdAddCircleOutline className="text-lg lg:text-2xl" />
+                  <span className="text-base font-poppins lg:text-lg font-semibold">
+                    Add Service
                   </span>
                 </NavLink>
               </li>

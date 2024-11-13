@@ -13,6 +13,7 @@ import AdminProfile from "@/pages/Dashboard/AdminDashboardPages/AdminProfile/Adm
 import UserProfile from "@/pages/Dashboard/UserDashboardPages/UserProfile/UserProfile";
 import AdminDashboardLayout from "@/pages/Dashboard/AdminDashboardLayout/AdminDashboardLayout";
 import UserDashboardLayout from "@/pages/Dashboard/UserDashboardLayout/UserDashboardLayout";
+import AddService from "@/pages/Dashboard/AdminDashboardPages/AddService/AddService";
 
 const router = createBrowserRouter([
   {
@@ -59,10 +60,10 @@ const router = createBrowserRouter([
         path: "adminProfile",
         element: <AdminProfile />,
       },
-      // {
-      //   path: "addProduct",
-      //   element: <DashboardAddProduct />,
-      // },
+      {
+        path: "addService",
+        element: <AddService />,
+      },
     ],
   },
   {
