@@ -126,11 +126,20 @@ const Navbar = () => {
               <a>Contact Us</a>
             </li>
           </NavLink>
-          <NavLink to="/dashboard">
-            <li className="hover:text-[#0E82FD] font-poppins font-medium text-[#1F2937]">
-              <a>Dashboard</a>
-            </li>
-          </NavLink>
+          {/* Conditionally render dashboard based on user role */}
+          {user?.user?.role === "admin" ? (
+            <NavLink to="/admin/dashboard">
+              <li className="hover:text-[#0E82FD] font-poppins font-medium text-[#1F2937]">
+                Admin Dashboard
+              </li>
+            </NavLink>
+          ) : user?.user?.role === "user" ? (
+            <NavLink to="/user/dashboard">
+              <li className="hover:text-[#0E82FD] font-poppins font-medium text-[#1F2937]">
+                User Dashboard
+              </li>
+            </NavLink>
+          ) : null}
         </ul>
       </div>
       <div className="navbar-end gap-2 sm:gap-3 md:gap-5 mr-0 sm:mr-1 md:mr-4 lg:mr-0">
