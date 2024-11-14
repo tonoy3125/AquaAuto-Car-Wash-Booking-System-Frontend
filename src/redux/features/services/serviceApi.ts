@@ -4,10 +4,13 @@ import { TResponseRedux, TServiceData } from "@/types";
 const ServiceApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
     createService: builder.mutation({
-      query: (serviceInfo) => ({
+      query: ({ token, formData }) => ({
         url: "/services",
         method: "POST",
-        body: serviceInfo,
+        body: formData,
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
       }),
       invalidatesTags: ["Service"],
     }),

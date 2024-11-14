@@ -1,46 +1,71 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Button, Modal } from "antd";
 import { useForm } from "react-hook-form";
+import { useCreateServiceMutation } from "@/redux/features/services/serviceApi";
+import { useAppSelector } from "@/redux/hooks";
+import { useCurrentToken } from "@/redux/features/auth/authSlice";
+import { toast } from "sonner";
 
 const AddService = () => {
   const [open, setOpen] = useState<boolean>(false);
-  const [loading, setLoading] = useState<boolean>(true);
-  const [selectedImage, setSelectedImage] = useState(null);
-  const [selectedIcon, setSelectedIcon] = useState(null);
+  const [loading, setLoading] = useState<boolean>(false);
+  const [selectedImage, setSelectedImage] = useState<File | null>(null);
+  const [selectedIcon, setSelectedIcon] = useState<File | null>(null);
+  const token = useAppSelector(useCurrentToken);
+  const [createService] = useCreateServiceMutation();
+
   const {
     register,
     handleSubmit,
     formState: { errors },
+    reset,
   } = useForm();
 
   const showLoading = () => {
     setOpen(true);
     setLoading(true);
-
-    // Simple loading mock. You should add cleanup logic in real world.
-    setTimeout(() => {
-      setLoading(false);
-    }, 2000);
+    setTimeout(() => setLoading(false), 2000); // Simulating loading delay
   };
 
-  const handleFileChange = (event) => {
-    const file = event.target.files[0]; // Only get the first file
-    console.log(file);
+  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
     if (file) {
-      setSelectedImage(URL.createObjectURL(file)); // Set image preview URL
+      setSelectedImage(file);
     }
   };
 
-  const handleIconFileChange = (event) => {
-    const file = event.target.files[0]; // Only get the first file
-    console.log(file);
+  const handleIconFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
     if (file) {
-      setSelectedIcon(URL.createObjectURL(file)); // Set image preview URL
+      setSelectedIcon(file);
     }
   };
 
-  const onSubmit = async (data) => {
-    console.log(data);
+  const onSubmit = async (data: any) => {
+    const toastId = toast.loading("Uploading Service...");
+    const serviceData = { ...data };
+    const formData = new FormData();
+    formData.append("data", JSON.stringify(serviceData));
+    if (selectedImage) formData.append("image", selectedImage);
+    if (selectedIcon) formData.append("icon", selectedIcon);
+
+    try {
+      const res = await createService({ token, formData }).unwrap();
+      // console.log(res);
+      toast.success(res.message || "Service Created Successfully", {
+        id: toastId,
+        duration: 3000,
+      });
+      setOpen(false);
+      reset(); // Reset form fields
+      setSelectedImage(null);
+      setSelectedIcon(null);
+    } catch (error: any) {
+      toast.error(error?.data?.message || "Something went wrong!", {
+        id: toastId,
+        duration: 3000,
+      });
+    }
   };
 
   return (
@@ -204,7 +229,7 @@ const AddService = () => {
               {selectedImage && (
                 <div className="mt-4 flex justify-center">
                   <img
-                    src={selectedImage}
+                    src={URL.createObjectURL(selectedImage)}
                     alt="Selected"
                     className="h-32 w-auto object-cover border border-gray-300 rounded-md"
                   />
@@ -255,7 +280,7 @@ const AddService = () => {
               {selectedIcon && (
                 <div className="mt-4 flex justify-center">
                   <img
-                    src={selectedIcon}
+                    src={URL.createObjectURL(selectedIcon)}
                     alt="Selected"
                     className="h-32 w-auto object-cover border border-gray-300 rounded-md"
                   />
