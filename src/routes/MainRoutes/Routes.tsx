@@ -14,6 +14,7 @@ import UserProfile from "@/pages/Dashboard/UserDashboardPages/UserProfile/UserPr
 import AdminDashboardLayout from "@/pages/Dashboard/AdminDashboardLayout/AdminDashboardLayout";
 import UserDashboardLayout from "@/pages/Dashboard/UserDashboardLayout/UserDashboardLayout";
 import AddService from "@/pages/Dashboard/AdminDashboardPages/AddService/AddService";
+import ManageServices from "@/pages/Dashboard/AdminDashboardPages/ManageServices/ManageServices";
 
 const router = createBrowserRouter([
   {
@@ -63,6 +64,10 @@ const router = createBrowserRouter([
       {
         path: "addService",
         element: <AddService />,
+      },
+      {
+        path: "manageService",
+        element: <ManageServices />,
       },
     ],
   },

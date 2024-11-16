@@ -45,3 +45,8 @@ export type TUserPayload = {
   user: TUser;
   id: string;
 };
+
+export type TQueryParams = {
+  name: string;
+  value: boolean | React.Key;
+};

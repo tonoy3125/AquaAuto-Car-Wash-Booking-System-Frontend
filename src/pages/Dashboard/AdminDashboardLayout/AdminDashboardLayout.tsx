@@ -90,6 +90,21 @@ const AdminDashboardLayout = () => {
                   </span>
                 </NavLink>
               </li>
+              <li>
+                <NavLink
+                  to="/admin/dashboard/manageService"
+                  className={({ isActive }) =>
+                    `flex items-center gap-[14px] px-8 py-4 group  hover:bg-gray-100 ${
+                      isActive ? "text-blue-500 font-bold" : "text-gray-700"
+                    }`
+                  }
+                >
+                  <IoMdAddCircleOutline className="text-lg lg:text-2xl" />
+                  <span className="text-base font-poppins lg:text-lg font-semibold">
+                    Manage Service
+                  </span>
+                </NavLink>
+              </li>
             </ul>
           </div>
         </div>

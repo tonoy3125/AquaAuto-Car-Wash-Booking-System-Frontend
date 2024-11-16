@@ -5,7 +5,8 @@ export type TServiceData = {
   icon: string;
   description: string;
   price: number;
-  duration: string;
+  duration: number;
+  durationUnit: string;
   isDeleted: boolean;
   createdAt: string;
   updatedAt: string;
