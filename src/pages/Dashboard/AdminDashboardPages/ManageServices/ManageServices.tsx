@@ -5,7 +5,7 @@ import {
   useGetAllServicesQuery,
   useRemoveServiceMutation,
 } from "@/redux/features/services/serviceApi";
-import { TServiceData } from "@/types";
+import { TMetaData, TServiceData } from "@/types";
 import Swal from "sweetalert2";
 import { useAppSelector } from "@/redux/hooks";
 import { useCurrentToken } from "@/redux/features/auth/authSlice";
@@ -32,6 +32,8 @@ export type TTableData = Pick<
 
 const ManageServices = () => {
   const [params, setParams] = useState<Record<string, string | undefined>>({});
+  const [currentPage, setCurrentPage] = useState(1);
+  const limit = 6;
   const [isModalOpen, setModalOpen] = useState(false);
   const [selectedService, setSelectedService] = useState<TServiceData | null>(
     null
@@ -40,13 +42,14 @@ const ManageServices = () => {
     data: serviceData,
     isLoading,
     isFetching,
-  } = useGetAllServicesQuery(params);
+  } = useGetAllServicesQuery({ page: currentPage, limit, ...params });
   //   console.log(serviceData);
 
   const [removeService] = useRemoveServiceMutation();
   const token = useAppSelector(useCurrentToken);
 
   console.log(isLoading, isFetching);
+  const metaData: TMetaData | undefined = serviceData?.meta;
 
   const tableData = serviceData?.data?.map(
     ({
@@ -191,7 +194,7 @@ const ManageServices = () => {
   ];
 
   const onChange: TableProps<TDataType>["onChange"] = (
-    _pagination,
+    pagination,
     filters,
     _sorter,
     _extra
@@ -213,6 +216,8 @@ const ManageServices = () => {
 
       setParams({ sort: sortQuery });
     }
+
+    setCurrentPage(pagination.current || 1);
   };
 
   return (
@@ -224,6 +229,11 @@ const ManageServices = () => {
           columns={columns}
           dataSource={tableData}
           tableLayout="fixed"
+          pagination={{
+            current: currentPage,
+            pageSize: limit,
+            total: metaData?.total || 0, // Total from API response
+          }}
           onChange={onChange}
           scroll={{ x: 768 }}
         />
