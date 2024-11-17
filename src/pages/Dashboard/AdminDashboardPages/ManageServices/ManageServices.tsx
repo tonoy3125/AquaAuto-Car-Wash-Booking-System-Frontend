@@ -13,6 +13,7 @@ import AdminUpdateService from "../AdminUpdateService/AdminUpdateService";
 
 type TDataType = {
   key: React.Key;
+  _id: string;
   name: string;
   description: string;
   price: number;
@@ -56,6 +57,7 @@ const ManageServices = () => {
       icon,
     }) => ({
       key: _id,
+      _id,
       name,
       description,
       price,
@@ -222,6 +224,7 @@ const ManageServices = () => {
           open={isModalOpen}
           setOpen={setModalOpen}
           service={selectedService}
+          id={selectedService._id}
         />
       )}
     </div>

@@ -1,11 +1,19 @@
+import { useCurrentToken } from "@/redux/features/auth/authSlice";
+import { useUpdateServiceMutation } from "@/redux/features/services/serviceApi";
+import { useAppSelector } from "@/redux/hooks";
 import { Button, Modal } from "antd";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
+import { toast } from "sonner";
 
-const AdminUpdateService = ({ open, setOpen, service }) => {
+const AdminUpdateService = ({ open, setOpen, service, id }) => {
   const [loading, setLoading] = useState<boolean>(false);
   const [image, setImage] = useState<string | null>(null);
+  const [selectedImage, setSelectedImage] = useState<File | null>(null);
+  const [selectedIcon, setSelectedIcon] = useState<File | null>(null);
   const [icon, setIcon] = useState<string | null>(null);
+  const token = useAppSelector(useCurrentToken);
+  const [updateService] = useUpdateServiceMutation();
   const {
     register,
     handleSubmit,
@@ -40,8 +48,42 @@ const AdminUpdateService = ({ open, setOpen, service }) => {
     }
   }, [service, reset]); // Reset on service change
 
-  const onSubmit = (data) => {
-    console.log(data); // You can replace this with your submit logic
+  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (file) {
+      setSelectedImage(file);
+    }
+  };
+
+  const handleIconFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (file) {
+      setSelectedIcon(file);
+    }
+  };
+
+  const onSubmit = async (data: any) => {
+    const toastId = toast.loading("Uploading Service...");
+    const serviceData = { ...data };
+    const formData = new FormData();
+    formData.append("data", JSON.stringify(serviceData));
+    if (selectedImage) formData.append("image", selectedImage);
+    if (selectedIcon) formData.append("icon", selectedIcon);
+
+    try {
+      const res = await updateService({ token, formData, id }).unwrap();
+      // console.log(res);
+      toast.success(res.message || "Service Updated Successfully", {
+        id: toastId,
+        duration: 3000,
+      });
+      setOpen(false);
+    } catch (error: any) {
+      toast.error(error?.data?.message || "Something went wrong!", {
+        id: toastId,
+        duration: 3000,
+      });
+    }
   };
 
   return (
@@ -186,20 +228,26 @@ const AdminUpdateService = ({ open, setOpen, service }) => {
                   type="file"
                   name="imageFile"
                   accept="image/*" // Allow only image files
-                  //   onChange={handleFileChange}
+                  onChange={handleFileChange}
                 />
               </label>
             </div>
             {/* Image preview section */}
-            {image && (
-              <div className="mt-4 flex justify-center">
+            <div className="mt-4 flex justify-center">
+              {selectedImage ? (
                 <img
-                  src={image}
-                  alt="Selected"
+                  src={URL.createObjectURL(selectedImage)}
+                  alt="Selected Image"
                   className="h-32 w-auto object-cover border border-gray-300 rounded-md"
                 />
-              </div>
-            )}
+              ) : image ? (
+                <img
+                  src={image}
+                  alt="Service Image"
+                  className="h-32 w-auto object-cover border border-gray-300 rounded-md"
+                />
+              ) : null}
+            </div>
           </div>
           <div className="mb-4">
             <h2 className="text-base font-normal text-[#4c4d4d] mb-3 font-poppins">
@@ -237,20 +285,26 @@ const AdminUpdateService = ({ open, setOpen, service }) => {
                   type="file"
                   name="iconFile"
                   accept="image/*"
-                  //   onChange={handleIconFileChange}
+                  onChange={handleIconFileChange}
                 />
               </label>
             </div>
             {/* Image preview section */}
-            {icon && (
-              <div className="mt-4 flex justify-center">
+            <div className="mt-4 flex justify-center">
+              {selectedIcon ? (
                 <img
-                  src={icon}
-                  alt="Selected"
+                  src={URL.createObjectURL(selectedIcon)}
+                  alt="Selected Icon"
                   className="h-32 w-auto object-cover border border-gray-300 rounded-md"
                 />
-              </div>
-            )}
+              ) : icon ? (
+                <img
+                  src={icon}
+                  alt="Service Icon"
+                  className="h-32 w-auto object-cover border border-gray-300 rounded-md"
+                />
+              ) : null}
+            </div>
           </div>
           <div className="flex justify-end mt-4">
             <Button
