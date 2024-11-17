@@ -21,6 +21,9 @@ type TDataType = {
   durationUnit: string;
   image: string;
   icon: string;
+  isDeleted: boolean;
+  createdAt: string;
+  updatedAt: string;
 };
 export type TTableData = Pick<
   TServiceData,
@@ -55,6 +58,9 @@ const ManageServices = () => {
       durationUnit,
       image,
       icon,
+      isDeleted,
+      createdAt,
+      updatedAt,
     }) => ({
       key: _id,
       _id,
@@ -65,6 +71,9 @@ const ManageServices = () => {
       durationUnit,
       image,
       icon,
+      isDeleted,
+      createdAt,
+      updatedAt,
     })
   );
 

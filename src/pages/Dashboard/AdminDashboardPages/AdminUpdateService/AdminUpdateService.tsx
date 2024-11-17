@@ -5,8 +5,21 @@ import { Button, Modal } from "antd";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
+import React, { Dispatch, SetStateAction } from "react";
 
-const AdminUpdateService = ({ open, setOpen, service, id }) => {
+type TAdminUpdateServiceProps = {
+  open: boolean;
+  setOpen: Dispatch<SetStateAction<boolean>>;
+  service: any;
+  id: string;
+};
+
+const AdminUpdateService: React.FC<TAdminUpdateServiceProps> = ({
+  open,
+  setOpen,
+  service,
+  id,
+}) => {
   const [loading, setLoading] = useState<boolean>(false);
   const [image, setImage] = useState<string | null>(null);
   const [selectedImage, setSelectedImage] = useState<File | null>(null);
