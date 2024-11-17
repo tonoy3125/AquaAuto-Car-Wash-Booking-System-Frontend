@@ -9,6 +9,7 @@ import { TServiceData } from "@/types";
 import Swal from "sweetalert2";
 import { useAppSelector } from "@/redux/hooks";
 import { useCurrentToken } from "@/redux/features/auth/authSlice";
+import AdminUpdateService from "../AdminUpdateService/AdminUpdateService";
 
 type TDataType = {
   key: React.Key;
@@ -27,6 +28,10 @@ export type TTableData = Pick<
 
 const ManageServices = () => {
   const [params, setParams] = useState<Record<string, string | undefined>>({});
+  const [isModalOpen, setModalOpen] = useState(false);
+  const [selectedService, setSelectedService] = useState<TServiceData | null>(
+    null
+  );
   const {
     data: serviceData,
     isLoading,
@@ -60,6 +65,11 @@ const ManageServices = () => {
       icon,
     })
   );
+
+  const handleEditService = (service: TServiceData) => {
+    setSelectedService(service); // Set the service to edit
+    setModalOpen(true); // Open the modal
+  };
 
   const handleRemoveService = async (_id: string) => {
     Swal.fire({
@@ -138,7 +148,7 @@ const ManageServices = () => {
       title: "Duration",
       key: "duration",
       dataIndex: "duration",
-      render: (record) => `${record.duration} ${record.durationUnit || ""}`,
+      render: (_, record) => `${record.duration} ${record.durationUnit || ""}`,
     },
     {
       title: "Description",
@@ -148,14 +158,17 @@ const ManageServices = () => {
     {
       title: "Action",
       key: "x",
-      render: (record) => {
+      render: (_, record) => {
         return (
           <div className="flex items-center  gap-5">
-            <button className="bg-[#43B9B2] px-6 py-2 font-poppins text-base rounded-lg text-white">
+            <button
+              onClick={() => handleEditService(record)}
+              className="bg-[#43B9B2] px-6 py-2 font-poppins text-base rounded-lg text-white"
+            >
               Edit
             </button>
             <button
-              onClick={() => handleRemoveService(record.key)}
+              onClick={() => handleRemoveService(record.key as string)}
               className="bg-[#43B9B2] px-6 py-2 font-poppins text-base rounded-lg text-white"
             >
               Delete
@@ -204,6 +217,13 @@ const ManageServices = () => {
           scroll={{ x: 768 }}
         />
       </div>
+      {isModalOpen && selectedService && (
+        <AdminUpdateService
+          open={isModalOpen}
+          setOpen={setModalOpen}
+          service={selectedService}
+        />
+      )}
     </div>
   );
 };
