@@ -4,6 +4,8 @@ import { useForm } from "react-hook-form";
 
 const AdminUpdateService = ({ open, setOpen, service }) => {
   const [loading, setLoading] = useState<boolean>(false);
+  const [image, setImage] = useState<string | null>(null);
+  const [icon, setIcon] = useState<string | null>(null);
   const {
     register,
     handleSubmit,
@@ -29,6 +31,12 @@ const AdminUpdateService = ({ open, setOpen, service }) => {
         duration: service.duration,
         durationUnit: service.durationUnit,
       });
+      if (service.image) {
+        setImage(service.image);
+      }
+      if (service.icon) {
+        setIcon(service.icon);
+      }
     }
   }, [service, reset]); // Reset on service change
 
@@ -183,15 +191,15 @@ const AdminUpdateService = ({ open, setOpen, service }) => {
               </label>
             </div>
             {/* Image preview section */}
-            {/* {selectedImage && (
+            {image && (
               <div className="mt-4 flex justify-center">
                 <img
-                  src={URL.createObjectURL(selectedImage)}
+                  src={image}
                   alt="Selected"
                   className="h-32 w-auto object-cover border border-gray-300 rounded-md"
                 />
               </div>
-            )} */}
+            )}
           </div>
           <div className="mb-4">
             <h2 className="text-base font-normal text-[#4c4d4d] mb-3 font-poppins">
@@ -234,15 +242,15 @@ const AdminUpdateService = ({ open, setOpen, service }) => {
               </label>
             </div>
             {/* Image preview section */}
-            {/* {selectedIcon && (
+            {icon && (
               <div className="mt-4 flex justify-center">
                 <img
-                  src={URL.createObjectURL(selectedIcon)}
+                  src={icon}
                   alt="Selected"
                   className="h-32 w-auto object-cover border border-gray-300 rounded-md"
                 />
               </div>
-            )} */}
+            )}
           </div>
           <div className="flex justify-end mt-4">
             <Button
