@@ -200,7 +200,8 @@ const AllServices = () => {
               <p className="font-poppins font-semibold text-xl ">
                 Service Duration :{" "}
                 <span className="text-[#EE3131]">
-                  {selectedServiceData?.duration}
+                  {selectedServiceData?.duration}{" "}
+                  {selectedServiceData?.durationUnit}
                 </span>
               </p>
               <p className="font-poppins font-semibold text-xl ">

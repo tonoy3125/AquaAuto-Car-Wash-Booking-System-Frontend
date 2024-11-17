@@ -8,13 +8,14 @@ import ResetPassword from "@/pages/ResetPassword/ResetPassword";
 import MyAccount from "@/pages/MyAccount/MyAccount";
 import Services from "@/pages/ServicesPage/Services/Services";
 import SingleService from "@/pages/ServicesPage/SingleService/SingleService";
-import DashboardLayout from "@/pages/Dashboard/AdminDashboardLayout/AdminDashboardLayout";
 import AdminProfile from "@/pages/Dashboard/AdminDashboardPages/AdminProfile/AdminProfile";
 import UserProfile from "@/pages/Dashboard/UserDashboardPages/UserProfile/UserProfile";
 import AdminDashboardLayout from "@/pages/Dashboard/AdminDashboardLayout/AdminDashboardLayout";
 import UserDashboardLayout from "@/pages/Dashboard/UserDashboardLayout/UserDashboardLayout";
 import AddService from "@/pages/Dashboard/AdminDashboardPages/AddService/AddService";
 import ManageServices from "@/pages/Dashboard/AdminDashboardPages/ManageServices/ManageServices";
+import CreateSlot from "@/pages/Dashboard/AdminDashboardPages/SlotManagement/CreateSlot/CreateSlot";
+import ManageSlot from "@/pages/Dashboard/AdminDashboardPages/SlotManagement/ManageSlot/ManageSlot";
 
 const router = createBrowserRouter([
   {
@@ -68,6 +69,14 @@ const router = createBrowserRouter([
       {
         path: "manageService",
         element: <ManageServices />,
+      },
+      {
+        path: "slotManagement/createSlot",
+        element: <CreateSlot />,
+      },
+      {
+        path: "slotManagement/manageSlot",
+        element: <ManageSlot />,
       },
     ],
   },

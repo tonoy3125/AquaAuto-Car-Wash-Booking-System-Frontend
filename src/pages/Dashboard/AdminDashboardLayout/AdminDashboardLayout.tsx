@@ -1,12 +1,14 @@
 import { Player } from "@lottiefiles/react-lottie-player";
 import { useState } from "react";
-import { MdOutlineDashboardCustomize } from "react-icons/md";
+import { MdExpandMore, MdOutlineDashboardCustomize } from "react-icons/md";
 import { RiMenuUnfold3Line } from "react-icons/ri";
 import { NavLink, Outlet } from "react-router-dom";
 import { IoMdAddCircleOutline } from "react-icons/io";
+import { FaCheckToSlot } from "react-icons/fa6";
 
 const AdminDashboardLayout = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const [isSlotSubmenuOpen, setIsSlotSubmenuOpen] = useState(false);
 
   const handleToggle = () => {
     setIsOpen((prev) => !prev);
@@ -104,6 +106,59 @@ const AdminDashboardLayout = () => {
                     Manage Service
                   </span>
                 </NavLink>
+              </li>
+              <li>
+                <div
+                  className="flex items-center gap-[14px] px-8 py-4 group hover:bg-gray-100 cursor-pointer"
+                  onClick={() => setIsSlotSubmenuOpen(!isSlotSubmenuOpen)}
+                >
+                  <FaCheckToSlot className="text-lg lg:text-2xl" />
+                  <span className="text-base font-poppins lg:text-lg font-semibold">
+                    Slot Management
+                  </span>
+                  <MdExpandMore
+                    className={`ml-auto transition-transform duration-[2000ms] text-xl ${
+                      isSlotSubmenuOpen ? "rotate-180" : ""
+                    }`}
+                  />
+                </div>
+                <ul
+                  className={`transition-[max-height] duration-[2000ms] overflow-hidden ${
+                    isSlotSubmenuOpen ? "max-h-[200px]" : "max-h-0"
+                  }`}
+                  style={{
+                    transitionTimingFunction: "ease-in-out", // Smooth opening and closing
+                  }}
+                >
+                  <li>
+                    <NavLink
+                      to="/admin/dashboard/slotManagement/createSlot"
+                      className={({ isActive }) =>
+                        `flex items-center gap-[14px] px-8 py-2 group hover:bg-gray-100 ${
+                          isActive ? "text-blue-500 font-bold" : "text-gray-700"
+                        }`
+                      }
+                    >
+                      <span className="text-base font-poppins font-semibold lg:text-lg">
+                        Create Slot
+                      </span>
+                    </NavLink>
+                  </li>
+                  <li>
+                    <NavLink
+                      to="/admin/dashboard/slotManagement/manageSlot"
+                      className={({ isActive }) =>
+                        `flex items-center gap-[14px] px-8 py-2 group hover:bg-gray-100 ${
+                          isActive ? "text-blue-500 font-bold" : "text-gray-700"
+                        }`
+                      }
+                    >
+                      <span className="text-base font-poppins font-semibold lg:text-lg">
+                        Manage Slot
+                      </span>
+                    </NavLink>
+                  </li>
+                </ul>
               </li>
             </ul>
           </div>
