@@ -58,6 +58,16 @@ const SlotApi = baseApi.injectEndpoints({
       }),
       invalidatesTags: ["Slot"],
     }),
+    removeSlot: builder.mutation({
+      query: ({ token, id }) => ({
+        url: `/services/slots/${id}`,
+        method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }),
+      invalidatesTags: ["Slot"],
+    }),
   }),
 });
 
@@ -65,4 +75,5 @@ export const {
   useCreateSlotMutation,
   useGetAllSlotQuery,
   useUpdateIsBookedMutation,
+  useRemoveSlotMutation,
 } = SlotApi;

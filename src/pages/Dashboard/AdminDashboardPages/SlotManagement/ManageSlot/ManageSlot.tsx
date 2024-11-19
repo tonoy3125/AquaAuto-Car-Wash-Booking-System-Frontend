@@ -5,16 +5,21 @@ import {
   DropdownMenuRadioItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { useCurrentToken } from "@/redux/features/auth/authSlice";
 import {
   useGetAllSlotQuery,
+  useRemoveSlotMutation,
   useUpdateIsBookedMutation,
 } from "@/redux/features/slot/slotApi";
+import { useAppSelector } from "@/redux/hooks";
 import { TMetaData } from "@/types";
 import { TSlotData } from "@/types/slotData.type";
 import { Table, TableColumnsType, TableProps } from "antd";
 import dayjs from "dayjs";
 import { useState } from "react";
+import { RiDeleteBin5Line } from "react-icons/ri";
 import { toast } from "sonner";
+import Swal from "sweetalert2";
 
 type TDataType = {
   key: React.Key;
@@ -48,6 +53,8 @@ const ManageSlot = () => {
   const metaData: TMetaData | undefined = slotData?.meta;
 
   const [updateIsBooked] = useUpdateIsBookedMutation();
+  const [removeSlot] = useRemoveSlotMutation();
+  const token = useAppSelector(useCurrentToken);
 
   const tableData = slotData?.data?.map(
     ({
@@ -71,6 +78,53 @@ const ManageSlot = () => {
       updatedAt,
     })
   );
+
+  const handleRemoveSlot = async (_id: string) => {
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, delete it!",
+      customClass: {
+        title: "custom-swal-title",
+        popup: "custom-swal-popup",
+        confirmButton: "custom-swal-confirm-btn",
+        cancelButton: "custom-swal-cancel-btn",
+      },
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        try {
+          await removeSlot({
+            token,
+            id: _id,
+          }).unwrap();
+          Swal.fire({
+            title: "Deleted!",
+            text: "The Slot has been removed from your Table.",
+            icon: "success",
+            customClass: {
+              title: "custom-swal-title",
+              popup: "custom-swal-popup",
+            },
+          });
+        } catch (error) {
+          console.error("Failed to remove Slot:", error);
+          Swal.fire({
+            title: "Error!",
+            text: "Failed to remove Slot from the Table.",
+            icon: "error",
+            customClass: {
+              title: "custom-swal-title",
+              popup: "custom-swal-popup",
+            },
+          });
+        }
+      }
+    });
+  };
 
   const columns: TableColumnsType<TDataType> = [
     {
@@ -193,19 +247,11 @@ const ManageSlot = () => {
       key: "x",
       render: (_, record) => {
         return (
-          <div className="flex items-center  gap-5">
-            <button
-              //   onClick={() => handleEditService(record)}
-              className="bg-[#43B9B2] px-6 py-2 font-poppins text-base rounded-lg text-white"
-            >
-              Edit
-            </button>
-            <button
-              //   onClick={() => handleRemoveService(record.key as string)}
-              className="bg-[#43B9B2] px-6 py-2 font-poppins text-base rounded-lg text-white"
-            >
-              Delete
-            </button>
+          <div
+            onClick={() => handleRemoveSlot(record.key as string)}
+            className="cursor-pointer"
+          >
+            <RiDeleteBin5Line className="text-2xl" />
           </div>
         );
       },
