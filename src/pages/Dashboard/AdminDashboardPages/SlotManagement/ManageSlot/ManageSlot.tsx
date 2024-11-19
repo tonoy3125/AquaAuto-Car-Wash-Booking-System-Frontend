@@ -6,6 +6,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { useCurrentToken } from "@/redux/features/auth/authSlice";
+import { useGetAllServicesQuery } from "@/redux/features/services/serviceApi";
 import {
   useGetAllSlotQuery,
   useRemoveSlotMutation,
@@ -14,7 +15,7 @@ import {
 import { useAppSelector } from "@/redux/hooks";
 import { TMetaData } from "@/types";
 import { TSlotData } from "@/types/slotData.type";
-import { Table, TableColumnsType, TableProps } from "antd";
+import { Select, Table, TableColumnsType, TableProps } from "antd";
 import dayjs from "dayjs";
 import { useState } from "react";
 import { RiDeleteBin5Line } from "react-icons/ri";
@@ -37,6 +38,7 @@ export type TTableData = Pick<
 
 const ManageSlot = () => {
   const [params, setParams] = useState<Record<string, string | undefined>>({});
+  const queryParams = {};
   const [currentPage, setCurrentPage] = useState(1);
   const limit = 10;
   //   const [selectedService, setSelectedService] = useState<TServiceData | null>(
@@ -48,6 +50,11 @@ const ManageSlot = () => {
     isFetching,
   } = useGetAllSlotQuery({ page: currentPage, limit, ...params });
   //   console.log(serviceData);
+
+  // Fetching Services
+  const { data: servicesData } = useGetAllServicesQuery(queryParams);
+  const services = servicesData?.data || [];
+  //   console.log(services);
 
   console.log(isLoading, isFetching);
   const metaData: TMetaData | undefined = slotData?.meta;
@@ -126,26 +133,20 @@ const ManageSlot = () => {
     });
   };
 
+  // Service selection handler
+  const handleServiceChange = (value: string) => {
+    setParams((prev) => ({
+      ...prev,
+      serviceId: value || undefined, // Set serviceId or remove it if cleared
+    }));
+    setCurrentPage(1); // Reset to the first page when applying a filter
+  };
+
   const columns: TableColumnsType<TDataType> = [
     {
       title: "Service Name",
       key: "serviceName",
       dataIndex: "serviceName",
-      showSorterTooltip: { target: "full-header" },
-      filters: [
-        {
-          text: "Featured",
-          value: "featured",
-        },
-        {
-          text: "Price High To Low",
-          value: "price_high_to_low",
-        },
-        {
-          text: "Price Low To High",
-          value: "price_low_to_high",
-        },
-      ],
     },
     {
       title: "Date",
@@ -270,6 +271,19 @@ const ManageSlot = () => {
   return (
     <div className="mt-7 lg:mt-0 md:p-10" style={{ height: "100vh" }}>
       <h1 className="font-poppins font-bold text-2xl mb-5">Manage Service</h1>
+      {/* Service Filter Dropdown */}
+      <div className="mb-5 flex items-center justify-end">
+        <Select
+          placeholder="Filter by Service"
+          allowClear
+          style={{ width: 300 }}
+          onChange={handleServiceChange}
+          options={services.map((service) => ({
+            label: service.name,
+            value: service._id,
+          }))}
+        />
+      </div>
       <div className="mt-10">
         <Table<TDataType>
           loading={isFetching}

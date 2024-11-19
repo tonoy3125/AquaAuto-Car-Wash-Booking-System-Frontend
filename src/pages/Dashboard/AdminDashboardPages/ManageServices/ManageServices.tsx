@@ -10,6 +10,8 @@ import Swal from "sweetalert2";
 import { useAppSelector } from "@/redux/hooks";
 import { useCurrentToken } from "@/redux/features/auth/authSlice";
 import AdminUpdateService from "../AdminUpdateService/AdminUpdateService";
+import { FaRegEdit } from "react-icons/fa";
+import { RiDeleteBinLine } from "react-icons/ri";
 
 type TDataType = {
   key: React.Key;
@@ -175,18 +177,18 @@ const ManageServices = () => {
       render: (_, record) => {
         return (
           <div className="flex items-center  gap-5">
-            <button
+            <span
               onClick={() => handleEditService(record)}
-              className="bg-[#43B9B2] px-6 py-2 font-poppins text-base rounded-lg text-white"
+              className="cursor-pointer"
             >
-              Edit
-            </button>
-            <button
+              <FaRegEdit className="text-2xl text-black" />
+            </span>
+            <span
               onClick={() => handleRemoveService(record.key as string)}
-              className="bg-[#43B9B2] px-6 py-2 font-poppins text-base rounded-lg text-white"
+              className="cursor-pointer"
             >
-              Delete
-            </button>
+              <RiDeleteBinLine className="text-2xl text-black" />
+            </span>
           </div>
         );
       },
