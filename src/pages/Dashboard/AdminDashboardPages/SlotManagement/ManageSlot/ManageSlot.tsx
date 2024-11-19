@@ -5,24 +5,29 @@ import {
   DropdownMenuRadioItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { useGetAllSlotQuery } from "@/redux/features/slot/slotApi";
+import {
+  useGetAllSlotQuery,
+  useUpdateIsBookedMutation,
+} from "@/redux/features/slot/slotApi";
 import { TMetaData } from "@/types";
 import { TSlotData } from "@/types/slotData.type";
 import { Table, TableColumnsType, TableProps } from "antd";
 import dayjs from "dayjs";
 import { useState } from "react";
+import { toast } from "sonner";
 
 type TDataType = {
   key: React.Key;
   _id: string;
   startTime: string;
   endTime: string;
+  isBooked: string;
   createdAt: string;
   updatedAt: string;
 };
 export type TTableData = Pick<
   TSlotData,
-  "service" | "date" | "startTime" | "endTime"
+  "service" | "date" | "startTime" | "endTime" | "isBooked"
 >;
 
 const ManageSlot = () => {
@@ -41,6 +46,8 @@ const ManageSlot = () => {
 
   console.log(isLoading, isFetching);
   const metaData: TMetaData | undefined = slotData?.meta;
+
+  const [updateIsBooked] = useUpdateIsBookedMutation();
 
   const tableData = slotData?.data?.map(
     ({
@@ -111,10 +118,10 @@ const ManageSlot = () => {
             <span
               className={`w-3 h-3 rounded-full ${
                 record.isBooked === "booked"
-                  ? "bg-blue-500"
+                  ? "bg-green-500"
                   : record.isBooked === "canceled"
                   ? "bg-red-500"
-                  : "bg-gray-300"
+                  : "bg-yellow-500"
               }`}
             ></span>
 
@@ -134,12 +141,35 @@ const ManageSlot = () => {
               <DropdownMenuContent className="w-40">
                 <DropdownMenuRadioGroup
                   value={record.isBooked}
-                  onValueChange={(value) => {
-                    // Update logic here (API call or state update)
-                    console.log(
-                      `Changing booking status for ${record._id} to ${value}`
-                    );
-                    updateSlotStatus(record._id, value); // Example function call
+                  onValueChange={async (value) => {
+                    const toastId = toast.loading("Updating Slot Status...");
+                    try {
+                      // Use async/await to handle mutation and unwrap response
+                      const res = await updateIsBooked({
+                        id: record._id,
+                        isBooked: value,
+                      }).unwrap();
+
+                      // Display success toast
+                      toast.success(
+                        res.message || "Slot status updated Successfully!",
+                        {
+                          id: toastId,
+                          duration: 3000,
+                        }
+                      );
+                    } catch (error: any) {
+                      //   console.error("Error updating booking status:", error);
+
+                      // Display error toast
+                      toast.error(
+                        error?.data?.message || "Something went wrong!",
+                        {
+                          id: toastId,
+                          duration: 3000,
+                        }
+                      );
+                    }
                   }}
                 >
                   <DropdownMenuRadioItem value="available">
@@ -184,7 +214,7 @@ const ManageSlot = () => {
 
   const onChange: TableProps<TDataType>["onChange"] = (
     pagination,
-    filters,
+    _filters,
     _sorter,
     _extra
   ) => {

@@ -47,7 +47,22 @@ const SlotApi = baseApi.injectEndpoints({
       },
       providesTags: ["Slot"],
     }),
+    updateIsBooked: builder.mutation({
+      query: ({ token, id, isBooked }) => ({
+        url: `/services/slots/isBooked/${id}`,
+        method: "PATCH",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+        body: { isBooked },
+      }),
+      invalidatesTags: ["Slot"],
+    }),
   }),
 });
 
-export const { useCreateSlotMutation, useGetAllSlotQuery } = SlotApi;
+export const {
+  useCreateSlotMutation,
+  useGetAllSlotQuery,
+  useUpdateIsBookedMutation,
+} = SlotApi;
