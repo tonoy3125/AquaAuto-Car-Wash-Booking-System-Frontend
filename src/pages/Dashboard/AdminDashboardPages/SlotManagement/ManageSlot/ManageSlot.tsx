@@ -15,7 +15,7 @@ import {
 import { useAppSelector } from "@/redux/hooks";
 import { TMetaData } from "@/types";
 import { TSlotData } from "@/types/slotData.type";
-import { Select, Table, TableColumnsType, TableProps } from "antd";
+import { DatePicker, Select, Table, TableColumnsType, TableProps } from "antd";
 import dayjs from "dayjs";
 import { useState } from "react";
 import { RiDeleteBin5Line } from "react-icons/ri";
@@ -140,6 +140,14 @@ const ManageSlot = () => {
       serviceId: value || undefined, // Set serviceId or remove it if cleared
     }));
     setCurrentPage(1); // Reset to the first page when applying a filter
+  };
+
+  const handleDateChange = (date: dayjs.Dayjs | null) => {
+    setParams((prev) => ({
+      ...prev,
+      date: date ? date.format("YYYY-MM-DD") : undefined,
+    }));
+    setCurrentPage(1);
   };
 
   const columns: TableColumnsType<TDataType> = [
@@ -272,7 +280,13 @@ const ManageSlot = () => {
     <div className="mt-7 lg:mt-0 md:p-10" style={{ height: "100vh" }}>
       <h1 className="font-poppins font-bold text-2xl mb-5">Manage Service</h1>
       {/* Service Filter Dropdown */}
-      <div className="mb-5 flex items-center justify-end">
+      <div className="mb-5 flex items-center justify-end gap-4">
+        <DatePicker
+          placeholder="Filter by Date"
+          style={{ width: 300 }}
+          onChange={handleDateChange}
+          allowClear
+        />
         <Select
           placeholder="Filter by Service"
           allowClear
