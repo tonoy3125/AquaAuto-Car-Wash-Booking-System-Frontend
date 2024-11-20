@@ -50,7 +50,17 @@ const BookingApi = baseApi.injectEndpoints({
       },
       providesTags: ["Booking"],
     }),
+    removeBooking: builder.mutation({
+      query: ({ token, id }) => ({
+        url: `/bookings/${id}`,
+        method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }),
+      invalidatesTags: ["Booking"],
+    }),
   }),
 });
 
-export const { useGetAllBookingsQuery } = BookingApi;
+export const { useGetAllBookingsQuery, useRemoveBookingMutation } = BookingApi;

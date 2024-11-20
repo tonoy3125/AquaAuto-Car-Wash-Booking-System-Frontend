@@ -1,4 +1,7 @@
-import { useGetAllBookingsQuery } from "@/redux/features/bookings/bookingsApi";
+import {
+  useGetAllBookingsQuery,
+  useRemoveBookingMutation,
+} from "@/redux/features/bookings/bookingsApi";
 import { TMetaData, TServiceData } from "@/types";
 import { TBookingData } from "@/types/bookingData.type";
 import { Table, TableColumnsType, TableProps } from "antd";
@@ -9,6 +12,9 @@ import dayjs from "dayjs";
 import UserBookingDetails from "./UserBookingDetails/UserBookingDetails";
 import { TUserData } from "@/types/userData.type";
 import { TSlotData } from "@/types/slotData.type";
+import Swal from "sweetalert2";
+import { useAppSelector } from "@/redux/hooks";
+import { useCurrentToken } from "@/redux/features/auth/authSlice";
 
 type TDataType = {
   key: React.Key;
@@ -56,6 +62,8 @@ const UserBookings = () => {
     isLoading,
     isFetching,
   } = useGetAllBookingsQuery({ page: currentPage, limit, ...params });
+  const [removeBooking] = useRemoveBookingMutation();
+  const token = useAppSelector(useCurrentToken);
 
   //   console.log(bookingData);
   const metaData: TMetaData | undefined = bookingData?.meta;
@@ -106,6 +114,53 @@ const UserBookings = () => {
     setModalOpen(true); // Open the modal
   };
 
+  const handleRemoveBooking = async (_id: string) => {
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, delete it!",
+      customClass: {
+        title: "custom-swal-title",
+        popup: "custom-swal-popup",
+        confirmButton: "custom-swal-confirm-btn",
+        cancelButton: "custom-swal-cancel-btn",
+      },
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        try {
+          await removeBooking({
+            token,
+            id: _id,
+          }).unwrap();
+          Swal.fire({
+            title: "Deleted!",
+            text: "The Booking has been removed from your Table.",
+            icon: "success",
+            customClass: {
+              title: "custom-swal-title",
+              popup: "custom-swal-popup",
+            },
+          });
+        } catch (error) {
+          console.error("Failed to remove Booking:", error);
+          Swal.fire({
+            title: "Error!",
+            text: "Failed to remove Booking from the Table.",
+            icon: "error",
+            customClass: {
+              title: "custom-swal-title",
+              popup: "custom-swal-popup",
+            },
+          });
+        }
+      }
+    });
+  };
+
   const columns: TableColumnsType<TDataType> = [
     {
       title: "Customer Name",
@@ -148,7 +203,7 @@ const UserBookings = () => {
               <FiEye className="text-2xl" />
             </div>
             <div
-              // onClick={() => handleRemoveSlot(record.key as string)}
+              onClick={() => handleRemoveBooking(record.key as string)}
               className="cursor-pointer"
             >
               <RiDeleteBin5Line className="text-2xl" />
@@ -170,7 +225,7 @@ const UserBookings = () => {
 
   return (
     <div className="mt-7 lg:mt-0 md:p-10" style={{ height: "100vh" }}>
-      <h1 className="font-poppins font-bold text-2xl mb-5">Manage Service</h1>
+      <h1 className="font-poppins font-bold text-2xl mb-5">User Bookings</h1>
       {/* Service Filter Dropdown */}
 
       <div className="mt-10">
