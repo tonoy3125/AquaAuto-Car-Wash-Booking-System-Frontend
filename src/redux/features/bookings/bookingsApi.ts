@@ -4,7 +4,17 @@ import { TBookingData } from "@/types/bookingData.type";
 
 const BookingApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
-   
+    // createService: builder.mutation({
+    //   query: ({ token, formData }) => ({
+    //     url: "/services",
+    //     method: "POST",
+    //     body: formData,
+    //     headers: {
+    //       Authorization: `Bearer ${token}`,
+    //     },
+    //   }),
+    //   invalidatesTags: ["Service"],
+    // }),
     getAllBookings: builder.query({
       query: ({ token, ...args }) => {
         const params = new URLSearchParams();
@@ -23,7 +33,7 @@ const BookingApi = baseApi.injectEndpoints({
         });
 
         return {
-          url: "/services",
+          url: "/bookings",
           method: "GET",
           params: params,
           headers: {
