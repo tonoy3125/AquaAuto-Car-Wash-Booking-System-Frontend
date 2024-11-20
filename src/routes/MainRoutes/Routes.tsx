@@ -16,6 +16,8 @@ import AddService from "@/pages/Dashboard/AdminDashboardPages/AddService/AddServ
 import ManageServices from "@/pages/Dashboard/AdminDashboardPages/ManageServices/ManageServices";
 import CreateSlot from "@/pages/Dashboard/AdminDashboardPages/SlotManagement/CreateSlot/CreateSlot";
 import ManageSlot from "@/pages/Dashboard/AdminDashboardPages/SlotManagement/ManageSlot/ManageSlot";
+import UserBookings from "@/pages/Dashboard/AdminDashboardPages/UserManagement/UserBookings/UserBookings";
+import UserList from "@/pages/Dashboard/AdminDashboardPages/UserManagement/UserList/UserList";
 
 const router = createBrowserRouter([
   {
@@ -75,8 +77,12 @@ const router = createBrowserRouter([
         element: <CreateSlot />,
       },
       {
-        path: "slotManagement/manageSlot",
-        element: <ManageSlot />,
+        path: "userManagement/userBookings",
+        element: <UserBookings />,
+      },
+      {
+        path: "userManagement/userList",
+        element: <UserList />,
       },
     ],
   },
