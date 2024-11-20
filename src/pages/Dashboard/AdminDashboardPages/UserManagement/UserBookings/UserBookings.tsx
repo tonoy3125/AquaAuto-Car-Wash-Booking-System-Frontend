@@ -1,11 +1,14 @@
 import { useGetAllBookingsQuery } from "@/redux/features/bookings/bookingsApi";
-import { TMetaData } from "@/types";
+import { TMetaData, TServiceData } from "@/types";
 import { TBookingData } from "@/types/bookingData.type";
 import { Table, TableColumnsType, TableProps } from "antd";
 import { useState } from "react";
 import { RiDeleteBin5Line } from "react-icons/ri";
 import { FiEye } from "react-icons/fi";
 import dayjs from "dayjs";
+import UserBookingDetails from "./UserBookingDetails/UserBookingDetails";
+import { TUserData } from "@/types/userData.type";
+import { TSlotData } from "@/types/slotData.type";
 
 type TDataType = {
   key: React.Key;
@@ -21,6 +24,9 @@ type TDataType = {
   vehicleModel: string;
   manufacturingYear: number;
   registrationPlate: string;
+  customer: TUserData;
+  service: TServiceData;
+  slot: TSlotData;
   createdAt: string;
   updatedAt: string;
 };
@@ -38,6 +44,10 @@ export type TTableData = Pick<
 
 const UserBookings = () => {
   const [params, setParams] = useState<Record<string, string | undefined>>({});
+  const [selectedBooking, setSelectedBooking] = useState<TBookingData | null>(
+    null
+  );
+  const [isModalOpen, setModalOpen] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const limit = 10;
 
@@ -50,7 +60,7 @@ const UserBookings = () => {
   //   console.log(bookingData);
   const metaData: TMetaData | undefined = bookingData?.meta;
 
-  const tableData = bookingData?.data?.map(
+  const tableData: TDataType[] | undefined = bookingData?.data?.map(
     ({
       _id,
       service,
@@ -67,9 +77,15 @@ const UserBookings = () => {
       key: _id,
       _id,
       customerName: customer?.name || "N/A",
+      customerEmail: customer?.email || "N/A",
+      customerPhone: customer?.phone || "N/A",
+      customerAddress: customer?.address || "N/A",
       serviceName: service?.name || "N/A",
       slotDate: dayjs(slot?.date).format("DD.MM.YYYY") || "N/A",
       formattedPrice: service?.price ? `$ ${service.price}` : "N/A",
+      slotStartTime: slot?.startTime || "N/A",
+      slotEndTime: slot?.endTime || "N/A",
+      slotStatus: slot?.isBooked || "N/A",
       serviceDuration: service?.duration,
       serviceDurationUnit: service?.durationUnit,
       manufacturingYear: manufacturingYear || 0, // Default if undefined
@@ -79,8 +95,16 @@ const UserBookings = () => {
       vehicleType: vehicleType || "N/A",
       createdAt,
       updatedAt,
+      customer,
+      service,
+      slot,
     })
   );
+
+  const handleEditBooking = (booking: TBookingData) => {
+    setSelectedBooking(booking); // Set the service to edit
+    setModalOpen(true); // Open the modal
+  };
 
   const columns: TableColumnsType<TDataType> = [
     {
@@ -118,7 +142,7 @@ const UserBookings = () => {
         return (
           <div className="flex items-center gap-5">
             <div
-              // onClick={() => handleRemoveSlot(record.key as string)}
+              onClick={() => handleEditBooking(record)}
               className="cursor-pointer"
             >
               <FiEye className="text-2xl" />
@@ -164,6 +188,14 @@ const UserBookings = () => {
           scroll={{ x: 768 }}
         />
       </div>
+      {isModalOpen && selectedBooking && (
+        <UserBookingDetails
+          open={isModalOpen}
+          setOpen={setModalOpen}
+          booking={selectedBooking}
+          id={selectedBooking._id}
+        />
+      )}
     </div>
   );
 };
