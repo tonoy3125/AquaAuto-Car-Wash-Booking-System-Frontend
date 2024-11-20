@@ -4,7 +4,7 @@ import {
 } from "@/redux/features/bookings/bookingsApi";
 import { TMetaData, TServiceData } from "@/types";
 import { TBookingData } from "@/types/bookingData.type";
-import { Table, TableColumnsType, TableProps } from "antd";
+import { Input, Select, Table, TableColumnsType, TableProps } from "antd";
 import { useState } from "react";
 import { RiDeleteBin5Line } from "react-icons/ri";
 import { FiEye } from "react-icons/fi";
@@ -15,6 +15,7 @@ import { TSlotData } from "@/types/slotData.type";
 import Swal from "sweetalert2";
 import { useAppSelector } from "@/redux/hooks";
 import { useCurrentToken } from "@/redux/features/auth/authSlice";
+import { useGetAllServicesQuery } from "@/redux/features/services/serviceApi";
 
 type TDataType = {
   key: React.Key;
@@ -50,12 +51,16 @@ export type TTableData = Pick<
 
 const UserBookings = () => {
   const [params, setParams] = useState<Record<string, string | undefined>>({});
+  const queryParams = {};
   const [selectedBooking, setSelectedBooking] = useState<TBookingData | null>(
     null
   );
   const [isModalOpen, setModalOpen] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const limit = 10;
+
+  const { data: servicesData } = useGetAllServicesQuery(queryParams);
+  const services = servicesData?.data || [];
 
   const {
     data: bookingData,
@@ -161,6 +166,24 @@ const UserBookings = () => {
     });
   };
 
+  // Service selection handler
+  const handleBookingChange = (value: string) => {
+    setParams((prev) => ({
+      ...prev,
+      serviceId: value || undefined, // Set serviceId or remove it if cleared
+    }));
+    setCurrentPage(1); // Reset to the first page when applying a filter
+  };
+
+  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value.trim();
+    setParams((prev) => ({
+      ...prev,
+      searchTerm: value || undefined, // Set or clear the searchTerm
+    }));
+    setCurrentPage(1);
+  };
+
   const columns: TableColumnsType<TDataType> = [
     {
       title: "Customer Name",
@@ -226,7 +249,27 @@ const UserBookings = () => {
   return (
     <div className="mt-7 lg:mt-0 md:p-10" style={{ height: "100vh" }}>
       <h1 className="font-poppins font-bold text-2xl mb-5">User Bookings</h1>
-      {/* Service Filter Dropdown */}
+
+      <div className="mb-5 flex items-center justify-end gap-4">
+        <Input
+          placeholder="Search bookings..."
+          allowClear
+          style={{ width: "50%" }}
+          onChange={handleSearchChange}
+        />
+        <Select
+          placeholder="Filter by Service"
+          allowClear
+          style={{ width: 300 }}
+          onChange={handleBookingChange}
+          options={services.map((service) => ({
+            label: service.name,
+            value: service._id,
+          }))}
+        />
+      </div>
+
+      {/* Booking Filter Dropdown */}
 
       <div className="mt-10">
         <Table<TDataType>
