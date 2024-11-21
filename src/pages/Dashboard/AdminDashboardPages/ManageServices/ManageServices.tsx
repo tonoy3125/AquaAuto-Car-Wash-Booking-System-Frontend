@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Table } from "antd";
+import { Input, Table } from "antd";
 import type { TableColumnsType, TableProps } from "antd";
 import {
   useGetAllServicesQuery,
@@ -85,6 +85,15 @@ const ManageServices = () => {
   const handleEditService = (service: TServiceData) => {
     setSelectedService(service); // Set the service to edit
     setModalOpen(true); // Open the modal
+  };
+
+  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value.trim();
+    setParams((prev) => ({
+      ...prev,
+      searchTerm: value || undefined, // Set or clear the searchTerm
+    }));
+    setCurrentPage(1);
   };
 
   const handleRemoveService = async (_id: string) => {
@@ -225,6 +234,14 @@ const ManageServices = () => {
   return (
     <div className="mt-7 lg:mt-0 md:p-10" style={{ height: "100vh" }}>
       <h1 className="font-poppins font-bold text-2xl mb-5">Manage Service</h1>
+      <div className="mb-5 flex items-center justify-end gap-4">
+        <Input
+          placeholder="Search Service By Name..."
+          allowClear
+          style={{ width: "25%" }}
+          onChange={handleSearchChange}
+        />
+      </div>
       <div className="mt-10">
         <Table<TDataType>
           loading={isFetching}
