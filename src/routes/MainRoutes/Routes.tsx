@@ -77,6 +77,10 @@ const router = createBrowserRouter([
         element: <CreateSlot />,
       },
       {
+        path: "slotManagement/manageSlot",
+        element: <ManageSlot />,
+      },
+      {
         path: "userManagement/userBookings",
         element: <UserBookings />,
       },
