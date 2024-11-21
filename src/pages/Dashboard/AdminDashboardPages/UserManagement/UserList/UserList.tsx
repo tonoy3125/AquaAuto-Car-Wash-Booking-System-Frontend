@@ -1,7 +1,15 @@
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuRadioGroup,
+  DropdownMenuRadioItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 import { useCurrentToken } from "@/redux/features/auth/authSlice";
 import {
   useGetAllUsersQuery,
   useRemoveUserMutation,
+  useUpdateUserMutation,
 } from "@/redux/features/user/userApi";
 import { useAppSelector } from "@/redux/hooks";
 import { TMetaData } from "@/types";
@@ -9,6 +17,7 @@ import { TUserData } from "@/types/userData.type";
 import { Input, Table, TableColumnsType, TableProps } from "antd";
 import { useState } from "react";
 import { RiDeleteBin5Line } from "react-icons/ri";
+import { toast } from "sonner";
 import Swal from "sweetalert2";
 
 type TDataType = {
@@ -30,6 +39,7 @@ export type TTableData = Pick<
 const UserList = () => {
   const [params, setParams] = useState<Record<string, string | undefined>>({});
   const [currentPage, setCurrentPage] = useState(1);
+  const [updateUser] = useUpdateUserMutation();
   const [removeUser] = useRemoveUserMutation();
   const token = useAppSelector(useCurrentToken);
   const limit = 10;
@@ -133,10 +143,73 @@ const UserList = () => {
       dataIndex: "address",
     },
     {
-      title: "Role",
-      key: "role",
-      dataIndex: "role",
-    },
+        title: "Role",
+        key: "role",
+        render: (_, record) => {
+          return (
+            <div className="flex items-center gap-2">
+              {/* Role Dropdown */}
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <button
+                    className={`flex items-center gap-2 border px-3 py-1 rounded-md focus:outline-none focus:ring-2 ${
+                      record.role === "admin"
+                        ? "text-blue-600 border-blue-500 focus:ring-blue-500"
+                        : "text-green-600 border-green-500 focus:ring-green-500"
+                    }`}
+                  >
+                    {record.role === "admin" ? "Admin" : "User"}
+                    <span className="ml-1 text-gray-500">&#9662;</span> {/* Down arrow */}
+                  </button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent className="w-40">
+                  <DropdownMenuRadioGroup
+                    value={record.role}
+                    onValueChange={async (value) => {
+                      if (record.role === value) {
+                        toast(
+                          `Role is already set to ${
+                            value === "admin" ? "Admin" : "User"
+                          }`,
+                          { duration: 3000 }
+                        );
+                        return;
+                      }
+      
+                      const toastId = toast.loading("Updating User Role...");
+                      try {
+                        // Update role using mutation
+                        const res = await updateUser({
+                          id: record._id,
+                          role: value,
+                        }).unwrap();
+      
+                        // Success notification
+                        toast.success(
+                          res.message || "User role updated successfully!",
+                          {
+                            id: toastId,
+                            duration: 3000,
+                          }
+                        );
+                      } catch (error: any) {
+                        // Error notification
+                        toast.error(
+                          error?.data?.message || "Failed to update user role!",
+                          { id: toastId, duration: 3000 }
+                        );
+                      }
+                    }}
+                  >
+                    <DropdownMenuRadioItem value="admin">Admin</DropdownMenuRadioItem>
+                    <DropdownMenuRadioItem value="user">User</DropdownMenuRadioItem>
+                  </DropdownMenuRadioGroup>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            </div>
+          );
+        },
+      },
 
     {
       title: "Action",
