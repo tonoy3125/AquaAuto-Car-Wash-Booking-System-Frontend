@@ -252,7 +252,7 @@ const UserBookings = () => {
 
       <div className="mb-5 flex items-center justify-end gap-4">
         <Input
-          placeholder="Search Bookings..."
+          placeholder="Search Bookings By Customer Name & Service Name..."
           allowClear
           style={{ width: "25%" }}
           onChange={handleSearchChange}

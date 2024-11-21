@@ -39,7 +39,17 @@ const UserApi = baseApi.injectEndpoints({
       },
       providesTags: ["Auth"],
     }),
+    removeUser: builder.mutation({
+      query: ({ token, id }) => ({
+        url: `/users/${id}`,
+        method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }),
+      invalidatesTags: ["Auth"],
+    }),
   }),
 });
 
-export const { useGetAllUsersQuery } = UserApi;
+export const { useGetAllUsersQuery, useRemoveUserMutation } = UserApi;

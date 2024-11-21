@@ -1,9 +1,15 @@
-import { useGetAllUsersQuery } from "@/redux/features/user/userApi";
+import { useCurrentToken } from "@/redux/features/auth/authSlice";
+import {
+  useGetAllUsersQuery,
+  useRemoveUserMutation,
+} from "@/redux/features/user/userApi";
+import { useAppSelector } from "@/redux/hooks";
 import { TMetaData } from "@/types";
 import { TUserData } from "@/types/userData.type";
-import { Table, TableColumnsType, TableProps } from "antd";
+import { Input, Table, TableColumnsType, TableProps } from "antd";
 import { useState } from "react";
 import { RiDeleteBin5Line } from "react-icons/ri";
+import Swal from "sweetalert2";
 
 type TDataType = {
   key: React.Key;
@@ -24,12 +30,14 @@ export type TTableData = Pick<
 const UserList = () => {
   const [params, setParams] = useState<Record<string, string | undefined>>({});
   const [currentPage, setCurrentPage] = useState(1);
+  const [removeUser] = useRemoveUserMutation();
+  const token = useAppSelector(useCurrentToken);
   const limit = 10;
-  const {
-    data: userData,
-    isLoading,
-    isFetching,
-  } = useGetAllUsersQuery({ page: currentPage, limit, ...params });
+  const { data: userData, isFetching } = useGetAllUsersQuery({
+    page: currentPage,
+    limit,
+    ...params,
+  });
   //   console.log(userData);
   const metaData: TMetaData | undefined = userData?.meta;
 
@@ -46,6 +54,62 @@ const UserList = () => {
       updatedAt,
     })
   );
+
+  const handleRemoveUser = async (_id: string) => {
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, delete it!",
+      customClass: {
+        title: "custom-swal-title",
+        popup: "custom-swal-popup",
+        confirmButton: "custom-swal-confirm-btn",
+        cancelButton: "custom-swal-cancel-btn",
+      },
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        try {
+          await removeUser({
+            token,
+            id: _id,
+          }).unwrap();
+          Swal.fire({
+            title: "Deleted!",
+            text: "The User has been removed from your Table.",
+            icon: "success",
+            customClass: {
+              title: "custom-swal-title",
+              popup: "custom-swal-popup",
+            },
+          });
+        } catch (error) {
+          console.error("Failed to remove User:", error);
+          Swal.fire({
+            title: "Error!",
+            text: "Failed to remove User from the Table.",
+            icon: "error",
+            customClass: {
+              title: "custom-swal-title",
+              popup: "custom-swal-popup",
+            },
+          });
+        }
+      }
+    });
+  };
+
+  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value.trim();
+    setParams((prev) => ({
+      ...prev,
+      searchTerm: value || undefined, // Set or clear the searchTerm
+    }));
+    setCurrentPage(1);
+  };
 
   const columns: TableColumnsType<TDataType> = [
     {
@@ -72,7 +136,6 @@ const UserList = () => {
       title: "Role",
       key: "role",
       dataIndex: "role",
-      
     },
 
     {
@@ -81,7 +144,7 @@ const UserList = () => {
       render: (_, record) => {
         return (
           <div
-            // onClick={() => handleRemoveSlot(record.key as string)}
+            onClick={() => handleRemoveUser(record.key as string)}
             className="cursor-pointer"
           >
             <RiDeleteBin5Line className="text-2xl" />
@@ -103,6 +166,16 @@ const UserList = () => {
   return (
     <div className="mt-7 lg:mt-0 md:p-10" style={{ height: "100vh" }}>
       <h1 className="font-poppins font-bold text-2xl mb-5">User Management</h1>
+
+      <div className="mb-5 flex items-center justify-end gap-4">
+        <Input
+          placeholder="Search User By Name & Email..."
+          allowClear
+          style={{ width: "25%" }}
+          onChange={handleSearchChange}
+        />
+      </div>
+
       {/* Service Filter Dropdown */}
 
       <div className="mt-10">
