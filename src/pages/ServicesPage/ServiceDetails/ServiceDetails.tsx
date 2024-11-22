@@ -1,11 +1,11 @@
 import { DatePicker } from "antd";
+import dayjs from "dayjs";
 import React, { useState } from "react";
+import "./ServiceDetails.css";
 
 const ServiceDetails = () => {
-  const [activeTab, setActiveTab] = useState(1); // 1 is the default tab
-  // Get today's date in the format YYYY-MM-DD
-  const today = new Date().toISOString().split("T")[0];
-  const [selectedDate, setSelectedDate] = useState(today);
+  const [activeTab, setActiveTab] = useState(1);
+
   const [formData, setFormData] = useState({
     category: "",
     service: "",
@@ -15,8 +15,16 @@ const ServiceDetails = () => {
     endTime: "",
   });
 
-  const handleDateChange = (e) => {
-    setSelectedDate(e.target.value); // Update the state when a new date is selected
+  const handleDateChange = (date, dateString) => {
+    setFormData((prev) => ({
+      ...prev,
+      availableDate: dateString,
+    }));
+  };
+
+  const disablePastDates = (current) => {
+    // Disable past dates
+    return current && current < new Date().setHours(0, 0, 0, 0);
   };
 
   const totalTabs = 5; // Total number of tabs
@@ -101,7 +109,7 @@ const ServiceDetails = () => {
                   Category
                 </h2>
                 <select
-                  className="pt-3 pb-3 pl-3 w-full mx-auto border-[#dae1e3] border-[1px] bg-[#fff] text-[#1D1D1F] font-poppins rounded-lg focus:outline focus:outline-1 focus:outline-[#0d6efd] transition-all duration-700 ease-in-out"
+                  className="pt-3 pb-3 pl-3 w-full mx-auto border-[#454545] border-[1px] bg-[#2E2E2E] text-[#fff] font-poppins rounded-lg outline-none"
                   id=""
                 >
                   <option value="">Select Category</option>
@@ -113,7 +121,7 @@ const ServiceDetails = () => {
                   Service
                 </h2>
                 <input
-                  className="pt-3 pb-3 pl-3 w-full mx-auto border-[#dae1e3] border-[1px] bg-[#fff] text-[#1D1D1F] font-poppins rounded-lg focus:outline focus:outline-1 focus:outline-[#0d6efd] transition-all duration-700 ease-in-out"
+                  className="pt-3 pb-3 pl-3 w-full mx-auto border-[#454545] border-[1px] bg-[#2E2E2E] text-[#fff] font-poppins rounded-lg outline-none"
                   type="text"
                   id=""
                   placeholder="Enter Your Service"
@@ -125,7 +133,7 @@ const ServiceDetails = () => {
                 </h2>
                 <div>
                   <select
-                    className="pt-3 pb-3 pl-3 w-full mx-auto border-[#dae1e3] border-[1px] bg-[#fff] text-[#1D1D1F] font-poppins rounded-lg focus:outline focus:outline-1 focus:outline-[#0d6efd] transition-all duration-700 ease-in-out"
+                    className="pt-3 pb-3 pl-3 w-full mx-auto border-[#454545] border-[1px] bg-[#2E2E2E] text-[#fff] font-poppins rounded-lg outline-none"
                     id=""
                   >
                     <option value="">Any</option>
@@ -143,23 +151,29 @@ const ServiceDetails = () => {
                   I'm available on or after
                 </h2>
                 <DatePicker
-                  placeholder="Filter by Date"
+                  placeholder={dayjs().format("MMMM DD, YYYY")}
+                  format="MMMM DD, YYYY"
                   style={{
                     width: "100%",
                     paddingTop: "13px",
                     paddingBottom: "13px",
                     fontFamily: "Poppins, sans-serif",
+                    background: "#2E2E2E",
+                    color: "#fff",
+                    border: "1px solid #454545",
                   }}
                   onChange={handleDateChange}
                   allowClear
+                  disabledDate={disablePastDates}
+                  className="datepicker-custom"
                 />
               </div>
               <div>
                 <h2 className="text-lg font-normal text-[#fff] mb-3 font-poppins">
-                  Service
+                  Start from
                 </h2>
                 <input
-                  className="pt-3 pb-3 pl-3 w-full mx-auto border-[#dae1e3] border-[1px] bg-[#fff] text-[#1D1D1F] font-poppins rounded-lg focus:outline focus:outline-1 focus:outline-[#0d6efd] transition-all duration-700 ease-in-out"
+                  className="pt-3 pb-3 pl-3 w-full mx-auto border-[#454545] border-[1px] bg-[#2E2E2E] text-[#fff] font-poppins rounded-lg outline-none"
                   type="text"
                   id=""
                   placeholder="Enter Your Service"
@@ -167,11 +181,11 @@ const ServiceDetails = () => {
               </div>
               <div>
                 <h2 className="text-lg font-normal text-[#fff] mb-3 font-poppins">
-                  Employee
+                  Finish by
                 </h2>
                 <div>
                   <select
-                    className="pt-3 pb-3 pl-3 w-full mx-auto border-[#dae1e3] border-[1px] bg-[#fff] text-[#1D1D1F] font-poppins rounded-lg focus:outline focus:outline-1 focus:outline-[#0d6efd] transition-all duration-700 ease-in-out"
+                    className="pt-3 pb-3 pl-3 w-full mx-auto border-[#454545] border-[1px] bg-[#2E2E2E] text-[#fff] font-poppins rounded-lg out"
                     id=""
                   >
                     <option value="">Any</option>

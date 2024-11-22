@@ -1,0 +1,43 @@
+.ant-picker-cell-inner {
+  color: #f4662f;
+}
+
+.ant-picker-cell-selected .ant-picker-cell-inner {
+  background-color: #f4662f !important;
+  color: #fff !important;
+  border: 1px solid #f4662f;
+}
+
+.ant-picker-cell-inner:hover {
+  background-color: #f4662f !important;
+  color: #fff !important;
+  border-radius: 4px;
+}
+
+.ant-picker-cell-disabled .ant-picker-cell-inner {
+  color: #f4662f !important;
+  pointer-events: none;
+  background-color: #f5f5f5 !important;
+  opacity: 0.6;
+}
+
+/* Apply custom placeholder style for Ant Design DatePicker */
+.ant-picker-input input::placeholder {
+  color: #ffffff !important; /* Ensure the color is white */
+  opacity: 1; /* Make the placeholder fully visible */
+}
+
+/* Optional: Apply specific styles for the input when focused */
+.ant-picker-input input {
+  color: #ffffff; /* Ensure the input text is also white */
+}
+
+/* Change the color of the clear (X) button in the DatePicker */
+.ant-picker-clear .anticon {
+  color: #ffffff !important; /* Make the clear button white */
+}
+
+/* Optional: Add hover effect for better UX */
+.ant-picker-clear .anticon:hover {
+  color: #f0f0f0 !important; /* Slightly lighter white on hover */
+}
