@@ -47,6 +47,15 @@ const SlotApi = baseApi.injectEndpoints({
       },
       providesTags: ["Slot"],
     }),
+    getAllSlotByServiceId: builder.query({
+      query: (serviceId) => {
+        return {
+          url: `/slots/availability/service/${serviceId}`, // Endpoint for fetching slots by serviceId
+          method: "GET",
+        };
+      },
+      providesTags: ["Slot"],
+    }),
     updateIsBooked: builder.mutation({
       query: ({ token, id, isBooked }) => ({
         url: `/services/slots/isBooked/${id}`,
@@ -74,6 +83,7 @@ const SlotApi = baseApi.injectEndpoints({
 export const {
   useCreateSlotMutation,
   useGetAllSlotQuery,
+  useGetAllSlotByServiceIdQuery,
   useUpdateIsBookedMutation,
   useRemoveSlotMutation,
 } = SlotApi;

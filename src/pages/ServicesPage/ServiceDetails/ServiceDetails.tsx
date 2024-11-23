@@ -3,14 +3,21 @@ import dayjs from "dayjs";
 import React, { useState } from "react";
 import "./ServiceDetails.css";
 import { MdKeyboardArrowLeft, MdKeyboardArrowRight } from "react-icons/md";
+import { useGetAllSlotByServiceIdQuery } from "@/redux/features/slot/slotApi";
 
-const ServiceDetails = () => {
+const ServiceDetails = ({ service }) => {
+  // console.log(service);
+  const id = service?._id;
   const [activeTab, setActiveTab] = useState(1);
   const [isMonchecked, setIsMonChecked] = useState(true);
   const [isTuechecked, setIsTueChecked] = useState(true);
   const [isWedchecked, setIsWedChecked] = useState(true);
   const [isThuchecked, setIsThuChecked] = useState(true);
   const [isFrichecked, setIsFriChecked] = useState(true);
+  const [selectedEmployee, setSelectedEmployee] = useState("");
+
+  const { data: slotData } = useGetAllSlotByServiceIdQuery(id!);
+  // console.log(slotData);
 
   const [formData, setFormData] = useState({
     category: "",
@@ -20,6 +27,10 @@ const ServiceDetails = () => {
     startTime: "",
     endTime: "",
   });
+
+  const handleEmployeeChange = (e) => {
+    setSelectedEmployee(e.target.value);
+  };
 
   const handleDateChange = (date, dateString) => {
     setFormData((prev) => ({
@@ -141,14 +152,16 @@ const ServiceDetails = () => {
                   <select
                     className="pt-3 pb-3 pl-3 w-full mx-auto border-[#454545] border-[1px] bg-[#2E2E2E] text-[#C0C0C0] font-poppins rounded-lg outline-none"
                     id=""
+                    value={selectedEmployee}
+                    onChange={handleEmployeeChange}
                   >
                     <option value="">Any</option>
-                    <option value="Minutes">Sazid</option>
-                    <option value="Hours">Tamim</option>
-                    <option value="Hours">Rifat</option>
-                    <option value="Hours">Migdad</option>
-                    <option value="Hours">Dipu</option>
-                    <option value="Hours">Murad</option>
+                    <option value="Sazid">Sazid</option>
+                    <option value="Tamim">Tamim</option>
+                    <option value="Rifat">Rifat</option>
+                    <option value="Migdad">Migdad</option>
+                    <option value="Dipu">Dipu</option>
+                    <option value="Murad">Murad</option>
                   </select>
                 </div>
               </div>
@@ -414,7 +427,19 @@ const ServiceDetails = () => {
               </div>
             </div>
           )}
-          {/* Add additional tabs as needed */}
+
+          {activeTab === 3 && (
+            <div>
+              <h4 className="font-poppins font-medium text-base text-white">
+                Below you can find a list of available time slots for{" "}
+                <span className="underline">{service?.name}</span> by{" "}
+                <span>{selectedEmployee || "Any Employee"}</span>.
+              </h4>
+              <h4 className="font-poppins font-medium text-base text-white">
+                Click on a time slot to proceed with booking.
+              </h4>
+            </div>
+          )}
         </div>
 
         {/* Navigation Buttons */}
