@@ -4,6 +4,8 @@ import React, { useState } from "react";
 import "./ServiceDetails.css";
 import { MdKeyboardArrowLeft, MdKeyboardArrowRight } from "react-icons/md";
 import { useGetAllSlotByServiceIdQuery } from "@/redux/features/slot/slotApi";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { Label } from "@/components/ui/label";
 
 const ServiceDetails = ({ service }) => {
   // console.log(service);
@@ -15,6 +17,10 @@ const ServiceDetails = ({ service }) => {
   const [isThuchecked, setIsThuChecked] = useState(true);
   const [isFrichecked, setIsFriChecked] = useState(true);
   const [selectedEmployee, setSelectedEmployee] = useState("");
+  const [selectedSlot, setSelectedSlot] = useState<{
+    date: string;
+    startTime: string;
+  } | null>(null);
 
   const { data: slotData } = useGetAllSlotByServiceIdQuery(id!);
   // console.log(slotData);
@@ -47,6 +53,13 @@ const ServiceDetails = ({ service }) => {
   const totalTabs = 5; // Total number of tabs
   const progressWidth = (activeTab / totalTabs) * 100;
 
+  const groupedSlots = slotData?.data?.reduce((acc, slot) => {
+    const date = slot.date; // Assuming each slot has a `date` property
+    if (!acc[date]) acc[date] = [];
+    acc[date].push(slot);
+    return acc;
+  }, {});
+
   const handleNext = () => {
     // // Validate current tab fields before moving to the next tab
     // if (activeTab === 1) {
@@ -72,6 +85,30 @@ const ServiceDetails = ({ service }) => {
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
+  };
+
+  const groupSlotsByDate = (slots) => {
+    return slots.reduce((grouped, slot) => {
+      const date = slot.date; // Assuming `slot.date` contains the date in format: "Mon Nov 25"
+      if (!grouped[date]) {
+        grouped[date] = [];
+      }
+      grouped[date].push(slot);
+      return grouped;
+    }, {});
+  };
+
+  // Process your slot data
+  const slotDataGrouped = groupSlotsByDate(slotData?.data || []);
+
+  const formatDate = (dateString: string) => {
+    const date = new Date(dateString);
+    const options: Intl.DateTimeFormatOptions = {
+      weekday: "short", // 'Mon', 'Tue', 'Wed', etc.
+      month: "short", // 'Nov', 'Dec', etc.
+      day: "numeric", // '25', '26', etc.
+    };
+    return new Intl.DateTimeFormat("en-US", options).format(date);
   };
 
   return (
@@ -438,6 +475,63 @@ const ServiceDetails = ({ service }) => {
               <h4 className="font-poppins font-medium text-base text-white">
                 Click on a time slot to proceed with booking.
               </h4>
+
+              <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-8 gap-4 mt-6">
+                {Object.entries(slotDataGrouped).map(([date, slots]) => (
+                  <React.Fragment key={date}>
+                    {/* Render the Date Button */}
+                    <button className="date-btn" disabled>
+                      {formatDate(date)}
+                    </button>
+                    {/* Render the Time Slots for this Date */}
+                    {slots?.map((slot, index) => (
+                      <button
+                        key={slot.startTime}
+                        className={`time-slot-btn ${
+                          selectedSlot?.date === slot.date &&
+                          selectedSlot?.startTime === slot.startTime
+                            ? "selected"
+                            : ""
+                        }`}
+                        onClick={() => {
+                          setSelectedSlot({
+                            date: slot.date, // assuming slot has a `date` field
+                            startTime: slot.startTime,
+                          });
+                          setFormData((prev) => ({
+                            ...prev,
+                            startTime: slot.startTime,
+                          }));
+                        }}
+                      >
+                        <div
+                          className={`radio-input ${
+                            selectedSlot?.date === slot.date &&
+                            selectedSlot?.startTime === slot.startTime
+                              ? "selected"
+                              : ""
+                          }`}
+                        >
+                          {selectedSlot?.date === slot.date &&
+                            selectedSlot?.startTime === slot.startTime && (
+                              <div className="radio-input-inner selected"></div>
+                            )}
+                        </div>
+                        <RadioGroup
+                          className="cursor-pointer"
+                          defaultValue="comfortable"
+                        >
+                          <div className="flex items-center space-x-2">
+                            <Label htmlFor={`radio-${slot.startTime}`}>
+                              {slot?.startTime}
+                            </Label>
+                          </div>
+                        </RadioGroup>
+                      </button>
+                    ))}
+                  </React.Fragment>
+                ))}
+              </div>
             </div>
           )}
         </div>

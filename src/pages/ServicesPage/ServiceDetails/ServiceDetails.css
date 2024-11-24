@@ -41,3 +41,82 @@
 .ant-picker-clear .anticon:hover {
   color: #f0f0f0 !important; /* Slightly lighter white on hover */
 }
+
+/* Date button style */
+.date-btn {
+  background-color: #e43337; /* Red background for date */
+  color: white; /* White text color */
+  font-family: "Poppins", sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  border-radius: 8px;
+  padding: 8px;
+  text-align: center;
+  cursor: default;
+  /* Span across all columns */
+}
+
+/* Button text style */
+.time-slot-btn {
+  background-color: white;
+  color: black;
+  font-family: "Poppins", sans-serif;
+  font-size: 16px;
+  font-weight: 500;
+  border-radius: 8px;
+  padding: 8px 16px;
+  cursor: pointer;
+  transition: background-color 0.3s, color 0.3s, border-color 0.3s,
+    font-weight 0.3s;
+  border: 2px solid transparent; /* Default border */
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* Highlight border on hover */
+.time-slot-btn:hover {
+  border-color: #e43337;
+}
+
+/* Bold text when button is selected */
+.time-slot-btn.selected {
+  border-color: #e43337; /* Red border for selected */
+  background-color: #fff4f4; /* Optional: light background to indicate selection */
+}
+
+/* Radio input style */
+.radio-input {
+  width: 20px;
+  height: 20px;
+  border: 1px solid gray;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: background-color 0.3s, border-color 0.3s;
+}
+
+.radio-input.selected {
+  border-color: #e43337;
+  background-color: #fff4f4;
+}
+
+/* Highlight radio input only on hover */
+.time-slot-btn:hover .radio-input {
+  border-color: #e43337;
+  background-color: #fff4f4;
+}
+
+/* Inner circle for selected radio input */
+.radio-input-inner {
+  width: 10px;
+  height: 10px;
+  background-color: white;
+  border-radius: 50%;
+  transition: background-color 0.3s;
+}
+
+.radio-input-inner.selected {
+  background-color: #e43337; /* Inner circle color when selected */
+}
