@@ -36,6 +36,7 @@ export type TUser = {
   email: string;
   name: string;
   role: string;
+  phone: number;
   iat: number; // Issued at time (Unix timestamp)
   exp: number; // Expiration time (Unix timestamp)
 };
@@ -49,4 +50,9 @@ export type TUserPayload = {
 export type TQueryParams = {
   name: string;
   value: boolean | React.Key;
+};
+
+export type TSlot = {
+  date: string; // Adjust type based on the actual format of `date`
+  [key: string]: any; // Include other properties of the slot if necessary
 };
