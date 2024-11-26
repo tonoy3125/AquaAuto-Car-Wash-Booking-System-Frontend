@@ -4,7 +4,7 @@ import React, { useState } from "react";
 import "./ServiceDetails.css";
 import { MdKeyboardArrowLeft, MdKeyboardArrowRight } from "react-icons/md";
 import { useGetAllSlotByServiceIdQuery } from "@/redux/features/slot/slotApi";
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { RadioGroup } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
 
 const ServiceDetails = ({ service }) => {
@@ -25,24 +25,8 @@ const ServiceDetails = ({ service }) => {
   const { data: slotData } = useGetAllSlotByServiceIdQuery(id!);
   // console.log(slotData);
 
-  const [formData, setFormData] = useState({
-    category: "",
-    service: "",
-    employee: "",
-    availableDate: "",
-    startTime: "",
-    endTime: "",
-  });
-
   const handleEmployeeChange = (e) => {
     setSelectedEmployee(e.target.value);
-  };
-
-  const handleDateChange = (date, dateString) => {
-    setFormData((prev) => ({
-      ...prev,
-      availableDate: dateString,
-    }));
   };
 
   const disablePastDates = (current) => {
@@ -52,40 +36,6 @@ const ServiceDetails = ({ service }) => {
 
   const totalTabs = 5; // Total number of tabs
   const progressWidth = (activeTab / totalTabs) * 100;
-
-  const groupedSlots = slotData?.data?.reduce((acc, slot) => {
-    const date = slot.date; // Assuming each slot has a `date` property
-    if (!acc[date]) acc[date] = [];
-    acc[date].push(slot);
-    return acc;
-  }, {});
-
-  const handleNext = () => {
-    // // Validate current tab fields before moving to the next tab
-    // if (activeTab === 1) {
-    //   if (!formData.category || !formData.service || !formData.employee) {
-    //     alert("Please fill out all fields in the current tab.");
-    //     return;
-    //   }
-    // }
-    // if (activeTab === 2) {
-    //   if (!formData.availableDate || !formData.startTime || !formData.endTime) {
-    //     alert("Please fill out all fields in the current tab.");
-    //     return;
-    //   }
-    // }
-
-    setActiveTab((prev) => prev + 1); // Move to the next tab
-  };
-
-  const handleBack = () => {
-    setActiveTab((prev) => prev - 1); // Go back to the previous tab
-  };
-
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
-  };
 
   const groupSlotsByDate = (slots) => {
     return slots.reduce((grouped, slot) => {
@@ -155,415 +105,512 @@ const ServiceDetails = ({ service }) => {
         </div>
 
         {/* Tab Content */}
-        <div className="mt-8">
-          {activeTab === 1 && (
-            <div className="mb-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 border-b-[1px] border-b-[#e5e7eb] pb-10">
-              <div>
-                <h2 className="text-lg font-normal text-[#fff] mb-3 font-poppins">
-                  Category
-                </h2>
-                <select
-                  className="pt-3 pb-3 pl-3 w-full mx-auto border-[#454545] border-[1px] bg-[#2E2E2E] text-[#C0C0C0] font-poppins rounded-lg outline-none"
-                  id=""
-                >
-                  <option value="">Select Category</option>
-                  <option value="Minutes">Repair</option>
-                </select>
-              </div>
-              <div>
-                <h2 className="text-lg font-normal text-[#fff] mb-3 font-poppins">
-                  Service
-                </h2>
-                <input
-                  className="pt-3 pb-3 pl-3 w-full mx-auto border-[#454545] border-[1px] bg-[#2E2E2E] text-[#C0C0C0] font-poppins rounded-lg outline-none"
-                  type="text"
-                  id=""
-                  placeholder="Enter Your Service"
-                />
-              </div>
-              <div>
-                <h2 className="text-lg font-normal text-[#fff] mb-3 font-poppins">
-                  Employee
-                </h2>
+        <form>
+          <div className="mt-8">
+            {activeTab === 1 && (
+              <div className="mb-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 border-b-[1px] border-b-[#e5e7eb] pb-10">
                 <div>
-                  <select
-                    className="pt-3 pb-3 pl-3 w-full mx-auto border-[#454545] border-[1px] bg-[#2E2E2E] text-[#C0C0C0] font-poppins rounded-lg outline-none"
-                    id=""
-                    value={selectedEmployee}
-                    onChange={handleEmployeeChange}
-                  >
-                    <option value="">Any</option>
-                    <option value="Sazid">Sazid</option>
-                    <option value="Tamim">Tamim</option>
-                    <option value="Rifat">Rifat</option>
-                    <option value="Migdad">Migdad</option>
-                    <option value="Dipu">Dipu</option>
-                    <option value="Murad">Murad</option>
-                  </select>
-                </div>
-              </div>
-              <div>
-                <h2 className="text-lg font-normal text-[#fff] mb-3 font-poppins">
-                  I'm available on or after
-                </h2>
-                <DatePicker
-                  placeholder={dayjs().format("MMMM DD, YYYY")}
-                  format="MMMM DD, YYYY"
-                  style={{
-                    width: "100%",
-                    paddingTop: "13px",
-                    paddingBottom: "13px",
-                    fontFamily: "Poppins, sans-serif",
-                    background: "#2E2E2E",
-                    color: "#C0C0C0",
-                    border: "1px solid #454545",
-                  }}
-                  onChange={handleDateChange}
-                  allowClear
-                  disabledDate={disablePastDates}
-                  className="datepicker-custom"
-                />
-              </div>
-              <div>
-                <h2 className="text-lg font-normal text-[#fff] mb-3 font-poppins">
-                  Start from
-                </h2>
-                <div>
+                  <h2 className="text-lg font-normal text-[#fff] mb-3 font-poppins">
+                    Category
+                  </h2>
                   <select
                     className="pt-3 pb-3 pl-3 w-full mx-auto border-[#454545] border-[1px] bg-[#2E2E2E] text-[#C0C0C0] font-poppins rounded-lg outline-none"
                     id=""
                   >
-                    <option value="Minutes">8.00 am</option>
-                    <option value="Hours">9.00 am</option>
-                    <option value="Hours">10.00 am</option>
-                    <option value="Hours">11.00 am</option>
-                    <option value="Hours">12.00 pm</option>
-                    <option value="Hours">1.00 pm</option>
-                    <option value="Hours">2.00 pm</option>
-                    <option value="Hours">3.00 pm</option>
-                    <option value="Hours">4.00 pm</option>
-                    <option value="Hours">5.00 pm</option>
-                    <option value="Hours">6.00 pm</option>
+                    <option value="">Select Category</option>
+                    <option value="Minutes">Repair</option>
                   </select>
                 </div>
-              </div>
-              <div>
-                <h2 className="text-lg font-normal text-[#fff] mb-3 font-poppins">
-                  Finish by
-                </h2>
                 <div>
-                  <select
+                  <h2 className="text-lg font-normal text-[#fff] mb-3 font-poppins">
+                    Service
+                  </h2>
+                  <input
                     className="pt-3 pb-3 pl-3 w-full mx-auto border-[#454545] border-[1px] bg-[#2E2E2E] text-[#C0C0C0] font-poppins rounded-lg outline-none"
+                    type="text"
                     id=""
-                    defaultValue="6.00 pm"
-                  >
-                    <option value="8.00 am">8.00 am</option>
-                    <option value="9.00 am">9.00 am</option>
-                    <option value="10.00 am">10.00 am</option>
-                    <option value="11.00 am">11.00 am</option>
-                    <option value="12.00 pm">12.00 pm</option>
-                    <option value="1.00 pm">1.00 pm</option>
-                    <option value="2.00 pm">2.00 pm</option>
-                    <option value="3.00 pm">3.00 pm</option>
-                    <option value="4.00 pm">4.00 pm</option>
-                    <option value="5.00 pm">5.00 pm</option>
-                    <option value="6.00 pm">6.00 pm</option>
-                  </select>
+                    placeholder="Enter Your Service"
+                  />
                 </div>
-              </div>
-              <div className="flex items-center gap-2">
                 <div>
-                  <p className="font-poppins text-base text-[#fff] mb-2">Mon</p>
-                  <div
-                    className={`w-6 h-6 rounded-full flex items-center justify-center cursor-pointer ${
-                      isMonchecked ? "bg-orange-500" : "bg-orange-500"
-                    }`}
-                    onClick={() => setIsMonChecked(!isMonchecked)}
-                  >
-                    {isMonchecked && (
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="white"
-                        className="w-4 h-4"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth="2"
-                          d="M5 13l4 4L19 7"
-                        />
-                      </svg>
-                    )}
+                  <h2 className="text-lg font-normal text-[#fff] mb-3 font-poppins">
+                    Employee
+                  </h2>
+                  <div>
+                    <select
+                      className="pt-3 pb-3 pl-3 w-full mx-auto border-[#454545] border-[1px] bg-[#2E2E2E] text-[#C0C0C0] font-poppins rounded-lg outline-none"
+                      id=""
+                      value={selectedEmployee}
+                      onChange={handleEmployeeChange}
+                    >
+                      <option value="">Any</option>
+                      <option value="Sazid">Sazid</option>
+                      <option value="Tamim">Tamim</option>
+                      <option value="Rifat">Rifat</option>
+                      <option value="Migdad">Migdad</option>
+                      <option value="Dipu">Dipu</option>
+                      <option value="Murad">Murad</option>
+                    </select>
                   </div>
                 </div>
                 <div>
-                  <p className="font-poppins text-base text-[#fff] mb-2">Tue</p>
-                  <div
-                    className={`w-6 h-6 rounded-full flex items-center justify-center cursor-pointer ${
-                      isTuechecked ? "bg-orange-500" : "bg-orange-500"
-                    }`}
-                    onClick={() => setIsTueChecked(!isTuechecked)}
-                  >
-                    {isTuechecked && (
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="white"
-                        className="w-4 h-4"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth="2"
-                          d="M5 13l4 4L19 7"
-                        />
-                      </svg>
-                    )}
+                  <h2 className="text-lg font-normal text-[#fff] mb-3 font-poppins">
+                    I'm available on or after
+                  </h2>
+                  <DatePicker
+                    placeholder={dayjs().format("MMMM DD, YYYY")}
+                    format="MMMM DD, YYYY"
+                    style={{
+                      width: "100%",
+                      paddingTop: "13px",
+                      paddingBottom: "13px",
+                      fontFamily: "Poppins, sans-serif",
+                      background: "#2E2E2E",
+                      color: "#C0C0C0",
+                      border: "1px solid #454545",
+                    }}
+                    allowClear
+                    disabledDate={disablePastDates}
+                    className="datepicker-custom"
+                  />
+                </div>
+                <div>
+                  <h2 className="text-lg font-normal text-[#fff] mb-3 font-poppins">
+                    Start from
+                  </h2>
+                  <div>
+                    <select
+                      className="pt-3 pb-3 pl-3 w-full mx-auto border-[#454545] border-[1px] bg-[#2E2E2E] text-[#C0C0C0] font-poppins rounded-lg outline-none"
+                      id=""
+                    >
+                      <option value="8.00 AM">8.00 am</option>
+                      <option value="9.00 AM">9.00 am</option>
+                      <option value="10.00 AM">10.00 am</option>
+                      <option value="11.00 AM">11.00 am</option>
+                      <option value="12.00 PM">12.00 pm</option>
+                      <option value="1.00 PM">1.00 pm</option>
+                      <option value="2.00 PM">2.00 pm</option>
+                      <option value="3.00 PM">3.00 pm</option>
+                      <option value="4.00 PM">4.00 pm</option>
+                      <option value="5.00 PM">5.00 pm</option>
+                      <option value="6.00 PM">6.00 pm</option>
+                    </select>
                   </div>
                 </div>
                 <div>
-                  <p className="font-poppins text-base text-[#fff] mb-2">Wed</p>
-                  <div
-                    className={`w-6 h-6 rounded-full flex items-center justify-center cursor-pointer ${
-                      isWedchecked ? "bg-orange-500" : "bg-orange-500"
-                    }`}
-                    onClick={() => setIsWedChecked(!isWedchecked)}
-                  >
-                    {isWedchecked && (
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="white"
-                        className="w-4 h-4"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth="2"
-                          d="M5 13l4 4L19 7"
-                        />
-                      </svg>
-                    )}
+                  <h2 className="text-lg font-normal text-[#fff] mb-3 font-poppins">
+                    Finish by
+                  </h2>
+                  <div>
+                    <select
+                      className="pt-3 pb-3 pl-3 w-full mx-auto border-[#454545] border-[1px] bg-[#2E2E2E] text-[#C0C0C0] font-poppins rounded-lg outline-none"
+                      id=""
+                      defaultValue="6.00 PM"
+                    >
+                      <option value="8.00 AM">8.00 am</option>
+                      <option value="9.00 AM">9.00 am</option>
+                      <option value="10.00 AM">10.00 am</option>
+                      <option value="11.00 AM">11.00 am</option>
+                      <option value="12.00 PM">12.00 pm</option>
+                      <option value="1.00 PM">1.00 pm</option>
+                      <option value="2.00 PM">2.00 pm</option>
+                      <option value="3.00 PM">3.00 pm</option>
+                      <option value="4.00 PM">4.00 pm</option>
+                      <option value="5.00 PM">5.00 pm</option>
+                      <option value="6.00 PM">6.00 pm</option>
+                    </select>
                   </div>
+                </div>
+                <div className="flex items-center gap-2">
+                  <div>
+                    <p className="font-poppins text-base text-[#fff] mb-2">
+                      Mon
+                    </p>
+                    <div
+                      className={`w-6 h-6 rounded-full flex items-center justify-center cursor-pointer ${
+                        isMonchecked ? "bg-orange-500" : "bg-orange-500"
+                      }`}
+                      onClick={() => setIsMonChecked(!isMonchecked)}
+                    >
+                      {isMonchecked && (
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                          stroke="white"
+                          className="w-4 h-4"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth="2"
+                            d="M5 13l4 4L19 7"
+                          />
+                        </svg>
+                      )}
+                    </div>
+                  </div>
+                  <div>
+                    <p className="font-poppins text-base text-[#fff] mb-2">
+                      Tue
+                    </p>
+                    <div
+                      className={`w-6 h-6 rounded-full flex items-center justify-center cursor-pointer ${
+                        isTuechecked ? "bg-orange-500" : "bg-orange-500"
+                      }`}
+                      onClick={() => setIsTueChecked(!isTuechecked)}
+                    >
+                      {isTuechecked && (
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                          stroke="white"
+                          className="w-4 h-4"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth="2"
+                            d="M5 13l4 4L19 7"
+                          />
+                        </svg>
+                      )}
+                    </div>
+                  </div>
+                  <div>
+                    <p className="font-poppins text-base text-[#fff] mb-2">
+                      Wed
+                    </p>
+                    <div
+                      className={`w-6 h-6 rounded-full flex items-center justify-center cursor-pointer ${
+                        isWedchecked ? "bg-orange-500" : "bg-orange-500"
+                      }`}
+                      onClick={() => setIsWedChecked(!isWedchecked)}
+                    >
+                      {isWedchecked && (
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                          stroke="white"
+                          className="w-4 h-4"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth="2"
+                            d="M5 13l4 4L19 7"
+                          />
+                        </svg>
+                      )}
+                    </div>
+                  </div>
+                  <div>
+                    <p className="font-poppins text-base text-[#fff] mb-2">
+                      Thu
+                    </p>
+                    <div
+                      className={`w-6 h-6 rounded-full flex items-center justify-center cursor-pointer ${
+                        isThuchecked ? "bg-orange-500" : "bg-orange-500"
+                      }`}
+                      onClick={() => setIsThuChecked(!isThuchecked)}
+                    >
+                      {isThuchecked && (
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                          stroke="white"
+                          className="w-4 h-4"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth="2"
+                            d="M5 13l4 4L19 7"
+                          />
+                        </svg>
+                      )}
+                    </div>
+                  </div>
+                  <div>
+                    <p className="font-poppins text-base text-[#fff] mb-2">
+                      Fri
+                    </p>
+                    <div
+                      className={`w-6 h-6 rounded-full flex items-center justify-center cursor-pointer ${
+                        isFrichecked ? "bg-orange-500" : "bg-orange-500"
+                      }`}
+                      onClick={() => setIsFriChecked(!isFrichecked)}
+                    >
+                      {isFrichecked && (
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                          stroke="white"
+                          className="w-4 h-4"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth="2"
+                            d="M5 13l4 4L19 7"
+                          />
+                        </svg>
+                      )}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )}
+            {activeTab === 2 && (
+              <div className="mb-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 border-b-[1px] border-b-[#e5e7eb] pb-10">
+                <div>
+                  <h2 className="text-lg font-normal text-[#fff] mb-3 font-poppins">
+                    Vehicle Type
+                  </h2>
+                  <input
+                    className="pt-3 pb-3 pl-3 w-full mx-auto border-[#454545] border-[1px] bg-[#2E2E2E] text-[#C0C0C0] font-poppins rounded-lg outline-none"
+                    type="text"
+                    id=""
+                    placeholder="Enter Your Vehicle Type"
+                  />
                 </div>
                 <div>
-                  <p className="font-poppins text-base text-[#fff] mb-2">Thu</p>
-                  <div
-                    className={`w-6 h-6 rounded-full flex items-center justify-center cursor-pointer ${
-                      isThuchecked ? "bg-orange-500" : "bg-orange-500"
-                    }`}
-                    onClick={() => setIsThuChecked(!isThuchecked)}
-                  >
-                    {isThuchecked && (
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="white"
-                        className="w-4 h-4"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth="2"
-                          d="M5 13l4 4L19 7"
-                        />
-                      </svg>
-                    )}
-                  </div>
+                  <h2 className="text-lg font-normal text-[#fff] mb-3 font-poppins">
+                    Vehicle Brand
+                  </h2>
+                  <input
+                    className="pt-3 pb-3 pl-3 w-full mx-auto border-[#454545] border-[1px] bg-[#2E2E2E] text-[#C0C0C0] font-poppins rounded-lg outline-none"
+                    type="text"
+                    id=""
+                    placeholder="Enter Your Vehicle Brand"
+                  />
                 </div>
                 <div>
-                  <p className="font-poppins text-base text-[#fff] mb-2">Fri</p>
-                  <div
-                    className={`w-6 h-6 rounded-full flex items-center justify-center cursor-pointer ${
-                      isFrichecked ? "bg-orange-500" : "bg-orange-500"
-                    }`}
-                    onClick={() => setIsFriChecked(!isFrichecked)}
-                  >
-                    {isFrichecked && (
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="white"
-                        className="w-4 h-4"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth="2"
-                          d="M5 13l4 4L19 7"
-                        />
-                      </svg>
-                    )}
-                  </div>
+                  <h2 className="text-lg font-normal text-[#fff] mb-3 font-poppins">
+                    Vehicle Model
+                  </h2>
+                  <input
+                    className="pt-3 pb-3 pl-3 w-full mx-auto border-[#454545] border-[1px] bg-[#2E2E2E] text-[#C0C0C0] font-poppins rounded-lg outline-none"
+                    type="text"
+                    id=""
+                    placeholder="Enter Your Vehicle Model"
+                  />
+                </div>
+                <div>
+                  <h2 className="text-lg font-normal text-[#fff] mb-3 font-poppins">
+                    Manufacturing Year
+                  </h2>
+                  <input
+                    className="pt-3 pb-3 pl-3 w-full mx-auto border-[#454545] border-[1px] bg-[#2E2E2E] text-[#C0C0C0] font-poppins rounded-lg outline-none"
+                    type="text"
+                    id=""
+                    placeholder="Enter Your Manufacturing Year"
+                  />
+                </div>
+                <div>
+                  <h2 className="text-lg font-normal text-[#fff] mb-3 font-poppins">
+                    Registration Plate
+                  </h2>
+                  <input
+                    className="pt-3 pb-3 pl-3 w-full mx-auto border-[#454545] border-[1px] bg-[#2E2E2E] text-[#C0C0C0] font-poppins rounded-lg outline-none"
+                    type="text"
+                    id=""
+                    placeholder="Enter Your Registration Plate"
+                  />
                 </div>
               </div>
-            </div>
-          )}
-          {activeTab === 2 && (
-            <div className="mb-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 border-b-[1px] border-b-[#e5e7eb] pb-10">
-              <div>
-                <h2 className="text-lg font-normal text-[#fff] mb-3 font-poppins">
-                  Vehicle Type
-                </h2>
-                <input
-                  className="pt-3 pb-3 pl-3 w-full mx-auto border-[#454545] border-[1px] bg-[#2E2E2E] text-[#C0C0C0] font-poppins rounded-lg outline-none"
-                  type="text"
-                  id=""
-                  placeholder="Enter Your Vehicle Type"
-                />
-              </div>
-              <div>
-                <h2 className="text-lg font-normal text-[#fff] mb-3 font-poppins">
-                  Vehicle Brand
-                </h2>
-                <input
-                  className="pt-3 pb-3 pl-3 w-full mx-auto border-[#454545] border-[1px] bg-[#2E2E2E] text-[#C0C0C0] font-poppins rounded-lg outline-none"
-                  type="text"
-                  id=""
-                  placeholder="Enter Your Vehicle Brand"
-                />
-              </div>
-              <div>
-                <h2 className="text-lg font-normal text-[#fff] mb-3 font-poppins">
-                  Vehicle Model
-                </h2>
-                <input
-                  className="pt-3 pb-3 pl-3 w-full mx-auto border-[#454545] border-[1px] bg-[#2E2E2E] text-[#C0C0C0] font-poppins rounded-lg outline-none"
-                  type="text"
-                  id=""
-                  placeholder="Enter Your Vehicle Model"
-                />
-              </div>
-              <div>
-                <h2 className="text-lg font-normal text-[#fff] mb-3 font-poppins">
-                  Manufacturing Year
-                </h2>
-                <input
-                  className="pt-3 pb-3 pl-3 w-full mx-auto border-[#454545] border-[1px] bg-[#2E2E2E] text-[#C0C0C0] font-poppins rounded-lg outline-none"
-                  type="text"
-                  id=""
-                  placeholder="Enter Your Manufacturing Year"
-                />
-              </div>
-              <div>
-                <h2 className="text-lg font-normal text-[#fff] mb-3 font-poppins">
-                  Registration Plate
-                </h2>
-                <input
-                  className="pt-3 pb-3 pl-3 w-full mx-auto border-[#454545] border-[1px] bg-[#2E2E2E] text-[#C0C0C0] font-poppins rounded-lg outline-none"
-                  type="text"
-                  id=""
-                  placeholder="Enter Your Registration Plate"
-                />
-              </div>
-            </div>
-          )}
+            )}
 
-          {activeTab === 3 && (
-            <div>
-              <h4 className="font-poppins font-medium text-base text-white">
-                Below you can find a list of available time slots for{" "}
-                <span className="underline">{service?.name}</span> by{" "}
-                <span>{selectedEmployee || "Any Employee"}</span>.
-              </h4>
-              <h4 className="font-poppins font-medium text-base text-white">
-                Click on a time slot to proceed with booking.
-              </h4>
+            {activeTab === 3 && (
+              <div>
+                <h4 className="font-poppins font-medium text-base text-white">
+                  Below you can find a list of available time slots for{" "}
+                  <span className="underline">{service?.name}</span> by{" "}
+                  <span>{selectedEmployee || "Any Employee"}</span>.
+                </h4>
+                <h4 className="font-poppins font-medium text-base text-white">
+                  Click on a time slot to proceed with booking.
+                </h4>
 
-              <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-8 gap-4 mt-6">
-                {Object.entries(slotDataGrouped).map(([date, slots]) => (
-                  <React.Fragment key={date}>
-                    {/* Render the Date Button */}
-                    <button className="date-btn" disabled>
-                      {formatDate(date)}
-                    </button>
-                    {/* Render the Time Slots for this Date */}
-                    {slots?.map((slot, index) => (
-                      <button
-                        key={slot.startTime}
-                        className={`time-slot-btn ${
-                          selectedSlot?.date === slot.date &&
-                          selectedSlot?.startTime === slot.startTime
-                            ? "selected"
-                            : ""
-                        }`}
-                        onClick={() => {
-                          setSelectedSlot({
-                            date: slot.date, // assuming slot has a `date` field
-                            startTime: slot.startTime,
-                          });
-                          setFormData((prev) => ({
-                            ...prev,
-                            startTime: slot.startTime,
-                          }));
-                        }}
-                      >
-                        <div
-                          className={`radio-input ${
+                <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-8 gap-4 mt-6">
+                  {Object.entries(slotDataGrouped).map(([date, slots]) => (
+                    <React.Fragment key={date}>
+                      {/* Render the Date Button */}
+                      <button className="date-btn" disabled>
+                        {formatDate(date)}
+                      </button>
+                      {/* Render the Time Slots for this Date */}
+                      {slots?.map((slot, index) => (
+                        <button
+                          key={slot.startTime}
+                          className={`time-slot-btn ${
                             selectedSlot?.date === slot.date &&
                             selectedSlot?.startTime === slot.startTime
                               ? "selected"
                               : ""
                           }`}
+                          onClick={() => {
+                            setSelectedSlot({
+                              date: slot.date, // assuming slot has a `date` field
+                              startTime: slot.startTime,
+                            });
+                          }}
                         >
-                          {selectedSlot?.date === slot.date &&
-                            selectedSlot?.startTime === slot.startTime && (
-                              <div className="radio-input-inner selected"></div>
-                            )}
-                        </div>
-                        <RadioGroup
-                          className="cursor-pointer"
-                          defaultValue="comfortable"
-                        >
-                          <div className="flex items-center space-x-2">
-                            <Label htmlFor={`radio-${slot.startTime}`}>
-                              {slot?.startTime}
-                            </Label>
+                          <div
+                            className={`radio-input ${
+                              selectedSlot?.date === slot.date &&
+                              selectedSlot?.startTime === slot.startTime
+                                ? "selected"
+                                : ""
+                            }`}
+                          >
+                            {selectedSlot?.date === slot.date &&
+                              selectedSlot?.startTime === slot.startTime && (
+                                <div className="radio-input-inner selected"></div>
+                              )}
                           </div>
-                        </RadioGroup>
-                      </button>
-                    ))}
-                  </React.Fragment>
-                ))}
+                          <RadioGroup
+                            className="cursor-pointer"
+                            defaultValue="comfortable"
+                          >
+                            <div className="flex items-center space-x-2">
+                              <Label htmlFor={`radio-${slot.startTime}`}>
+                                {slot?.startTime}
+                              </Label>
+                            </div>
+                          </RadioGroup>
+                        </button>
+                      ))}
+                    </React.Fragment>
+                  ))}
+                </div>
               </div>
-            </div>
-          )}
-        </div>
+            )}
+            {activeTab === 4 && (
+              <div className="border-b-[1px] border-b-[#e5e7eb] pb-10">
+                <div className="mb-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 lg:pb-5">
+                  <div>
+                    <h2 className="text-lg font-normal text-[#fff] mb-3 font-poppins">
+                      Full Name
+                    </h2>
+                    <input
+                      className="pt-3 pb-3 pl-3 w-full mx-auto border-[#454545] border-[1px] bg-[#2E2E2E] text-[#C0C0C0] font-poppins rounded-lg outline-none"
+                      type="text"
+                      id=""
+                      placeholder="Enter Your Full Name"
+                    />
+                  </div>
+                  <div>
+                    <h2 className="text-lg font-normal text-[#fff] mb-3 font-poppins">
+                      Phone
+                    </h2>
+                    <div className="flex items-center w-full mx-auto border-[#454545] border-[1px] bg-[#2E2E2E] text-[#C0C0C0] font-poppins rounded-lg overflow-hidden">
+                      {/* Country Flag Dropdown */}
+                      <div className="flex items-center bg-[#2E2E2E] px-3 py-3 border-r border-[#454545]">
+                        <img
+                          src="https://flagcdn.com/w40/bd.png"
+                          alt="Bangladesh Flag"
+                          className="w-6 h-4 rounded-sm"
+                        />
+                        <span className="ml-2 text-[#C0C0C0] text-sm">
+                          +880
+                        </span>
+                        <button className="ml-2">
+                          <svg
+                            className="w-4 h-4 text-[#C0C0C0]"
+                            fill="none"
+                            stroke="currentColor"
+                            viewBox="0 0 24 24"
+                            xmlns="http://www.w3.org/2000/svg"
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              strokeWidth={2}
+                              d="M19 9l-7 7-7-7"
+                            />
+                          </svg>
+                        </button>
+                      </div>
+                      {/* Phone Number Input */}
+                      <input
+                        className="flex-1 bg-transparent pl-3 py-3 outline-none"
+                        type="text"
+                        placeholder="01812-345678"
+                      />
+                    </div>
+                  </div>
+                  <div>
+                    <h2 className="text-lg font-normal text-[#fff] mb-3 font-poppins">
+                      Email
+                    </h2>
+                    <input
+                      className="pt-3 pb-3 pl-3 w-full mx-auto border-[#454545] border-[1px] bg-[#2E2E2E] text-[#C0C0C0] font-poppins rounded-lg outline-none"
+                      type="text"
+                      id=""
+                      placeholder="Enter Your Email Address"
+                    />
+                  </div>
+                </div>
+                <div>
+                  <h2 className="text-lg font-normal text-[#fff] mb-3 font-poppins">
+                    Notes
+                  </h2>
+                  <textarea
+                    id="order"
+                    rows={4}
+                    className="pt-3 pb-3 pl-3 w-full mx-auto border-[#454545] border-[1px] bg-[#2E2E2E] text-[#C0C0C0] font-poppins rounded-lg outline-none "
+                  ></textarea>
+                </div>
+              </div>
+            )}
+          </div>
 
-        {/* Navigation Buttons */}
-        <div className="mt-8 flex justify-center md:justify-between gap-5 md:gap-0">
-          {/* Back button */}
-          {activeTab > 1 && (
-            <button
-              className="px-5 sm:px-10 md:px-16 py-4 bg-[#E43337] text-white text-base rounded font-poppins font-medium flex items-center"
-              onClick={handleBack}
-            >
-              <MdKeyboardArrowLeft className="mr-2 text-xl" />
-              Back
-            </button>
-          )}
+          {/* Navigation Buttons */}
+          <div className="mt-8 flex justify-center md:justify-between gap-5 md:gap-0">
+            {/* Back button */}
+            {activeTab > 1 && (
+              <button
+                type="button"
+                className="px-5 sm:px-10 md:px-16 py-4 bg-[#E43337] text-white text-base rounded font-poppins font-medium flex items-center"
+                onClick={() => setActiveTab((prev) => prev - 1)}
+              >
+                <MdKeyboardArrowLeft className="mr-2 text-xl" />
+                Back
+              </button>
+            )}
 
-          {/* Spacer for center alignment if no Back button */}
-          {activeTab === 1 && <div className="flex-1"></div>}
+            {/* Spacer for center alignment if no Back button */}
+            {activeTab === 1 && <div className="flex-1"></div>}
 
-          {/* Next button */}
-          {activeTab < 4 && (
-            <button
-              className="px-5 sm:px-10 md:px-16 py-4 bg-[#E43337] text-white text-base rounded font-poppins font-medium flex items-center"
-              onClick={handleNext}
-              style={{ letterSpacing: "1px" }}
-            >
-              Next
-              <MdKeyboardArrowRight className="ml-2 text-xl" />
-            </button>
-          )}
-        </div>
+            {/* Next button */}
+            {activeTab < 4 && (
+              <button
+                type="button"
+                className="px-5 sm:px-10 md:px-16 py-4 bg-[#E43337] text-white text-base rounded font-poppins font-medium flex items-center"
+                onClick={() => setActiveTab((prev) => prev + 1)}
+                style={{ letterSpacing: "1px" }}
+              >
+                Next
+                <MdKeyboardArrowRight className="ml-2 text-xl" />
+              </button>
+            )}
+            {activeTab === 4 && (
+              <div>
+                <button
+                  type="submit"
+                  className="px-5 sm:px-10 md:px-16 py-4 bg-[#E43337] text-white text-base rounded font-poppins font-medium flex items-center"
+                >
+                  Submit
+                </button>
+              </div>
+            )}
+          </div>
+        </form>
       </div>
     </div>
   );
