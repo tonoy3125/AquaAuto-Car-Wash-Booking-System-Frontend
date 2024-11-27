@@ -515,12 +515,15 @@ const ServiceDetails: React.FC<{ service: TServiceData }> = ({ service }) => {
                               ? "selected"
                               : ""
                           }`}
+                          disabled={slot.isBooked === "booked"} // Disable if slot is booked
                           onClick={() => {
-                            setSelectedSlot({
-                              slotId: slot._id,
-                              date: slot.date, // assuming slot has a `date` field
-                              startTime: slot.startTime,
-                            });
+                            if (slot.isBooked !== "booked") {
+                              setSelectedSlot({
+                                slotId: slot._id,
+                                date: slot.date, // assuming slot has a `date` field
+                                startTime: slot.startTime,
+                              });
+                            }
                           }}
                         >
                           <div

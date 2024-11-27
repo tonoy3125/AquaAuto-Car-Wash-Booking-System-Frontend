@@ -104,7 +104,7 @@
 
 /* Highlight radio input only on hover */
 .time-slot-btn:hover .radio-input {
-  border-color: #e43337;
+  /* border-color: #e43337; */
   background-color: #fff4f4;
 }
 
@@ -119,4 +119,22 @@
 
 .radio-input-inner.selected {
   background-color: #e43337; /* Inner circle color when selected */
+}
+
+.time-slot-btn:disabled {
+  background-color: #f0f0f0;
+  color: #888;
+  cursor: not-allowed;
+}
+
+.time-slot-btn:disabled:hover {
+  border-color: transparent;
+  background-color: #f0f0f0;
+  color: #888;
+  cursor: not-allowed;
+}
+
+.time-slot-btn:disabled .radio-input:hover {
+  border-color: gray;
+  background-color: transparent;
 }
