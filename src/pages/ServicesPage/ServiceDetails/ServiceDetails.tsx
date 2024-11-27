@@ -23,6 +23,7 @@ const ServiceDetails: React.FC<{ service: TServiceData }> = ({ service }) => {
   const id = service?._id;
   const serviceName = service?.name;
   const [activeTab, setActiveTab] = useState(1);
+  const [isBookingSuccessful, setIsBookingSuccessful] = useState(false);
   const [checkedDays, setCheckedDays] = useState({
     Mon: true,
     Tue: true,
@@ -144,12 +145,15 @@ const ServiceDetails: React.FC<{ service: TServiceData }> = ({ service }) => {
       });
       reset();
       setSelectedSlot(null);
+      setIsBookingSuccessful(true);
+      setActiveTab(5);
       refetch();
     } catch (error: any) {
       toast.error(error?.data?.message || "Something went wrong!", {
         id: toastId,
         duration: 3000,
       });
+      setIsBookingSuccessful(false);
     }
   };
 
@@ -549,6 +553,24 @@ const ServiceDetails: React.FC<{ service: TServiceData }> = ({ service }) => {
             )}
             {activeTab === 4 && (
               <div className="border-b-[1px] border-b-[#e5e7eb] pb-10">
+                <h4 className="font-poppins font-medium text-base text-white pb-1">
+                  You selected a booking for{" "}
+                  <span className="underline">{service?.name}</span> by{" "}
+                  <span className="underline">
+                    {selectedEmployee || "Any Employee"}
+                  </span>{" "}
+                  at{" "}
+                  <span className="underline">{selectedSlot?.startTime}</span>{" "}
+                  <span className="underline">
+                    {dayjs(selectedSlot?.date).format("MMMM DD, YYYY")}
+                  </span>
+                  . The price for the service is{" "}
+                  <span className="underline">${service?.price}</span>
+                </h4>
+                <h4 className="font-poppins font-medium text-base text-white pb-5">
+                  Please provide your details in the form below to proceed with
+                  booking.
+                </h4>
                 <div className="mb-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 lg:pb-5">
                   <div>
                     <h2 className="text-lg font-normal text-[#fff] mb-3 font-poppins">
@@ -626,6 +648,20 @@ const ServiceDetails: React.FC<{ service: TServiceData }> = ({ service }) => {
                     className="pt-3 pb-3 pl-3 w-full mx-auto border-[#454545] border-[1px] bg-[#2E2E2E] text-[#C0C0C0] font-poppins rounded-lg outline-none "
                   ></textarea>
                 </div>
+              </div>
+            )}
+            {activeTab === 5 && (
+              <div className="border-b-[1px] border-b-[#e5e7eb]">
+                {isBookingSuccessful ? (
+                  <h4 className="font-poppins font-medium text-base text-white pb-5">
+                    Thank you! Your booking is complete.
+                  </h4>
+                ) : (
+                  <h4 className="font-poppins font-medium text-base text-white pb-5">
+                    Please provide your details in the form below to proceed
+                    with booking.
+                  </h4>
+                )}
               </div>
             )}
           </div>
