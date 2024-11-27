@@ -1,6 +1,6 @@
 import { DatePicker } from "antd";
 import dayjs from "dayjs";
-import React, { useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import "./ServiceDetails.css";
 import { MdKeyboardArrowLeft, MdKeyboardArrowRight } from "react-icons/md";
 import { useGetAllSlotByServiceIdQuery } from "@/redux/features/slot/slotApi";
@@ -9,6 +9,7 @@ import { Label } from "@/components/ui/label";
 import { useForm } from "react-hook-form";
 import { days, TDay } from "./Service.constant";
 import { useAppSelector } from "@/redux/hooks";
+import moment from "moment";
 import {
   selectCurrentUser,
   useCurrentToken,
@@ -45,8 +46,34 @@ const ServiceDetails: React.FC<{ service: TServiceData }> = ({ service }) => {
   const fullName = user?.user?.name;
   const phone = user?.user?.phone;
   const email = user?.user?.email;
+  const [startTime, setStartTime] = useState("08.00 AM"); // Default startTime
+  const [endTime, setEndTime] = useState("06.00 PM"); // Default endTime
+  const [debouncedStartTime, setDebouncedStartTime] = useState(startTime);
+  const [debouncedEndTime, setDebouncedEndTime] = useState(endTime);
 
-  const { data: slotData, refetch } = useGetAllSlotByServiceIdQuery(id!);
+  // Debounce logic
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setDebouncedStartTime(startTime);
+      setDebouncedEndTime(endTime);
+    }, 300);
+
+    return () => clearTimeout(timer);
+  }, [startTime, endTime]);
+
+  // Memoized query parameters
+  const queryParams = useMemo(
+    () => ({
+      startTime: moment(debouncedStartTime, "hh:mm A").format("HH:mm"),
+      endTime: moment(debouncedEndTime, "hh:mm A").format("HH:mm"),
+    }),
+    [debouncedStartTime, debouncedEndTime]
+  );
+
+  const { data: slotData, refetch } = useGetAllSlotByServiceIdQuery({
+    serviceId: id,
+    args: queryParams,
+  });
   // console.log(slotData);
 
   const [createBooking] = useCreateBookingMutation();
@@ -266,18 +293,20 @@ const ServiceDetails: React.FC<{ service: TServiceData }> = ({ service }) => {
                     <select
                       className="pt-3 pb-3 pl-3 w-full mx-auto border-[#454545] border-[1px] bg-[#2E2E2E] text-[#C0C0C0] font-poppins rounded-lg outline-none"
                       id=""
+                      value={startTime}
+                      onChange={(e) => setStartTime(e.target.value)}
                     >
-                      <option value="8.00 AM">8.00 am</option>
-                      <option value="9.00 AM">9.00 am</option>
+                      <option value="08.00 AM">08.00 am</option>
+                      <option value="09.00 AM">09.00 am</option>
                       <option value="10.00 AM">10.00 am</option>
                       <option value="11.00 AM">11.00 am</option>
                       <option value="12.00 PM">12.00 pm</option>
-                      <option value="1.00 PM">1.00 pm</option>
-                      <option value="2.00 PM">2.00 pm</option>
-                      <option value="3.00 PM">3.00 pm</option>
-                      <option value="4.00 PM">4.00 pm</option>
-                      <option value="5.00 PM">5.00 pm</option>
-                      <option value="6.00 PM">6.00 pm</option>
+                      <option value="01.00 PM">01.00 pm</option>
+                      <option value="02.00 PM">02.00 pm</option>
+                      <option value="03.00 PM">03.00 pm</option>
+                      <option value="04.00 PM">04.00 pm</option>
+                      <option value="05.00 PM">05.00 pm</option>
+                      <option value="06.00 PM">06.00 pm</option>
                     </select>
                   </div>
                 </div>
@@ -289,19 +318,20 @@ const ServiceDetails: React.FC<{ service: TServiceData }> = ({ service }) => {
                     <select
                       className="pt-3 pb-3 pl-3 w-full mx-auto border-[#454545] border-[1px] bg-[#2E2E2E] text-[#C0C0C0] font-poppins rounded-lg outline-none"
                       id=""
-                      defaultValue="6.00 PM"
+                      value={endTime}
+                      onChange={(e) => setEndTime(e.target.value)}
                     >
-                      <option value="8.00 AM">8.00 am</option>
-                      <option value="9.00 AM">9.00 am</option>
+                      <option value="08.00 AM">08.00 am</option>
+                      <option value="09.00 AM">09.00 am</option>
                       <option value="10.00 AM">10.00 am</option>
                       <option value="11.00 AM">11.00 am</option>
                       <option value="12.00 PM">12.00 pm</option>
-                      <option value="1.00 PM">1.00 pm</option>
-                      <option value="2.00 PM">2.00 pm</option>
-                      <option value="3.00 PM">3.00 pm</option>
-                      <option value="4.00 PM">4.00 pm</option>
-                      <option value="5.00 PM">5.00 pm</option>
-                      <option value="6.00 PM">6.00 pm</option>
+                      <option value="01.00 PM">01.00 pm</option>
+                      <option value="02.00 PM">02.00 pm</option>
+                      <option value="03.00 PM">03.00 pm</option>
+                      <option value="04.00 PM">04.00 pm</option>
+                      <option value="05.00 PM">05.00 pm</option>
+                      <option value="06.00 PM">06.00 pm</option>
                     </select>
                   </div>
                 </div>

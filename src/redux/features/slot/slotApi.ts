@@ -48,9 +48,23 @@ const SlotApi = baseApi.injectEndpoints({
       providesTags: ["Slot"],
     }),
     getAllSlotByServiceId: builder.query({
-      query: (serviceId) => {
+      query: ({ serviceId, args }) => {
+        const params = new URLSearchParams();
+
+        // Append each query parameter without extra encoding
+        Object.keys(args).forEach((key) => {
+          if (Array.isArray(args[key])) {
+            // Handle array values
+            args[key].forEach((value) => {
+              params.append(key, value); // No need for `encodeURIComponent` here
+            });
+          } else if (args[key]) {
+            params.append(key, args[key]); // No need for `encodeURIComponent`
+          }
+        });
+
         return {
-          url: `/slots/availability/service/${serviceId}`, // Endpoint for fetching slots by serviceId
+          url: `/slots/availability/service/${serviceId}?${params.toString()}`,
           method: "GET",
         };
       },
