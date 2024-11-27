@@ -17,11 +17,13 @@ import {
 import { TServiceData, TSlot, TUserPayload } from "@/types";
 import { useCreateBookingMutation } from "@/redux/features/bookings/bookingsApi";
 import { toast } from "sonner";
+import { useNavigate } from "react-router-dom";
 
 const ServiceDetails: React.FC<{ service: TServiceData }> = ({ service }) => {
   // console.log(service);
   const id = service?._id;
   const serviceName = service?.name;
+  const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState(1);
   const [isBookingSuccessful, setIsBookingSuccessful] = useState(false);
   const [checkedDays, setCheckedDays] = useState({
@@ -669,7 +671,7 @@ const ServiceDetails: React.FC<{ service: TServiceData }> = ({ service }) => {
           {/* Navigation Buttons */}
           <div className="mt-8 flex justify-center md:justify-between gap-5 md:gap-0">
             {/* Back button */}
-            {activeTab > 1 && (
+            {activeTab > 1 && activeTab < 5 && (
               <button
                 type="button"
                 className="px-5 sm:px-10 md:px-16 py-4 bg-[#E43337] text-white text-base rounded font-poppins font-medium flex items-center"
@@ -704,6 +706,16 @@ const ServiceDetails: React.FC<{ service: TServiceData }> = ({ service }) => {
                   Submit
                 </button>
               </div>
+            )}
+            {activeTab === 5 && (
+              <button
+                type="button"
+                className="px-5 sm:px-10 md:px-16 py-4 bg-[#E43337] text-white text-base rounded font-poppins font-medium flex items-center"
+                onClick={() => navigate("/booking")} // Use your routing logic here
+              >
+                <MdKeyboardArrowLeft className="mr-2 text-xl" />
+                Back to Booking
+              </button>
             )}
           </div>
         </form>
