@@ -12,6 +12,10 @@ const Booking = () => {
   const userId = user?.id as string;
   const [selectedService, setSelectedService] = useState<string | null>(null);
   const [hoveredService, setHoveredService] = useState<string | null>(null);
+  const [selectedSlot, setSelectedSlot] = useState<{
+    startTime: string;
+    endTime: string;
+  } | null>(null);
 
   const { data: userBookings, isLoading } = useGetBookingsByUserIdQuery(
     userId!
@@ -96,6 +100,12 @@ const Booking = () => {
                     {selectedServiceSlots.map((slot, index) => (
                       <li
                         key={index}
+                        onClick={() =>
+                          setSelectedSlot({
+                            startTime: slot?.slot?.startTime || "",
+                            endTime: slot?.slot?.endTime || "",
+                          })
+                        }
                         className="relative group p-5 border border-gray-200 rounded-lg shadow-md bg-white hover:bg-gradient-to-r hover:from-[#F75D34] hover:to-[#EE3131] transition-all duration-300"
                       >
                         {/* Date and Time */}
@@ -150,6 +160,7 @@ const Booking = () => {
                 className="pt-3 pb-3 pl-3 w-[295px] sm:w-[350px] semi-sm:w-[370px] md:w-[461px] mx-auto border-[#dae1e3] border-[1px] bg-[#fff] text-[#1D1D1F] font-poppins rounded-lg focus:outline focus:outline-1 focus:outline-[#0d6efd] transition-all duration-700 ease-in-out"
                 type="text"
                 id=""
+                value={user?.user?.name || ""}
                 placeholder="User Name"
               />
             </div>
@@ -161,6 +172,7 @@ const Booking = () => {
                 className="pt-3 pb-3 pl-3 w-[295px] sm:w-[350px] semi-sm:w-[370px] md:w-[461px] mx-auto border-[#dae1e3] border-[1px] bg-[#fff] text-[#1D1D1F] font-poppins rounded-lg focus:outline focus:outline-1 focus:outline-[#0d6efd] transition-all duration-700 ease-in-out"
                 type="text"
                 id=""
+                value={user?.user?.email || ""}
                 placeholder="User Email"
               />
             </div>
@@ -173,6 +185,7 @@ const Booking = () => {
                   className="pt-3 pb-3 pl-3 w-[295px] sm:w-[350px] semi-sm:w-[370px] md:w-[218px] mx-auto border-[#dae1e3] border-[1px] bg-[#fff] text-[#1D1D1F] font-poppins rounded-lg focus:outline focus:outline-1 focus:outline-[#0d6efd] transition-all duration-700 ease-in-out"
                   type="text"
                   id=""
+                  value={selectedSlot?.startTime || ""}
                   placeholder="Start Time"
                 />
               </div>
@@ -184,6 +197,7 @@ const Booking = () => {
                   className="pt-3 pb-3 pl-3 w-[295px] sm:w-[350px] semi-sm:w-[370px] md:w-[218px] mx-auto border-[#dae1e3] border-[1px] bg-[#fff] text-[#1D1D1F] font-poppins rounded-lg focus:outline focus:outline-1 focus:outline-[#0d6efd] transition-all duration-700 ease-in-out"
                   type="text"
                   id=""
+                  value={selectedSlot?.endTime || ""}
                   placeholder="End Time"
                 />
               </div>
