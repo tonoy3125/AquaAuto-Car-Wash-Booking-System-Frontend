@@ -4,7 +4,7 @@ import { useGetBookingsByUserIdQuery } from "@/redux/features/bookings/bookingsA
 import { useAppSelector } from "@/redux/hooks";
 import { TUserPayload } from "@/types";
 import { Button } from "antd";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { BsFillPersonLinesFill } from "react-icons/bs";
 
 const Booking = () => {
@@ -29,6 +29,13 @@ const Booking = () => {
     }
     return acc;
   }, [] as (typeof userBookings)["data"]);
+
+  // Automatically set the first service as active on load
+  useEffect(() => {
+    if (uniqueServices?.length && !selectedService) {
+      setSelectedService(uniqueServices[0]?.service?.name || null);
+    }
+  }, [uniqueServices, selectedService]);
 
   const selectedServiceSlots = userBookings?.data?.filter(
     (booking) => booking?.service?.name === selectedService
