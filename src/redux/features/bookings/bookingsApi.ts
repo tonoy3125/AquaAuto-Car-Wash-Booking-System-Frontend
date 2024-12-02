@@ -50,6 +50,16 @@ const BookingApi = baseApi.injectEndpoints({
       },
       providesTags: ["Booking"],
     }),
+    getBookingsByUserId: builder.query({
+      query: (token) => ({
+        url: "/my-bookings",
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }),
+      providesTags: ["Booking"],
+    }),
     removeBooking: builder.mutation({
       query: ({ token, id }) => ({
         url: `/bookings/${id}`,
@@ -66,5 +76,6 @@ const BookingApi = baseApi.injectEndpoints({
 export const {
   useCreateBookingMutation,
   useGetAllBookingsQuery,
+  useGetBookingsByUserIdQuery,
   useRemoveBookingMutation,
 } = BookingApi;
