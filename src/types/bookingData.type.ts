@@ -15,3 +15,22 @@ export type TBookingData = {
   createdAt: string;
   updatedAt: string;
 };
+
+export type TSlotBooking = {
+  date: string;
+  startTime: string;
+  endTime: string;
+};
+
+export type TSlotBookingData = {
+  slot: TSlotBooking;
+};
+
+export type TServiceBooking = {
+  name: string;
+  icon: string;
+};
+
+export type TServiceBookingData = {
+  service: TServiceBooking;
+};
