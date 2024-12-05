@@ -3,7 +3,7 @@ import {
   selectCurrentUser,
   useCurrentToken,
 } from "@/redux/features/auth/authSlice";
-import { useGetBookingsByUserIdQuery } from "@/redux/features/bookings/bookingsApi";
+import { useGetPendingBookingsByUserIdQuery } from "@/redux/features/bookings/bookingsApi";
 import { useCreatePaymentMutation } from "@/redux/features/payment/paymentApi";
 import { useAppSelector } from "@/redux/hooks";
 import { TUserPayload } from "@/types";
@@ -34,15 +34,14 @@ const Booking = () => {
     reset,
   } = useForm();
 
-  const { data: userBookings, isLoading } = useGetBookingsByUserIdQuery(
-    userId!
-  );
+  const { data: userPendingBookings, isLoading } =
+    useGetPendingBookingsByUserIdQuery(userId!);
   //   console.log(userBookings);
 
   const [createPayment] = useCreatePaymentMutation();
 
   // Filter to get unique services
-  const uniqueServices = userBookings?.data?.reduce(
+  const uniqueServices = userPendingBookings?.data?.reduce(
     (acc: any, booking: TServiceBookingData) => {
       const serviceName = booking?.service?.name;
       if (
@@ -53,7 +52,7 @@ const Booking = () => {
       }
       return acc;
     },
-    [] as (typeof userBookings)["data"]
+    [] as (typeof userPendingBookings)["data"]
   );
 
   // Automatically set the first service as active on load
@@ -63,15 +62,15 @@ const Booking = () => {
     }
   }, [uniqueServices, selectedService]);
 
-  const selectedServiceSlots = userBookings?.data?.filter(
+  const selectedServiceSlots = userPendingBookings?.data?.filter(
     (booking: any) => booking?.service?.name === selectedService
   );
   // console.log(selectedServiceSlots);
 
   const calculateTotalServicePrice = () => {
-    if (!userBookings?.data?.length) return 0;
+    if (!userPendingBookings?.data?.length) return 0;
 
-    return userBookings.data.reduce((total: number, booking: any) => {
+    return userPendingBookings.data.reduce((total: number, booking: any) => {
       return total + (booking?.service?.price || 0); // Add price if it exists
     }, 0);
   };
@@ -81,7 +80,9 @@ const Booking = () => {
   // console.log("Total Price for All Services:", totalServicePrice);
 
   const onSubmit = async () => {
-    const bookingIds = userBookings.data.map((booking: any) => booking._id);
+    const bookingIds = userPendingBookings.data.map(
+      (booking: any) => booking._id
+    );
     try {
       const paymentData = {
         customerId: userId,
