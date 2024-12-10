@@ -39,6 +39,16 @@ const UserApi = baseApi.injectEndpoints({
       },
       providesTags: ["Auth"],
     }),
+    getUserById: builder.query({
+      query: ({ id, token }) => ({
+        url: `/users/${id}`,
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }),
+      providesTags: ["Auth"],
+    }),
     updateUser: builder.mutation({
       query: ({ token, id, role }) => ({
         url: `/users/role/${id}`,
@@ -47,6 +57,17 @@ const UserApi = baseApi.injectEndpoints({
           Authorization: `Bearer ${token}`,
         },
         body: { role },
+      }),
+      invalidatesTags: ["Auth"],
+    }),
+    updateUserById: builder.mutation({
+      query: ({ token, id, userInfo }) => ({
+        url: `/users/${id}`,
+        method: "PATCH",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+        body: userInfo,
       }),
       invalidatesTags: ["Auth"],
     }),
@@ -65,6 +86,8 @@ const UserApi = baseApi.injectEndpoints({
 
 export const {
   useGetAllUsersQuery,
+  useGetUserByIdQuery,
   useUpdateUserMutation,
+  useUpdateUserByIdMutation,
   useRemoveUserMutation,
 } = UserApi;

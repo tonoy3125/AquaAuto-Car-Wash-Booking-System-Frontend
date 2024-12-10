@@ -1,3 +1,5 @@
+import { TUserPayload } from "./global";
+
 export type TUserData = {
   _id: string;
   name: string;
@@ -8,4 +10,25 @@ export type TUserData = {
   createdAt: string;
   updatedAt: string;
   __v: number;
+};
+
+export type TUserResponse = {
+  data: TUserData;
+};
+
+export type TCurrentUser = {
+  user: {
+    name: string;
+    email: string;
+    phone: string;
+    address: string;
+  };
+  token: string;
+};
+
+export type TUserUpdateProfileProps = {
+  user: TUserResponse | null;
+  onClose: () => void;
+  token: string | null;
+  currentUser: TUserPayload | null;
 };

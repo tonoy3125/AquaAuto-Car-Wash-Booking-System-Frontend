@@ -70,7 +70,7 @@ const UserDashboardLayout = () => {
                 >
                   <MdOutlineDashboardCustomize className="text-lg lg:text-xl" />
                   <span className="text-base lg:text-lg font-semibold">
-                    User Dashboard
+                    User Profile
                   </span>
                 </NavLink>
               </li>
