@@ -70,9 +70,54 @@ const BookingApi = baseApi.injectEndpoints({
       }),
       providesTags: ["Booking"],
     }),
+    getUserPastBooking: builder.query({
+      query: ({ token, ...args }) => {
+        const params = new URLSearchParams();
+
+        // Loop through args and append them to params
+        Object.keys(args).forEach((key) => {
+          if (Array.isArray(args[key])) {
+            // Handle array for multiple values, if necessary (e.g., for statuses)
+            args[key].forEach((value: string) => {
+              params.append(key, value);
+            });
+          } else if (args[key]) {
+            // Append normal key-value pairs
+            params.append(key, args[key]);
+          }
+        });
+
+        return {
+          url: "/my-bookings/my-past-bookings",
+          method: "GET",
+          params: params,
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        };
+      },
+      transformResponse: (response: TResponseRedux<TBookingData[]>) => {
+        // console.log("inside redux", response);
+        return {
+          data: response.data,
+          meta: response.meta,
+        };
+      },
+      providesTags: ["Booking"],
+    }),
     removeBooking: builder.mutation({
       query: ({ token, id }) => ({
         url: `/bookings/${id}`,
+        method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }),
+      invalidatesTags: ["Booking"],
+    }),
+    removeUserBooking: builder.mutation({
+      query: ({ token, id }) => ({
+        url: `/my-bookings/${id}`,
         method: "DELETE",
         headers: {
           Authorization: `Bearer ${token}`,
@@ -88,5 +133,7 @@ export const {
   useGetAllBookingsQuery,
   useGetBookingsByUserIdQuery,
   useGetPendingBookingsByUserIdQuery,
+  useGetUserPastBookingQuery,
   useRemoveBookingMutation,
+  useRemoveUserBookingMutation,
 } = BookingApi;

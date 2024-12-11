@@ -74,6 +74,21 @@ const UserDashboardLayout = () => {
                   </span>
                 </NavLink>
               </li>
+              <li>
+                <NavLink
+                  to="/user/dashboard/pastBookings"
+                  className={({ isActive }) =>
+                    `flex items-center gap-[14px] px-8 py-4 group  hover:bg-gray-100 ${
+                      isActive ? "text-blue-500 font-bold" : "text-gray-700"
+                    }`
+                  }
+                >
+                  <MdOutlineDashboardCustomize className="text-lg lg:text-xl" />
+                  <span className="text-base lg:text-lg font-semibold">
+                    Past Bookings
+                  </span>
+                </NavLink>
+              </li>
             </ul>
           </div>
         </div>

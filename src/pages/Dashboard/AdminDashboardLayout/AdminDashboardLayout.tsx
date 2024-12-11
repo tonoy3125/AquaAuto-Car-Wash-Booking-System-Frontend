@@ -75,7 +75,7 @@ const AdminDashboardLayout = () => {
                 >
                   <MdOutlineDashboardCustomize className="text-lg lg:text-2xl" />
                   <span className="text-base font-poppins lg:text-lg font-semibold">
-                    Admin Dashboard
+                    Admin Profile
                   </span>
                 </NavLink>
               </li>

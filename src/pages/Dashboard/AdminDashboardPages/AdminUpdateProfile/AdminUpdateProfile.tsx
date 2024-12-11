@@ -7,7 +7,7 @@ import { useForm } from "react-hook-form";
 import { useDispatch } from "react-redux";
 import { toast } from "sonner";
 
-const UserUpdateProfile: React.FC<TUserUpdateProfileProps> = ({
+const AdminUpdateProfile: React.FC<TUserUpdateProfileProps> = ({
   user,
   onClose,
   token,
@@ -39,7 +39,7 @@ const UserUpdateProfile: React.FC<TUserUpdateProfileProps> = ({
   }, [user, reset]);
 
   const onSubmit = async (data: any) => {
-    const toastId = toast.loading("Uploading Service...");
+    const toastId = toast.loading("Updating Profile...");
 
     const userInfo = { ...data };
 
@@ -164,4 +164,4 @@ const UserUpdateProfile: React.FC<TUserUpdateProfileProps> = ({
   );
 };
 
-export default UserUpdateProfile;
+export default AdminUpdateProfile;

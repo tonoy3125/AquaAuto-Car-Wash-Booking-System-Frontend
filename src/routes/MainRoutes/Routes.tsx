@@ -19,6 +19,7 @@ import ManageSlot from "@/pages/Dashboard/AdminDashboardPages/SlotManagement/Man
 import UserBookings from "@/pages/Dashboard/AdminDashboardPages/UserManagement/UserBookings/UserBookings";
 import UserList from "@/pages/Dashboard/AdminDashboardPages/UserManagement/UserList/UserList";
 import Bookings from "@/pages/BookingPage/Bookings/Bookings";
+import PastBookings from "@/pages/Dashboard/UserDashboardPages/PastBookings/PastBookings";
 
 const router = createBrowserRouter([
   {
@@ -104,10 +105,10 @@ const router = createBrowserRouter([
         path: "userProfile",
         element: <UserProfile />,
       },
-      // {
-      //   path: "addProduct",
-      //   element: <DashboardAddProduct />,
-      // },
+      {
+        path: "pastBookings",
+        element: <PastBookings />,
+      },
     ],
   },
 ]);

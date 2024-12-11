@@ -8,7 +8,7 @@ import { TUserPayload } from "@/types";
 import { FiEdit } from "react-icons/fi";
 import { skipToken } from "@reduxjs/toolkit/query/react";
 import { useState } from "react";
-import UserUpdateProfile from "../../UserUpdateProfile/UserUpdateProfile";
+import UserUpdateProfile from "../UserUpdateProfile/UserUpdateProfile";
 
 const UserProfile = () => {
   const [isModalOpen, setIsModalOpen] = useState(false); // Modal state
@@ -32,17 +32,19 @@ const UserProfile = () => {
     <div className="mt-7 lg:mt-0 md:p-10" style={{ height: "100vh" }}>
       <h1 className="font-poppins font-bold text-2xl mb-5">User Profile</h1>
       <div className="flex flex-col items-center mt-10">
-        <div className="relative">
+        <div className="relative group">
+          {/* Profile Image */}
           <img
             className="object-cover w-32 h-32 rounded-full ring ring-gray-300 dark:ring-gray-600"
             src="https://i.ibb.co.com/zRRyFjg/icons8-profile-picture-80.png"
             alt=""
           />
+          {/* Edit Button */}
           <div
-            className="absolute top-0 left-24 cursor-pointer"
+            className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer "
             onClick={handleEditClick}
           >
-            <FiEdit className="text-3xl" />
+            <FiEdit className="text-3xl text-gray-600 hover:text-gray-800" />
           </div>
         </div>
         <h1 className="font-poppins font-semibold mt-3 text-base">
