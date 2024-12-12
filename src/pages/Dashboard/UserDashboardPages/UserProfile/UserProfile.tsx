@@ -51,7 +51,7 @@ const UserProfile = () => {
           <span className="underline font-bold">Name </span> :{" "}
           {user?.user?.name}
         </h1>
-        <h1 className="font-poppins font-semibold mt-1 text-base">
+        <h1 className="font-poppins font-semibold mt-1 text-sm sm:text-base">
           <span className="underline font-bold">Email </span> :{" "}
           {user?.user?.email}
         </h1>

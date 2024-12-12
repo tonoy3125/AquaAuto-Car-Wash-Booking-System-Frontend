@@ -20,6 +20,7 @@ import UserBookings from "@/pages/Dashboard/AdminDashboardPages/UserManagement/U
 import UserList from "@/pages/Dashboard/AdminDashboardPages/UserManagement/UserList/UserList";
 import Bookings from "@/pages/BookingPage/Bookings/Bookings";
 import PastBookings from "@/pages/Dashboard/UserDashboardPages/PastBookings/PastBookings";
+import UpcomingBookings from "@/pages/Dashboard/UserDashboardPages/UpcomingBookings/UpcomingBookings";
 
 const router = createBrowserRouter([
   {
@@ -108,6 +109,10 @@ const router = createBrowserRouter([
       {
         path: "pastBookings",
         element: <PastBookings />,
+      },
+      {
+        path: "upcomingBookings",
+        element: <UpcomingBookings />,
       },
     ],
   },

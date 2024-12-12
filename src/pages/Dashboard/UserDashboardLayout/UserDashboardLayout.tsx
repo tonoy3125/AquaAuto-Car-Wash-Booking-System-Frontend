@@ -3,6 +3,8 @@ import { useState } from "react";
 import { MdOutlineDashboardCustomize } from "react-icons/md";
 import { RiMenuUnfold3Line } from "react-icons/ri";
 import { NavLink, Outlet } from "react-router-dom";
+import { TbBrandBooking } from "react-icons/tb";
+import { IoNavigateCircleSharp } from "react-icons/io5";
 
 const UserDashboardLayout = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -83,9 +85,24 @@ const UserDashboardLayout = () => {
                     }`
                   }
                 >
-                  <MdOutlineDashboardCustomize className="text-lg lg:text-xl" />
+                  <TbBrandBooking className="text-lg lg:text-xl" />
                   <span className="text-base lg:text-lg font-semibold">
                     Past Bookings
+                  </span>
+                </NavLink>
+              </li>
+              <li>
+                <NavLink
+                  to="/user/dashboard/upcomingBookings"
+                  className={({ isActive }) =>
+                    `flex items-center gap-[14px] px-8 py-4 group  hover:bg-gray-100 ${
+                      isActive ? "text-blue-500 font-bold" : "text-gray-700"
+                    }`
+                  }
+                >
+                  <IoNavigateCircleSharp className="text-lg lg:text-xl" />
+                  <span className="text-base lg:text-lg font-semibold">
+                    Upcoming Bookings
                   </span>
                 </NavLink>
               </li>

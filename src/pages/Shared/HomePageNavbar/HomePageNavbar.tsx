@@ -8,6 +8,7 @@ import { CiFacebook, CiLinkedin, CiTwitter, CiYoutube } from "react-icons/ci";
 import { useAppSelector } from "@/redux/hooks";
 import { selectCurrentUser } from "@/redux/features/auth/authSlice";
 import { TUserPayload } from "@/types";
+import NavbarCountdown from "../NavbarCountdown/NavbarCountdown";
 
 const HomePageNavbar = () => {
   const user = useAppSelector(selectCurrentUser) as TUserPayload | null;
@@ -45,9 +46,10 @@ const HomePageNavbar = () => {
                 </p>
               </div>
               <div>
-                <p className="text-base font-poppins font-medium text-white">
+                {/* <p className="text-base font-poppins font-medium text-white">
                   +8899555578883
-                </p>
+                </p> */}
+                <NavbarCountdown />
               </div>
               <div className="flex items-center gap-2">
                 <span>
