@@ -6,6 +6,7 @@ export function getTimeRemaining(endDate: Date): {
 } {
   const now = new Date();
   const timeDifference = endDate.getTime() - now.getTime();
+  console.log("Time Difference:", timeDifference);
 
   if (timeDifference <= 0) {
     return { days: 0, hours: 0, minutes: 0, seconds: 0 };

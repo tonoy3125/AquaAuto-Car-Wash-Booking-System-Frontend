@@ -49,8 +49,8 @@ const ServiceDetails: React.FC<{ service: TServiceData }> = ({ service }) => {
   const fullName = user?.user?.name;
   const phone = user?.user?.phone;
   const email = user?.user?.email;
-  const [startTime, setStartTime] = useState("08.00 AM"); // Default startTime
-  const [endTime, setEndTime] = useState("06.00 PM"); // Default endTime
+  const [startTime, setStartTime] = useState("08.00"); // Default startTime
+  const [endTime, setEndTime] = useState("18.00"); // Default endTime
   const [debouncedStartTime, setDebouncedStartTime] = useState(startTime);
   const [debouncedEndTime, setDebouncedEndTime] = useState(endTime);
 
@@ -72,12 +72,13 @@ const ServiceDetails: React.FC<{ service: TServiceData }> = ({ service }) => {
     }),
     [debouncedStartTime, debouncedEndTime]
   );
+  console.log(queryParams);
 
   const { data: slotData, refetch } = useGetAllSlotByServiceIdQuery({
     serviceId: id,
     args: queryParams,
   });
-  // console.log(slotData);
+  console.log(slotData);
 
   const [createBooking] = useCreateBookingMutation();
   const token = useAppSelector(useCurrentToken);
@@ -103,6 +104,10 @@ const ServiceDetails: React.FC<{ service: TServiceData }> = ({ service }) => {
 
   // Process your slot data
   const slotDataGrouped = groupSlotsByDate(slotData?.data || []);
+
+  console.log("slot data ", slotData?.data);
+
+  console.log("slot data grouped", slotDataGrouped);
 
   const formatDate = (dateString: string) => {
     const date = new Date(dateString);
@@ -302,17 +307,17 @@ const ServiceDetails: React.FC<{ service: TServiceData }> = ({ service }) => {
                       value={startTime}
                       onChange={(e) => setStartTime(e.target.value)}
                     >
-                      <option value="08.00 AM">08.00 am</option>
-                      <option value="09.00 AM">09.00 am</option>
-                      <option value="10.00 AM">10.00 am</option>
-                      <option value="11.00 AM">11.00 am</option>
-                      <option value="12.00 PM">12.00 pm</option>
-                      <option value="01.00 PM">01.00 pm</option>
-                      <option value="02.00 PM">02.00 pm</option>
-                      <option value="03.00 PM">03.00 pm</option>
-                      <option value="04.00 PM">04.00 pm</option>
-                      <option value="05.00 PM">05.00 pm</option>
-                      <option value="06.00 PM">06.00 pm</option>
+                      <option value="08.00">08.00 AM</option>
+                      <option value="09.00">09.00 AM</option>
+                      <option value="10.00">10.00 AM</option>
+                      <option value="11.00">11.00 AM</option>
+                      <option value="12.00">12.00 PM</option>
+                      <option value="13.00">01.00 PM</option>
+                      <option value="14.00">02.00 PM</option>
+                      <option value="15.00">03.00 PM</option>
+                      <option value="16.00">04.00 PM</option>
+                      <option value="17.00">05.00 PM</option>
+                      <option value="18.00">06.00 PM</option>
                     </select>
                   </div>
                 </div>
@@ -327,17 +332,17 @@ const ServiceDetails: React.FC<{ service: TServiceData }> = ({ service }) => {
                       value={endTime}
                       onChange={(e) => setEndTime(e.target.value)}
                     >
-                      <option value="08.00 AM">08.00 am</option>
-                      <option value="09.00 AM">09.00 am</option>
-                      <option value="10.00 AM">10.00 am</option>
-                      <option value="11.00 AM">11.00 am</option>
-                      <option value="12.00 PM">12.00 pm</option>
-                      <option value="01.00 PM">01.00 pm</option>
-                      <option value="02.00 PM">02.00 pm</option>
-                      <option value="03.00 PM">03.00 pm</option>
-                      <option value="04.00 PM">04.00 pm</option>
-                      <option value="05.00 PM">05.00 pm</option>
-                      <option value="06.00 PM">06.00 pm</option>
+                      <option value="08.00">08.00 AM</option>
+                      <option value="09.00">09.00 AM</option>
+                      <option value="10.00">10.00 AM</option>
+                      <option value="11.00">11.00 AM</option>
+                      <option value="12.00">12.00 PM</option>
+                      <option value="13.00">01.00 PM</option>
+                      <option value="14.00">02.00 PM</option>
+                      <option value="15.00">03.00 PM</option>
+                      <option value="16.00">04.00 PM</option>
+                      <option value="17.00">05.00 PM</option>
+                      <option value="18.00">06.00 PM</option>
                     </select>
                   </div>
                 </div>
@@ -505,52 +510,69 @@ const ServiceDetails: React.FC<{ service: TServiceData }> = ({ service }) => {
                         {formatDate(date)}
                       </button>
                       {/* Render the Time Slots for this Date */}
-                      {slots?.map((slot) => (
-                        <button
-                          type="button"
-                          key={slot.startTime}
-                          className={`time-slot-btn ${
-                            selectedSlot?.date === slot.date &&
-                            selectedSlot?.startTime === slot.startTime
-                              ? "selected"
-                              : ""
-                          }`}
-                          disabled={slot.isBooked === "booked"} // Disable if slot is booked
-                          onClick={() => {
-                            if (slot.isBooked !== "booked") {
-                              setSelectedSlot({
-                                slotId: slot._id,
-                                date: slot.date, // assuming slot has a `date` field
-                                startTime: slot.startTime,
-                              });
-                            }
-                          }}
-                        >
-                          <div
-                            className={`radio-input ${
+                      {slots?.map((slot) => {
+                        // Convert time to 12-hour format
+                        const formatTime12Hour = (time: any) => {
+                          const [hours, minutes] = time.split(":");
+                          const dateObj = new Date();
+                          dateObj.setHours(hours, minutes);
+                          return dateObj.toLocaleTimeString([], {
+                            hour: "numeric",
+                            minute: "2-digit",
+                            hour12: true,
+                          });
+                        };
+
+                        const formattedTime = formatTime12Hour(slot.startTime);
+
+                        return (
+                          <button
+                            type="button"
+                            key={slot.startTime}
+                            className={`time-slot-btn ${
                               selectedSlot?.date === slot.date &&
                               selectedSlot?.startTime === slot.startTime
                                 ? "selected"
                                 : ""
                             }`}
+                            disabled={slot.isBooked === "booked"} // Disable if slot is booked
+                            onClick={() => {
+                              if (slot.isBooked !== "booked") {
+                                setSelectedSlot({
+                                  slotId: slot._id,
+                                  date: slot.date, // assuming slot has a `date` field
+                                  startTime: slot.startTime,
+                                });
+                              }
+                            }}
                           >
-                            {selectedSlot?.date === slot.date &&
-                              selectedSlot?.startTime === slot.startTime && (
-                                <div className="radio-input-inner selected"></div>
-                              )}
-                          </div>
-                          <RadioGroup
-                            className="cursor-pointer"
-                            defaultValue="comfortable"
-                          >
-                            <div className="flex items-center space-x-2">
-                              <Label htmlFor={`radio-${slot.startTime}`}>
-                                {slot?.startTime}
-                              </Label>
+                            <div
+                              className={`radio-input ${
+                                selectedSlot?.date === slot.date &&
+                                selectedSlot?.startTime === slot.startTime
+                                  ? "selected"
+                                  : ""
+                              }`}
+                            >
+                              {selectedSlot?.date === slot.date &&
+                                selectedSlot?.startTime === slot.startTime && (
+                                  <div className="radio-input-inner selected"></div>
+                                )}
                             </div>
-                          </RadioGroup>
-                        </button>
-                      ))}
+                            <RadioGroup
+                              className="cursor-pointer"
+                              defaultValue="comfortable"
+                            >
+                              <div className="flex items-center space-x-2">
+                                <Label htmlFor={`radio-${slot.startTime}`}>
+                                  {formattedTime}{" "}
+                                  {/* Display time in 12-hour format */}
+                                </Label>
+                              </div>
+                            </RadioGroup>
+                          </button>
+                        );
+                      })}
                     </React.Fragment>
                   ))}
                 </div>
