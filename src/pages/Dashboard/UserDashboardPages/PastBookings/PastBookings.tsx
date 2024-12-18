@@ -66,14 +66,18 @@ const PastBookings = () => {
     data: pastBookings,
     isLoading,
     isFetching,
-  } = useGetUserPastBookingQuery({
-    page: currentPage,
-    userId,
-    limit,
-    ...params,
-  });
+    refetch,
+  } = useGetUserPastBookingQuery(
+    {
+      page: currentPage,
+      userId,
+      limit,
+      ...params,
+    },
+    { pollingInterval: 5000 }
+  );
 
-  console.log(pastBookings);
+  // console.log(pastBookings);
   // Fetching Services
   const { data: servicesData } = useGetAllServicesQuery(queryParams);
   const services = servicesData?.data || [];
@@ -158,6 +162,7 @@ const PastBookings = () => {
               popup: "custom-swal-popup",
             },
           });
+          refetch();
         } catch (error) {
           console.error("Failed to remove Booking:", error);
           Swal.fire({
@@ -228,6 +233,7 @@ const PastBookings = () => {
     _extra
   ) => {
     setCurrentPage(pagination.current || 1);
+    refetch();
   };
 
   return (

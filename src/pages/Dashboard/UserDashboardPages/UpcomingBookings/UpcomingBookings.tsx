@@ -19,7 +19,9 @@ const UpcomingBookings = () => {
   const userId = user?.id;
 
   // Fetch upcoming bookings for the user
-  const { data: bookings } = useGetUpcomingBookingsByUserIdQuery(userId!);
+  const { data: bookings, refetch } = useGetUpcomingBookingsByUserIdQuery(
+    userId!
+  );
 
   useEffect(() => {
     if (!bookings || bookings.length === 0) return;
@@ -30,6 +32,8 @@ const UpcomingBookings = () => {
         { days: number; hours: number; minutes: number; seconds: number }
       > = {};
 
+      let refetchNeeded = false; // Flag to track if a refetch is needed
+
       bookings?.data?.forEach((booking: any) => {
         const { date, startTime } = booking.slot;
         const slotStartDateTime = new Date(
@@ -37,17 +41,32 @@ const UpcomingBookings = () => {
         );
 
         // Update countdown for each booking by its unique ID
-        newCountdowns[booking._id] = getTimeRemaining(slotStartDateTime);
+        const timeRemaining = getTimeRemaining(slotStartDateTime);
+
+        if (
+          timeRemaining.days === 0 &&
+          timeRemaining.hours === 0 &&
+          timeRemaining.minutes === 0 &&
+          timeRemaining.seconds === 0
+        ) {
+          refetchNeeded = true; // Set flag to refetch if countdown reaches zero
+        }
+
+        newCountdowns[booking._id] = timeRemaining;
       });
 
       setCountdowns(newCountdowns);
+
+      if (refetchNeeded) {
+        refetch(); // Trigger refetch if countdown reaches zero for any booking
+      }
     };
 
     updateCountdowns();
     const intervalId = setInterval(updateCountdowns, 1000);
 
     return () => clearInterval(intervalId);
-  }, [bookings]);
+  }, [bookings, refetch]);
 
   if (!bookings || bookings.length === 0) {
     return <p className="font-poppins">No upcoming bookings found.</p>;
