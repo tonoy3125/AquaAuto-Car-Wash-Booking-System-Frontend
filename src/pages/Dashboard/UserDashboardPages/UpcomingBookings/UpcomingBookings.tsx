@@ -8,6 +8,7 @@ import { getTimeRemaining } from "@/utils/getTimeRemaining";
 import { format } from "date-fns";
 import { useEffect, useState } from "react";
 import "./UpcomingBookings.css";
+import Spinner from "@/components/Spinner/Spinner";
 const UpcomingBookings = () => {
   const [countdowns, setCountdowns] = useState<
     Record<
@@ -19,9 +20,11 @@ const UpcomingBookings = () => {
   const userId = user?.id;
 
   // Fetch upcoming bookings for the user
-  const { data: bookings, refetch } = useGetUpcomingBookingsByUserIdQuery(
-    userId!
-  );
+  const {
+    data: bookings,
+    refetch,
+    isLoading,
+  } = useGetUpcomingBookingsByUserIdQuery(userId!);
 
   useEffect(() => {
     if (!bookings || bookings.length === 0) return;
@@ -68,8 +71,20 @@ const UpcomingBookings = () => {
     return () => clearInterval(intervalId);
   }, [bookings, refetch]);
 
+  if (isLoading) {
+    return (
+      <div className="min-h-screen">
+        <Spinner name="Upcoming Booking" />
+      </div>
+    );
+  }
+
   if (!bookings || bookings.length === 0) {
-    return <p className="font-poppins">No upcoming bookings found.</p>;
+    return (
+      <p className="font-poppins text-base text-center">
+        No upcoming bookings found.
+      </p>
+    );
   }
 
   return (
