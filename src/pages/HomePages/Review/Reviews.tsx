@@ -174,66 +174,71 @@ export default function Reviews() {
 
   const avgRating = (rating / totalCount).toFixed(2);
   return (
-    <section
-      className="container mx-auto py-[40px] flex md:flex-row flex-col gap-[20px] font-poppins"
-      id="review"
-    >
-      <Card className="w-full">
-        <CardHeader>
-          <CardTitle>Reviews</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <div className="flex items-start gap-8 mb-8">
-            <h2 className="text-5xl font-bold">{avgRating}</h2>
-            <div className="flex-1">
-              <RatingBar data={reviewData?.data || []} />
+    <div className="mx-2 sm:mx-3 semi-sm:mx-4 md:mx-5 lg:mx-0">
+      <section
+        className="container mx-auto py-[40px] flex lg:flex-row flex-col gap-[20px] font-poppins"
+        id="review"
+      >
+        <Card className="w-full">
+          <CardHeader>
+            <CardTitle>Reviews</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="flex items-start gap-8 mb-8">
+              <h2 className="text-5xl font-bold">{avgRating}</h2>
+              <div className="flex-1">
+                <RatingBar data={reviewData?.data || []} />
+              </div>
             </div>
-          </div>
 
-          {reviewData?.data?.slice(0, 2)?.map((review, i) => (
-            <Review
-              key={i + "rev"}
-              name={review.userId?.name}
-              rating={review.rating}
-              date={review.createdAt}
-              review={review.review}
-            />
-          ))}
-          <Link
-            to={"/testimonials"}
-            className="mt-4 mx-auto text-center hover:underline flex items-center justify-center gap-[5px]"
+            {reviewData?.data?.slice(0, 2)?.map((review, i) => (
+              <Review
+                key={i + "rev"}
+                name={review.userId?.name}
+                rating={review.rating}
+                date={review.createdAt}
+                review={review.review}
+              />
+            ))}
+            <Link
+              to={"/testimonials"}
+              className="mt-4 mx-auto text-center hover:underline flex items-center justify-center gap-[5px]"
+            >
+              Read all reviews <MdArrowRight />
+            </Link>
+          </CardContent>
+        </Card>
+        <div className="bg-muted px-6 py-8 sm:px-10 sm:py-10 lg:w-[40%] w-full">
+          <h3 className="text-xl font-bold mb-4">Write a Review</h3>
+          <form
+            onSubmit={handleSubmit(onSubmit)}
+            className="flex flex-col gap-4"
           >
-            Read all reviews <MdArrowRight />
-          </Link>
-        </CardContent>
-      </Card>
-      <div className="bg-muted px-6 py-8 sm:px-10 sm:py-10 md:w-[40%] w-full">
-        <h3 className="text-xl font-bold mb-4">Write a Review</h3>
-        <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4">
-          <RatingJsx
-            className="text-[30px]"
-            emptySymbol={<GoStar className="text-[#F62727]" />}
-            fullSymbol={<GoStarFill className="text-[#F62727]" />}
-            onClick={handleRating}
-          />
-          <div>
-            <div className="mb-2">
-              <Label htmlFor="feedback">Feedback:</Label>
-            </div>
-            <Textarea
-              placeholder="Share your thoughts and experiences..."
-              className="w-full rounded-lg border-2 border-muted focus:border-primary focus:ring-primary"
-              rows={4}
-              {...register("review", {
-                required: "review is Required",
-              })}
+            <RatingJsx
+              className="text-[30px]"
+              emptySymbol={<GoStar className="text-[#F62727]" />}
+              fullSymbol={<GoStarFill className="text-[#F62727]" />}
+              onClick={handleRating}
             />
-          </div>
-          <Button type="submit" className="mt-5">
-            Submit Review
-          </Button>
-        </form>
-      </div>
-    </section>
+            <div>
+              <div className="mb-2">
+                <Label htmlFor="feedback">Feedback:</Label>
+              </div>
+              <Textarea
+                placeholder="Share your thoughts and experiences..."
+                className="w-full rounded-lg border-2 border-muted focus:border-primary focus:ring-primary"
+                rows={4}
+                {...register("review", {
+                  required: "review is Required",
+                })}
+              />
+            </div>
+            <Button type="submit" className="mt-5">
+              Submit Review
+            </Button>
+          </form>
+        </div>
+      </section>
+    </div>
   );
 }
