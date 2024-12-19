@@ -21,6 +21,7 @@ import UserList from "@/pages/Dashboard/AdminDashboardPages/UserManagement/UserL
 import Bookings from "@/pages/BookingPage/Bookings/Bookings";
 import PastBookings from "@/pages/Dashboard/UserDashboardPages/PastBookings/PastBookings";
 import UpcomingBookings from "@/pages/Dashboard/UserDashboardPages/UpcomingBookings/UpcomingBookings";
+import AllReviews from "@/pages/AllReviews/AllReviews";
 
 const router = createBrowserRouter([
   {
@@ -59,6 +60,10 @@ const router = createBrowserRouter([
       {
         path: "/booking",
         element: <Bookings />,
+      },
+      {
+        path: "/allReviews",
+        element: <AllReviews />,
       },
     ],
   },

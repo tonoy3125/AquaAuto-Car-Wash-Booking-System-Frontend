@@ -20,7 +20,7 @@ import { getRatingCounts } from "@/utils/getRatingCount";
 import { formatDistanceToNow } from "date-fns";
 import { Star } from "lucide-react";
 import { FormEvent, useState } from "react";
-import { useForm } from "react-hook-form";
+import { FieldValues, useForm } from "react-hook-form";
 import { GoStar, GoStarFill } from "react-icons/go";
 import { MdArrowRight } from "react-icons/md";
 import Rating from "react-rating";
@@ -136,7 +136,7 @@ export default function Reviews() {
 
   const handleRating = (rate: number) => setReview(rate);
   const navigate = useNavigate();
-  const onSubmit = async (data) => {
+  const onSubmit = async (data: FieldValues) => {
     if (!user) {
       return navigate("/login");
     }
@@ -201,7 +201,7 @@ export default function Reviews() {
               />
             ))}
             <Link
-              to={"/testimonials"}
+              to={"/allReviews"}
               className="mt-4 mx-auto text-center hover:underline flex items-center justify-center gap-[5px]"
             >
               Read all reviews <MdArrowRight />
