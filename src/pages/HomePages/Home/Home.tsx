@@ -3,6 +3,7 @@ import Experience from "../Experience/Experience";
 import AppointmentBanner from "../AppointmentBanner/AppointmentBanner";
 import Footer from "@/pages/Shared/Footer/Footer";
 import Professional from "../Professional/Professional";
+import Reviews from "../Review/Reviews";
 
 const Home = () => {
   return (
@@ -11,6 +12,7 @@ const Home = () => {
       <Experience />
       <Professional />
       <AppointmentBanner />
+      <Reviews />
       <Footer />
     </div>
   );
