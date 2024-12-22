@@ -23,6 +23,9 @@ import PastBookings from "@/pages/Dashboard/UserDashboardPages/PastBookings/Past
 import UpcomingBookings from "@/pages/Dashboard/UserDashboardPages/UpcomingBookings/UpcomingBookings";
 import AllReviews from "@/pages/AllReviews/AllReviews";
 
+import ContactUs from "@/pages/ContactUsPage/ContactUs/ContactUs";
+import AboutUs from "@/pages/AboutUsPage/AboutUs/AboutUs";
+
 const router = createBrowserRouter([
   {
     path: "/",
@@ -52,6 +55,14 @@ const router = createBrowserRouter([
       {
         path: "/services",
         element: <Services />,
+      },
+      {
+        path: "/about-us",
+        element: <AboutUs />,
+      },
+      {
+        path: "/contact-us",
+        element: <ContactUs />,
       },
       {
         path: "/services/:id",
