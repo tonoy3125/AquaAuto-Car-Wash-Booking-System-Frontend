@@ -36,9 +36,9 @@ const ReviewApi = baseApi.injectEndpoints({
           url: "/review",
           method: "GET",
           params: params,
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
+          // headers: {
+          //   Authorization: `Bearer ${token}`,
+          // },
         };
       },
       transformResponse: (response: TResponseRedux<TReviewData[]>) => {

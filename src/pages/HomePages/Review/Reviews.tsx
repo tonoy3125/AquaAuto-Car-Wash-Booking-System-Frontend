@@ -1,3 +1,4 @@
+import Spinner from "@/components/Spinner/Spinner";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -126,10 +127,12 @@ const Review = ({
 
 export default function Reviews() {
   const [review, setReview] = useState<number>(1);
-  const { data: reviewData } = useGetAllReviewsQuery({ limit: 99999 });
+  const { data: reviewData, isLoading } = useGetAllReviewsQuery({
+    limit: 99999,
+  });
   const user = useAppSelector(selectCurrentUser) as TUserPayload | null; // Get current user's ID
   const userId = user?.id as string;
-  const token = useAppSelector(useCurrentToken);
+  // const token = useAppSelector(useCurrentToken);
   const { register, handleSubmit, reset } = useForm();
 
   const [createReview] = useCreateReviewMutation();
@@ -149,7 +152,7 @@ export default function Reviews() {
         review: data?.review,
       };
 
-      const res = await createReview({ token, reviewData }).unwrap();
+      const res = await createReview({ reviewData }).unwrap();
       console.log(res);
       toast.success(res.message || "Review Created Successfully", {
         id: toastId,
@@ -173,72 +176,99 @@ export default function Reviews() {
   const totalCount = reviewData?.data?.length || 1;
 
   const avgRating = (rating / totalCount).toFixed(2);
-  return (
-    <div className="mx-2 sm:mx-3 semi-sm:mx-4 md:mx-5 lg:mx-0">
-      <section
-        className="container mx-auto py-[40px] flex lg:flex-row flex-col gap-[20px] font-poppins"
-        id="review"
-      >
-        <Card className="w-full">
-          <CardHeader>
-            <CardTitle>Reviews</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="flex items-start gap-8 mb-8">
-              <h2 className="text-5xl font-bold">{avgRating}</h2>
-              <div className="flex-1">
-                <RatingBar data={reviewData?.data || []} />
-              </div>
-            </div>
 
-            {reviewData?.data?.slice(0, 2)?.map((review, i) => (
-              <Review
-                key={i + "rev"}
-                name={review.userId?.name}
-                rating={review.rating}
-                date={review.createdAt}
-                review={review.review}
-              />
-            ))}
-            <Link
-              to={"/allReviews"}
-              className="mt-4 mx-auto text-center hover:underline flex items-center justify-center gap-[5px]"
+  const handleLoginRedirect = () => {
+    navigate("/login", { state: { from: location.pathname } });
+  };
+  return (
+    <div className="relative mx-2 sm:mx-3 semi-sm:mx-4 md:mx-5 lg:mx-0">
+      {/* Overlay for unauthenticated users */}
+      {!user && (
+        <div className="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center z-10">
+          <div className="text-center text-white">
+            <p className="mb-4 text-lg font-poppins">
+              Please log in to write or view reviews.
+            </p>
+            <Button
+              onClick={handleLoginRedirect}
+              className="bg-primary text-white hover:bg-primary-dark font-poppins"
             >
-              Read all reviews <MdArrowRight />
-            </Link>
-          </CardContent>
-        </Card>
-        <div className="bg-muted px-6 py-8 sm:px-10 sm:py-10 lg:w-[40%] w-full">
-          <h3 className="text-xl font-bold mb-4">Write a Review</h3>
-          <form
-            onSubmit={handleSubmit(onSubmit)}
-            className="flex flex-col gap-4"
-          >
-            <RatingJsx
-              className="text-[30px]"
-              emptySymbol={<GoStar className="text-[#F62727]" />}
-              fullSymbol={<GoStarFill className="text-[#F62727]" />}
-              onClick={handleRating}
-            />
-            <div>
-              <div className="mb-2">
-                <Label htmlFor="feedback">Feedback:</Label>
-              </div>
-              <Textarea
-                placeholder="Share your thoughts and experiences..."
-                className="w-full rounded-lg border-2 border-muted focus:border-primary focus:ring-primary"
-                rows={4}
-                {...register("review", {
-                  required: "review is Required",
-                })}
-              />
-            </div>
-            <Button type="submit" className="mt-5">
-              Submit Review
+              Login
             </Button>
-          </form>
+          </div>
         </div>
-      </section>
+      )}
+
+      {isLoading ? (
+        <Spinner name="Reviews" />
+      ) : (
+        <section
+          className={`container mx-auto py-[40px] flex lg:flex-row flex-col gap-[20px] font-poppins ${
+            !user ? "opacity-50 pointer-events-none" : ""
+          }`}
+          id="review"
+        >
+          <Card className="w-full">
+            <CardHeader>
+              <CardTitle>Reviews</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="flex items-start gap-8 mb-8">
+                <h2 className="text-5xl font-bold">{avgRating}</h2>
+                <div className="flex-1">
+                  <RatingBar data={reviewData?.data || []} />
+                </div>
+              </div>
+
+              {reviewData?.data?.slice(0, 2)?.map((review, i) => (
+                <Review
+                  key={i + "rev"}
+                  name={review.userId?.name}
+                  rating={review.rating}
+                  date={review.createdAt}
+                  review={review.review}
+                />
+              ))}
+              <Link
+                to={"/allReviews"}
+                className="mt-4 mx-auto text-center hover:underline flex items-center justify-center gap-[5px]"
+              >
+                Read all reviews <MdArrowRight />
+              </Link>
+            </CardContent>
+          </Card>
+          <div className="bg-muted px-6 py-8 sm:px-10 sm:py-10 lg:w-[40%] w-full">
+            <h3 className="text-xl font-bold mb-4">Write a Review</h3>
+            <form
+              onSubmit={handleSubmit(onSubmit)}
+              className="flex flex-col gap-4"
+            >
+              <RatingJsx
+                className="text-[30px]"
+                emptySymbol={<GoStar className="text-[#F62727]" />}
+                fullSymbol={<GoStarFill className="text-[#F62727]" />}
+                onClick={handleRating}
+              />
+              <div>
+                <div className="mb-2">
+                  <Label htmlFor="feedback">Feedback:</Label>
+                </div>
+                <Textarea
+                  placeholder="Share your thoughts and experiences..."
+                  className="w-full rounded-lg border-2 border-muted focus:border-primary focus:ring-primary"
+                  rows={4}
+                  {...register("review", {
+                    required: "review is Required",
+                  })}
+                />
+              </div>
+              <Button type="submit" className="mt-5">
+                Submit Review
+              </Button>
+            </form>
+          </div>
+        </section>
+      )}
     </div>
   );
 }

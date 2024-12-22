@@ -72,13 +72,13 @@ const ServiceDetails: React.FC<{ service: TServiceData }> = ({ service }) => {
     }),
     [debouncedStartTime, debouncedEndTime]
   );
-  console.log(queryParams);
+  // console.log(queryParams);
 
   const { data: slotData, refetch } = useGetAllSlotByServiceIdQuery({
     serviceId: id,
     args: queryParams,
   });
-  console.log(slotData);
+  // console.log(slotData);
 
   const [createBooking] = useCreateBookingMutation();
   const token = useAppSelector(useCurrentToken);
@@ -105,9 +105,9 @@ const ServiceDetails: React.FC<{ service: TServiceData }> = ({ service }) => {
   // Process your slot data
   const slotDataGrouped = groupSlotsByDate(slotData?.data || []);
 
-  console.log("slot data ", slotData?.data);
+  // console.log("slot data ", slotData?.data);
 
-  console.log("slot data grouped", slotDataGrouped);
+  // console.log("slot data grouped", slotDataGrouped);
 
   const formatDate = (dateString: string) => {
     const date = new Date(dateString);
