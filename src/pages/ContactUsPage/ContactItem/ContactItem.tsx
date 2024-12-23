@@ -28,8 +28,13 @@ const ContactItem = () => {
               src="https://i.ibb.co.com/h1rZPbN/contact.png"
               alt=""
             />
-            <p className="font-poppins text-sm">+91 386-454-0624(Toll Free)</p>
-            <p className="font-poppins text-sm">+91 386-433-9096</p>
+            <p className="font-poppins text-sm text-[#FF2A39]">
+              +91 386-454-0624{" "}
+              <span className="text-[#626472]">(Toll Free)</span>
+            </p>
+            <p className="font-poppins text-sm text-[#FF2A39]">
+              +91 386-433-9096
+            </p>
           </div>
           <div className="flex items-center flex-col">
             <img
@@ -37,8 +42,12 @@ const ContactItem = () => {
               src="https://i.ibb.co.com/G9vkG7S/email.png"
               alt=""
             />
-            <p className="font-poppins text-sm">contact.dealer@example.com</p>
-            <p className="font-poppins text-sm">servicecenter@domain.com</p>
+            <p className="font-poppins text-sm text-[#FF2A39]">
+              contact.dealer@example.com
+            </p>
+            <p className="font-poppins text-sm text-[#FF2A39]">
+              servicecenter@domain.com
+            </p>
           </div>
         </div>
       </div>
