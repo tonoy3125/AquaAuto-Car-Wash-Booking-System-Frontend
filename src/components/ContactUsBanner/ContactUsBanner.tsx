@@ -3,7 +3,7 @@ import { NavLink } from "react-router-dom";
 
 const ContactUsBanner = () => {
   return (
-    <div className="w-full pb-20 pt-5">
+    <div className="w-full pb-20 pt-5 bg-[#F7F7FA]">
       <div className="border relative">
         <img
           className="w-full h-[70vh] lg:h-[40vh]  object-cover"
