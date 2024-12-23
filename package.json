@@ -20,6 +20,7 @@
     "@radix-ui/react-radio-group": "^1.2.1",
     "@radix-ui/react-select": "^2.1.2",
     "@radix-ui/react-slot": "^1.1.1",
+    "@react-google-maps/api": "^2.20.3",
     "@reduxjs/toolkit": "^2.3.0",
     "antd": "^5.20.1",
     "class-variance-authority": "^0.7.0",
@@ -47,6 +48,7 @@
     "tailwindcss-animate": "^1.0.7"
   },
   "devDependencies": {
+    "@types/google-map-react": "^2.1.10",
     "@types/lodash": "^4.17.13",
     "@types/node": "^22.8.7",
     "@types/react": "^18.3.3",
