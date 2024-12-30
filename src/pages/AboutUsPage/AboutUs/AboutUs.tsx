@@ -3,6 +3,7 @@ import Footer from "../../Shared/Footer/Footer";
 import Navbar from "../../Shared/Navbar/Navbar";
 import Faq from "../Faq/Faq";
 import Team from "../Team/Team";
+import History from "../History/History";
 
 const AboutUs = () => {
   return (
@@ -10,6 +11,7 @@ const AboutUs = () => {
       <Navbar />
       <AboutUsBanner />
       <Faq />
+      <History />
       <Team />
       <Footer />
     </div>
