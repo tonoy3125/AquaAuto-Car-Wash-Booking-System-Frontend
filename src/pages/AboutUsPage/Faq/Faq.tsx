@@ -1,10 +1,11 @@
-import React, { useState } from "react";
-import { IoMdArrowDropdown, IoMdArrowDropup } from "react-icons/io";
+import React, { useState, useRef } from "react";
+import { MdKeyboardArrowDown, MdKeyboardArrowUp } from "react-icons/md";
 
 const Faq = () => {
-  const [openIndex, setOpenIndex] = useState(null);
+  const [openIndex, setOpenIndex] = useState<number | null>(null);
+  const contentRefs = useRef<(HTMLDivElement | null)[]>([]);
 
-  const toggleAccordion = (index) => {
+  const toggleAccordion = (index: number) => {
     setOpenIndex(openIndex === index ? null : index);
   };
 
@@ -43,7 +44,7 @@ const Faq = () => {
           <br className="hidden md:block" /> anything, and we’ll get back to you
           soon.
         </p>
-        <div className="flex items-center gap-4 justify-center mt-16">
+        <div className="flex items-center flex-col-reverse lg:flex-row gap-4 justify-center mt-16 mx-3 sm:mx-4 semi-sm:mx-5 lg:mx-0">
           <div className="w-full font-poppins">
             {faqData.map((faq, index) => (
               <div
@@ -52,21 +53,27 @@ const Faq = () => {
                 onClick={() => toggleAccordion(index)}
               >
                 <div className="flex justify-between items-center cursor-pointer">
-                  <h2 className="font-semibold text-lg">{faq.question}</h2>
+                  <h2 className="font-semibold text-base">{faq.question}</h2>
                   <span>
                     {openIndex === index ? (
-                      <IoMdArrowDropup className="text-xl" />
+                      <MdKeyboardArrowUp className="text-2xl" />
                     ) : (
-                      <IoMdArrowDropdown className="text-xl" />
+                      <MdKeyboardArrowDown className="text-2xl" />
                     )}
                   </span>
                 </div>
                 <div
-                  className={`overflow-hidden transition-max-height duration-500 ease-in-out ${
-                    openIndex === index ? "max-h-40" : "max-h-0"
-                  }`}
+                  ref={(el) => (contentRefs.current[index] = el)}
+                  style={{
+                    maxHeight:
+                      openIndex === index
+                        ? `${contentRefs.current[index]?.scrollHeight}px`
+                        : "0",
+                    transition: "max-height 0.5s ease",
+                    overflow: "hidden",
+                  }}
                 >
-                  <p className="mt-3 text-gray-600">{faq.answer}</p>
+                  <p className="mt-3 text-sm text-gray-600">{faq.answer}</p>
                 </div>
               </div>
             ))}
