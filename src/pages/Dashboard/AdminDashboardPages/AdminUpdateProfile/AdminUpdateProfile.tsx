@@ -16,6 +16,10 @@ const AdminUpdateProfile: React.FC<TUserUpdateProfileProps> = ({
   console.log(user);
   const id = user?.data?._id;
   const [loading, setLoading] = useState<boolean>(false);
+  const [selectedImage, setSelectedImage] = useState<File | null>(null);
+  const [currentImage, setCurrentImage] = useState<string | null>(
+    user?.data?.image || null
+  );
   const [updateUserById] = useUpdateUserByIdMutation();
   const dispatch = useDispatch();
   const {
@@ -35,16 +39,28 @@ const AdminUpdateProfile: React.FC<TUserUpdateProfileProps> = ({
         phone: user.data.phone || "",
         address: user.data.address || "",
       });
+      setCurrentImage(user.data.image || null);
     }
   }, [user, reset]);
+
+  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (file) {
+      setSelectedImage(file);
+      setCurrentImage(null);
+    }
+  };
 
   const onSubmit = async (data: any) => {
     const toastId = toast.loading("Updating Profile...");
 
     const userInfo = { ...data };
+    const formData = new FormData();
+    formData.append("data", JSON.stringify(userInfo));
+    if (selectedImage) formData.append("image", selectedImage);
 
     try {
-      const res = await updateUserById({ token, userInfo, id }).unwrap();
+      const res = await updateUserById({ token, formData, id }).unwrap();
       // console.log(res);
       toast.success(res.message || "Profile Updated Successfully", {
         id: toastId,
@@ -146,6 +162,67 @@ const AdminUpdateProfile: React.FC<TUserUpdateProfileProps> = ({
                   required: "Address is Required",
                 })}
               />
+            </div>
+            <div className="mb-4">
+              <h2 className="text-base font-normal text-[#4c4d4d] mb-3 font-poppins">
+                Upload Image
+              </h2>
+              <div className="flex items-center justify-center w-full">
+                <label className="flex flex-col items-center justify-center w-full h-28 border-2 border-[#43B9B2] border-dashed rounded-lg cursor-pointer bg-[#ECF8F7] dark:hover:bg-bray-800 dark:bg-gray-700 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600">
+                  <div className="flex flex-col items-center justify-center pt-5 pb-6">
+                    <svg
+                      className="w-8 h-8 mb-4 text-black"
+                      aria-hidden="true"
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 20 16"
+                    >
+                      <path
+                        stroke="currentColor"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth="2"
+                        d="M13 13h3a3 3 0 0 0 0-6h-.025A5.56 5.56 0 0 0 16 6.5 5.5 5.5 0 0 0 5.207 5.021C5.137 5.017 5.071 5 5 5a4 4 0 0 0 0 8h2.167M10 15V6m0 0L8 8m2-2 2 2"
+                      />
+                    </svg>
+                    <p className="mb-2 text-sm text-black font-poppins text-center sem">
+                      <span className="font-semibold">Click to upload</span> or
+                      drag and drop
+                    </p>
+                    <p className="text-xs text-black font-poppins">
+                      SVG, PNG, JPG or GIF
+                    </p>
+                  </div>
+                  <input
+                    className="hidden"
+                    id="dropzone-file"
+                    type="file"
+                    name="imageFile"
+                    accept="image/*" // Allow only image files
+                    onChange={handleFileChange}
+                  />
+                </label>
+              </div>
+
+              {/* Image preview section */}
+              {selectedImage && (
+                <div className="mt-4 flex justify-center">
+                  <img
+                    src={URL.createObjectURL(selectedImage)}
+                    alt="Selected"
+                    className="h-32 w-auto object-cover border border-gray-300 rounded-md"
+                  />
+                </div>
+              )}
+              {!selectedImage && currentImage && (
+                <div className="mt-4 flex justify-center">
+                  <img
+                    src={currentImage}
+                    alt="Current"
+                    className="h-32 w-auto object-cover border border-gray-300 rounded-md"
+                  />
+                </div>
+              )}
             </div>
 
             <div className="flex justify-end mt-4">

@@ -7,6 +7,7 @@ export type TUserData = {
   phone: number;
   role: string;
   address: string;
+  image: string;
   createdAt: string;
   updatedAt: string;
   __v: number;

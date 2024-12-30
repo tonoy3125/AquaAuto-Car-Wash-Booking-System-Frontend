@@ -61,13 +61,13 @@ const UserApi = baseApi.injectEndpoints({
       invalidatesTags: ["Auth"],
     }),
     updateUserById: builder.mutation({
-      query: ({ token, id, userInfo }) => ({
+      query: ({ token, id, formData }) => ({
         url: `/users/${id}`,
         method: "PATCH",
         headers: {
           Authorization: `Bearer ${token}`,
         },
-        body: userInfo,
+        body: formData,
       }),
       invalidatesTags: ["Auth"],
     }),
