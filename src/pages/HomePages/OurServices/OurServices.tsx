@@ -3,7 +3,7 @@ import { FaLongArrowAltRight } from "react-icons/fa";
 const OurServices = () => {
   return (
     <div className="relative">
-      <div className="min-h-[1350px] relative">
+      <div className="min-h-[2850px] md:min-h-[2870px] lg:min-h-[1350px] relative">
         {/* Image Container with Overlay */}
         <div
           className="absolute inset-0"
@@ -24,7 +24,7 @@ const OurServices = () => {
           ></div>
 
           {/* Content Container with Padding */}
-          <div className="relative z-10 pt-28">
+          <div className="relative z-10 pt-16 semi-sm:pt-28">
             <h1 className="text-4xl font-bold text-center text-[#1E1E1E] font-poppins">
               Our Services
             </h1>
@@ -36,19 +36,19 @@ const OurServices = () => {
               vision to life.
             </p>
             <div className="max-w-7xl mx-auto">
-              <div className="flex  gap-5">
-                <div>
+              <div className="flex flex-col lg:flex-row items-center lg:items-start gap-5">
+                <div >
                   <div>
                     <img
-                      className="w-[370px] "
+                      className="w-[300px] sm:w-[350px] semi-sm:w-[370px] "
                       src="https://i.ibb.co.com/5hx3Rpt/Rectangle-6298-2.jpg"
                       alt=""
                     />
                   </div>
-                  <div className="bg-[#EE3232] w-[370px] px-8 py-16 relative">
+                  <div className="bg-[#EE3232] w-[300px] sm:w-[350px] semi-sm:w-[370px] px-8 py-16 relative">
                     <div className="z-20">
                       <h1 className="text-white font-poppins text-3xl font-medium mb-10">
-                        Hand car
+                        Hand Car Wash
                       </h1>
                       <p
                         className="font-poppins text-base mb-10 text-white "
@@ -83,16 +83,16 @@ const OurServices = () => {
                   </div>
                 </div>
                 <div>
-                  <div className="flex gap-6 mb-32">
-                    <div className="relative">
+                  <div className="flex flex-col lg:flex-row items-center lg:items-start gap-6 lg:mb-32">
+                    <div className="relative mb-24 lg:mb-0">
                       <div>
                         <img
-                          className="w-[380px] h-[305px]"
+                          className="w-[300px] sm:w-[350px] semi-sm:w-[380px] h-[305px]"
                           src="https://i.ibb.co.com/99BBpdV/Rectangle-6298-2-1.jpg"
                           alt=""
                         />
                       </div>
-                      <div className="bg-[#fff] w-[350px] px-6 py-8 absolute -bottom-24 right-0">
+                      <div className="bg-[#fff] w-[270px] sm:w-[320px] semi-sm:w-[350px] px-6 py-8 absolute -bottom-24 right-0">
                         <div>
                           <h1 className="text-[#1E1E1E] font-poppins text-[22px] font-medium mb-4">
                             Self-service facilities
@@ -123,15 +123,15 @@ const OurServices = () => {
                         </div>
                       </div>
                     </div>
-                    <div className="relative">
+                    <div className="relative mb-32 lg:mb-0">
                       <div>
                         <img
-                          className="w-[380px] h-[305px]"
+                          className="w-[300px] sm:w-[350px] semi-sm:w-[380px] h-[305px]"
                           src="https://i.ibb.co.com/s62qHgh/Rectangle-1217-4.png"
                           alt=""
                         />
                       </div>
-                      <div className="bg-[#fff] w-[350px] px-6 py-8 absolute -bottom-24 right-0">
+                      <div className="bg-[#fff] w-[270px] sm:w-[320px] semi-sm:w-[350px] px-6 py-8 absolute -bottom-24 right-0">
                         <div>
                           <h1 className="text-[#1E1E1E] font-poppins text-[22px] font-medium mb-4">
                             Tunnel Washes
@@ -163,19 +163,19 @@ const OurServices = () => {
                       </div>
                     </div>
                   </div>
-                  <div className="flex gap-6">
-                    <div className="relative">
+                  <div className="flex flex-col lg:flex-row items-center lg:items-start gap-6">
+                    <div className="relative mb-24 lg:mb-0">
                       <div>
                         <img
-                          className="w-[380px] h-[305px]"
+                          className="w-[300px] sm:w-[350px] semi-sm:w-[380px] h-[305px]"
                           src="https://i.ibb.co.com/YBFxBPQ/Rectangle-1217-2-1.png"
                           alt=""
                         />
                       </div>
-                      <div className="bg-[#fff] w-[350px] px-6 py-8 absolute -bottom-24 right-0">
+                      <div className="bg-[#fff] w-[270px] sm:w-[320px] semi-sm:w-[350px] px-6 py-8 absolute -bottom-24 right-0">
                         <div>
                           <h1 className="text-[#1E1E1E] font-poppins text-[22px] font-medium mb-4">
-                            Self-service facilities
+                            Chemical car wash
                           </h1>
                           <p
                             className="font-poppins text-base mb-4 text-[#626472]"
@@ -203,18 +203,18 @@ const OurServices = () => {
                         </div>
                       </div>
                     </div>
-                    <div className="relative">
+                    <div className="relative mb-24 lg:mb-0">
                       <div>
                         <img
-                          className="w-[380px] h-[305px]"
+                          className="w-[300px] sm:w-[350px] semi-sm:w-[380px] h-[305px]"
                           src="https://i.ibb.co.com/gFtNytp/Rectangle-1217.png"
                           alt=""
                         />
                       </div>
-                      <div className="bg-[#fff] w-[350px] px-6 py-8 absolute -bottom-24 right-0">
+                      <div className="bg-[#fff] w-[270px] sm:w-[320px] semi-sm:w-[350px] px-6 py-8 absolute -bottom-24 right-0">
                         <div>
                           <h1 className="text-[#1E1E1E] font-poppins text-[22px] font-medium mb-4">
-                            Self-service facilities
+                            Steam Car Wash
                           </h1>
                           <p
                             className="font-poppins text-base mb-4 text-[#626472]"
@@ -249,7 +249,7 @@ const OurServices = () => {
           </div>
         </div>
       </div>
-      <div className="absolute -top-[132px] right-0">
+      <div className="absolute -top-[132px] right-0 hidden md:block">
         <img src="https://i.ibb.co.com/xsmYy6x/Group-598.jpg" alt="" />
       </div>
     </div>
