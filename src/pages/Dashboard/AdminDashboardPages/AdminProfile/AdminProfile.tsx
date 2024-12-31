@@ -16,12 +16,12 @@ const AdminProfile = () => {
   const user = useAppSelector(selectCurrentUser) as TUserPayload | null; // Get current user's ID
   // console.log(user);
   const userId = user?.id;
-  console.log(userId);
+  // console.log(userId);
   const token = useAppSelector(useCurrentToken);
   const { data: singleUser } = useGetUserByIdQuery(
     userId ? { id: userId, token } : skipToken
   );
-  console.log(singleUser);
+  // console.log(singleUser);
 
   const handleEditClick = () => {
     setEditableUser(singleUser); // Set user data for the modal
@@ -32,17 +32,17 @@ const AdminProfile = () => {
     <div className="mt-7 lg:mt-0 md:p-10" style={{ height: "100vh" }}>
       <h1 className="font-poppins font-bold text-2xl mb-5">Admin Profile</h1>
       <div className="flex flex-col items-center mt-10">
-        <div className="relative">
+        <div className="relative group">
           <img
             className="object-cover w-32 h-32 rounded-full ring ring-gray-300 dark:ring-gray-600"
             src="https://i.ibb.co.com/zRRyFjg/icons8-profile-picture-80.png"
             alt=""
           />
           <div
-            className="absolute top-0 left-24 cursor-pointer"
+            className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer"
             onClick={handleEditClick}
           >
-            <FiEdit className="text-3xl" />
+            <FiEdit className="text-3xl text-gray-600 hover:text-gray-800" />
           </div>
         </div>
         <h1 className="font-poppins font-semibold mt-3 text-base">

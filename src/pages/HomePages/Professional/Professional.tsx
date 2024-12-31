@@ -7,7 +7,7 @@ import { MdOutlineArrowLeft, MdOutlineArrowRight } from "react-icons/md";
 
 const Professional = () => {
   return (
-    <div className="mb-20 lg:container lg:mx-auto">
+    <div className="mb-20 lg:container lg:mx-auto mt-20">
       <div className="mx-5">
         <h3
           className="relative text-[#E81C2E] font-barlow font-bold uppercase text-center md:pl-0 lg:pl-28 before:content-[''] before:absolute md:before:left-[130px] lg:before:left-[570px] before:top-1/2 before:transform before:-translate-y-1/2 before:bg-[#E81C2E] before:h-px md:before:w-20 before:mr-4"

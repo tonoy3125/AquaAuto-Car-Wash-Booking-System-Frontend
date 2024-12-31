@@ -4,12 +4,14 @@ import AppointmentBanner from "../AppointmentBanner/AppointmentBanner";
 import Footer from "@/pages/Shared/Footer/Footer";
 import Professional from "../Professional/Professional";
 import Reviews from "../Review/Reviews";
+import OurServices from "../OurServices/OurServices";
 
 const Home = () => {
   return (
     <div>
       <HomePageNavbar />
       <Experience />
+      <OurServices />
       <Professional />
       <AppointmentBanner />
       <Reviews />
