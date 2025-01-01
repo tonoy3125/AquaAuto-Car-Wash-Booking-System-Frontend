@@ -46,11 +46,6 @@ const Navbar = () => {
                     <a>Booking</a>
                   </li>
                 </NavLink>
-                <NavLink to="/gallery">
-                  <li className="hover:text-[#0E82FD] pt-2 pb-2 font-medium border-b-2 text-[#1F2937]">
-                    <a>Gallery</a>
-                  </li>
-                </NavLink>
                 <NavLink to="/about-us">
                   <li className="hover:text-[#0E82FD] pt-2 pb-2 font-medium border-b-2 text-[#1F2937]">
                     <a>About Us</a>
@@ -95,12 +90,6 @@ const Navbar = () => {
       </div>
       <div className="navbar-center font-poppins hidden lg:flex">
         <ul className=" flex items-center gap-7">
-          {/* <NavLink to="/">
-              <li className="hover:text-[#0E82FD] font-medium text-[#1F2937]">
-                <a>Home</a>
-              </li>
-            </NavLink> */}
-
           <NavLink to="/services">
             <li className="hover:text-[#0E82FD] font-poppins font-medium text-[#1F2937]">
               <a>Services</a>
@@ -109,11 +98,6 @@ const Navbar = () => {
           <NavLink to="/booking">
             <li className="hover:text-[#0E82FD] font-poppins font-medium text-[#1F2937]">
               <a>Booking</a>
-            </li>
-          </NavLink>
-          <NavLink to="/gallery">
-            <li className="hover:text-[#0E82FD] font-poppins font-medium text-[#1F2937]">
-              <a>Gallery</a>
             </li>
           </NavLink>
           <NavLink to="/about-us">

@@ -75,15 +75,20 @@ const OurServices = () => {
                                 .join(" ")}
                               ...
                             </p>
-                            <button
-                              onClick={() => handleLearnMore(service.name)}
-                              className="flex items-center gap-2 text-[#EE3232] font-poppins "
-                            >
-                              <span className="text-base font-medium cursor-pointer">
-                                Learn More
-                              </span>
-                              <FaLongArrowAltRight className="text-lg" />
-                            </button>
+                            <div className="flex items-center flex-col lg:flex-row justify-between gap-5 lg:gap-0">
+                              <button
+                                onClick={() => handleLearnMore(service.name)}
+                                className="flex items-center gap-2 text-[#EE3232] font-poppins "
+                              >
+                                <span className="text-base font-medium cursor-pointer">
+                                  Learn More
+                                </span>
+                                <FaLongArrowAltRight className="text-lg" />
+                              </button>
+                              <button className="font-poppins border px-2 py-1 rounded text-sm bg-[#EE3131] text-white">
+                                Add To Compare
+                              </button>
+                            </div>
                           </div>
 
                           <div className="absolute top-[-45px] right-[22px] z-0">
