@@ -9,8 +9,8 @@ const OurServices = () => {
   const { data: serviceData } = useGetAllServicesQuery(queryParams);
   console.log(serviceData);
 
-  const handleLearnMore = (serviceName) => {
-    navigate(`/services?=${serviceName}`);
+  const handleLearnMore = (serviceName: string) => {
+    navigate(`/services?selectedService=${serviceName}`);
   };
 
   return (
