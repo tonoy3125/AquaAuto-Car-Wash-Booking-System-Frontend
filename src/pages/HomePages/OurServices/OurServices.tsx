@@ -1,25 +1,37 @@
+import { useGetAllServicesQuery } from "@/redux/features/services/serviceApi";
 import { FaLongArrowAltRight } from "react-icons/fa";
+import { useNavigate } from "react-router-dom";
 
 const OurServices = () => {
+  const navigate = useNavigate();
+  const queryParams = {};
+
+  const { data: serviceData } = useGetAllServicesQuery(queryParams);
+  console.log(serviceData);
+
+  const handleLearnMore = (serviceName) => {
+    navigate(`/services?=${serviceName}`);
+  };
+
   return (
     <div className="relative">
-      <div className="min-h-[2850px] md:min-h-[2870px] lg:min-h-[1350px] relative">
+      <div className="min-h-[2920px] sm:min-h-[2900px] semi-sm:min-h-[2950px] md:min-h-[2900px] lg:min-h-[1350px] relative">
         {/* Image Container with Overlay */}
         <div
           className="absolute inset-0"
           style={{
             backgroundImage:
               "url(https://i.ibb.co.com/Sx9pdVR/Mask-Group-1.png)",
-            backgroundSize: "100% 100%", // Ensures the background image covers the entire area
-            backgroundPosition: "center", // Centers the image within the container
-            backgroundRepeat: "no-repeat", // Prevents the image from repeating
+            backgroundSize: "100% 100%",
+            backgroundPosition: "center",
+            backgroundRepeat: "no-repeat",
           }}
         >
           {/* Background Color Overlay */}
           <div
             className="absolute inset-0"
             style={{
-              backgroundColor: "rgba(255, 192, 203, 0.2)", // Adjust RGBA values for your desired color and opacity
+              backgroundColor: "rgba(255, 192, 203, 0.2)",
             }}
           ></div>
 
@@ -37,211 +49,55 @@ const OurServices = () => {
             </p>
             <div className="max-w-7xl mx-auto">
               <div className="flex flex-col lg:flex-row items-center lg:items-start gap-5">
-                <div >
-                  <div>
-                    <img
-                      className="w-[300px] sm:w-[350px] semi-sm:w-[370px] "
-                      src="https://i.ibb.co.com/5hx3Rpt/Rectangle-6298-2.jpg"
-                      alt=""
-                    />
-                  </div>
-                  <div className="bg-[#EE3232] w-[300px] sm:w-[350px] semi-sm:w-[370px] px-8 py-16 relative">
-                    <div className="z-20">
-                      <h1 className="text-white font-poppins text-3xl font-medium mb-10">
-                        Hand Car Wash
-                      </h1>
-                      <p
-                        className="font-poppins text-base mb-10 text-white "
-                        style={{ lineHeight: "1.8" }}
-                      >
-                        There are many variations passages of Lorem Ipsum
-                        available, but the main majority…
-                      </p>
-                      <button className="flex items-center gap-2 text-white font-poppins ">
-                        <span className="text-base font-medium cursor-pointer">
-                          Learn More
-                        </span>
-                        <FaLongArrowAltRight className="text-lg" />
-                      </button>
-                    </div>
-                    <div className="absolute top-0 z-0">
-                      <img
-                        src="https://i.ibb.co.com/p2kNQWF/Mask-Group-5.png"
-                        alt=""
-                      />
-                    </div>
-
-                    <div className="absolute top-[-45px] right-[22px] z-0">
-                      <div className="bg-white w-[90px] h-[90px] rounded-full flex items-center justify-center shadow-lg">
-                        <img
-                          className="w-[45%] h-[45%]"
-                          src="https://i.ibb.co/KmXXDzD/Ser-01-1.png"
-                          alt="Service Icon"
-                        />
-                      </div>
-                    </div>
-                  </div>
-                </div>
                 <div>
-                  <div className="flex flex-col lg:flex-row items-center lg:items-start gap-6 lg:mb-32">
-                    <div className="relative mb-24 lg:mb-0">
-                      <div>
-                        <img
-                          className="w-[300px] sm:w-[350px] semi-sm:w-[380px] h-[305px]"
-                          src="https://i.ibb.co.com/99BBpdV/Rectangle-6298-2-1.jpg"
-                          alt=""
-                        />
-                      </div>
-                      <div className="bg-[#fff] w-[270px] sm:w-[320px] semi-sm:w-[350px] px-6 py-8 absolute -bottom-24 right-0">
+                  <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 lg:mb-32">
+                    {serviceData?.data?.map((service) => (
+                      <div className="relative mb-24">
                         <div>
-                          <h1 className="text-[#1E1E1E] font-poppins text-[22px] font-medium mb-4">
-                            Self-service facilities
-                          </h1>
-                          <p
-                            className="font-poppins text-base mb-4 text-[#626472]"
-                            style={{ lineHeight: "1.8" }}
-                          >
-                            There are many variations passages of Lorem Ipsum
-                            available, but the main majority…
-                          </p>
-                          <button className="flex items-center gap-2 text-[#EE3232] font-poppins ">
-                            <span className="text-base font-medium cursor-pointer">
-                              Learn More
-                            </span>
-                            <FaLongArrowAltRight className="text-lg" />
-                          </button>
+                          <img
+                            className="w-[300px] sm:w-[350px] semi-sm:w-[380px] h-[305px]"
+                            src={service?.image}
+                            alt=""
+                          />
                         </div>
+                        <div className="bg-[#fff] w-[270px] sm:w-[320px] semi-sm:w-[350px] px-6 py-8 absolute -bottom-24 right-0">
+                          <div>
+                            <h1 className="text-[#1E1E1E] font-poppins text-[22px] font-medium mb-4">
+                              {service?.name}
+                            </h1>
+                            <p
+                              className="font-poppins text-base mb-4 text-[#626472]"
+                              style={{ lineHeight: "1.8" }}
+                            >
+                              {service?.description
+                                ?.split(" ")
+                                .slice(0, 14)
+                                .join(" ")}
+                              ...
+                            </p>
+                            <button
+                              onClick={() => handleLearnMore(service.name)}
+                              className="flex items-center gap-2 text-[#EE3232] font-poppins "
+                            >
+                              <span className="text-base font-medium cursor-pointer">
+                                Learn More
+                              </span>
+                              <FaLongArrowAltRight className="text-lg" />
+                            </button>
+                          </div>
 
-                        <div className="absolute top-[-45px] right-[22px] z-0">
-                          <div className="bg-[#EE3232] w-[90px] h-[90px] rounded-full flex items-center justify-center shadow-lg">
-                            <img
-                              className="w-[45%] h-[45%]"
-                              src="https://i.ibb.co.com/pZM6snz/Ser-02.png"
-                              alt="Service Icon"
-                            />
+                          <div className="absolute top-[-45px] right-[22px] z-0">
+                            <div className="bg-[#EE3232] w-[90px] h-[90px] rounded-full flex items-center justify-center shadow-lg">
+                              <img
+                                className="w-[45%] h-[45%]"
+                                src={service?.icon}
+                                alt="Service Icon"
+                              />
+                            </div>
                           </div>
                         </div>
                       </div>
-                    </div>
-                    <div className="relative mb-32 lg:mb-0">
-                      <div>
-                        <img
-                          className="w-[300px] sm:w-[350px] semi-sm:w-[380px] h-[305px]"
-                          src="https://i.ibb.co.com/s62qHgh/Rectangle-1217-4.png"
-                          alt=""
-                        />
-                      </div>
-                      <div className="bg-[#fff] w-[270px] sm:w-[320px] semi-sm:w-[350px] px-6 py-8 absolute -bottom-24 right-0">
-                        <div>
-                          <h1 className="text-[#1E1E1E] font-poppins text-[22px] font-medium mb-4">
-                            Tunnel Washes
-                          </h1>
-                          <p
-                            className="font-poppins text-base mb-4 text-[#626472]"
-                            style={{ lineHeight: "1.8" }}
-                          >
-                            There are many variations passages of Lorem Ipsum
-                            available, but the main majority…
-                          </p>
-                          <button className="flex items-center gap-2 text-[#EE3232] font-poppins ">
-                            <span className="text-base font-medium cursor-pointer">
-                              Learn More
-                            </span>
-                            <FaLongArrowAltRight className="text-lg" />
-                          </button>
-                        </div>
-
-                        <div className="absolute top-[-45px] right-[22px] z-0">
-                          <div className="bg-[#EE3232] w-[90px] h-[90px] rounded-full flex items-center justify-center shadow-lg">
-                            <img
-                              className="w-[45%] h-[45%]"
-                              src="https://i.ibb.co.com/SvYSgMZ/ser-03.png"
-                              alt="Service Icon"
-                            />
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="flex flex-col lg:flex-row items-center lg:items-start gap-6">
-                    <div className="relative mb-24 lg:mb-0">
-                      <div>
-                        <img
-                          className="w-[300px] sm:w-[350px] semi-sm:w-[380px] h-[305px]"
-                          src="https://i.ibb.co.com/YBFxBPQ/Rectangle-1217-2-1.png"
-                          alt=""
-                        />
-                      </div>
-                      <div className="bg-[#fff] w-[270px] sm:w-[320px] semi-sm:w-[350px] px-6 py-8 absolute -bottom-24 right-0">
-                        <div>
-                          <h1 className="text-[#1E1E1E] font-poppins text-[22px] font-medium mb-4">
-                            Chemical car wash
-                          </h1>
-                          <p
-                            className="font-poppins text-base mb-4 text-[#626472]"
-                            style={{ lineHeight: "1.8" }}
-                          >
-                            There are many variations passages of Lorem Ipsum
-                            available, but the main majority…
-                          </p>
-                          <button className="flex items-center gap-2 text-[#EE3232] font-poppins ">
-                            <span className="text-base font-medium cursor-pointer">
-                              Learn More
-                            </span>
-                            <FaLongArrowAltRight className="text-lg" />
-                          </button>
-                        </div>
-
-                        <div className="absolute top-[-45px] right-[22px] z-0">
-                          <div className="bg-[#EE3232] w-[90px] h-[90px] rounded-full flex items-center justify-center shadow-lg">
-                            <img
-                              className="w-[45%] h-[45%]"
-                              src="https://i.ibb.co.com/2cjgMrs/ser-04.png"
-                              alt="Service Icon"
-                            />
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    <div className="relative mb-24 lg:mb-0">
-                      <div>
-                        <img
-                          className="w-[300px] sm:w-[350px] semi-sm:w-[380px] h-[305px]"
-                          src="https://i.ibb.co.com/gFtNytp/Rectangle-1217.png"
-                          alt=""
-                        />
-                      </div>
-                      <div className="bg-[#fff] w-[270px] sm:w-[320px] semi-sm:w-[350px] px-6 py-8 absolute -bottom-24 right-0">
-                        <div>
-                          <h1 className="text-[#1E1E1E] font-poppins text-[22px] font-medium mb-4">
-                            Steam Car Wash
-                          </h1>
-                          <p
-                            className="font-poppins text-base mb-4 text-[#626472]"
-                            style={{ lineHeight: "1.8" }}
-                          >
-                            There are many variations passages of Lorem Ipsum
-                            available, but the main majority…
-                          </p>
-                          <button className="flex items-center gap-2 text-[#EE3232] font-poppins ">
-                            <span className="text-base font-medium cursor-pointer">
-                              Learn More
-                            </span>
-                            <FaLongArrowAltRight className="text-lg" />
-                          </button>
-                        </div>
-
-                        <div className="absolute top-[-45px] right-[22px] z-0">
-                          <div className="bg-[#EE3232] w-[90px] h-[90px] rounded-full flex items-center justify-center shadow-lg">
-                            <img
-                              className="w-[45%] h-[45%]"
-                              src="https://i.ibb.co.com/0cnWfwy/ser-05.png"
-                              alt="Service Icon"
-                            />
-                          </div>
-                        </div>
-                      </div>
-                    </div>
+                    ))}
                   </div>
                 </div>
               </div>

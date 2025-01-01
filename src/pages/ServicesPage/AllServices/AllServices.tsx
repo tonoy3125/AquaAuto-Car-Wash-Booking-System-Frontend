@@ -4,12 +4,12 @@ import { MdOutlineKeyboardArrowDown } from "react-icons/md";
 import { SortOption } from "./AllService.constant";
 import { debounce } from "lodash";
 import Spinner from "@/components/Spinner/Spinner";
-import { Link } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 
 const AllServices = () => {
-  const [selectedService, setSelectedService] = useState<string | null>(
-    "Car Wash Lift info"
-  );
+  const [searchParams] = useSearchParams();
+  const initialService = searchParams.get("selectedService") || null;
+  const [selectedService, setSelectedService] = useState(initialService);
   const [hoveredService, setHoveredService] = useState<string | null>(null);
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [searchInput, setSearchInput] = useState("");
@@ -43,10 +43,10 @@ const AllServices = () => {
   );
 
   useEffect(() => {
-    if (serviceData?.data?.length) {
-      setSelectedService(serviceData.data[0].name);
+    if (!initialService && serviceData?.data?.length) {
+      setSelectedService(serviceData.data[0].name); // Set default service if none selected
     }
-  }, [serviceData]);
+  }, [initialService, serviceData]);
 
   useEffect(() => {
     // Save the selected sort option to localStorage whenever it changes
