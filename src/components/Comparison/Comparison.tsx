@@ -17,6 +17,7 @@ import { Badge } from "../ui/badge";
 import { IoIosGitCompare } from "react-icons/io";
 import { selectCurrentUser } from "@/redux/features/auth/authSlice";
 import { TUserPayload } from "@/types";
+import { removeServiceFromCompare } from "@/redux/features/services/serviceComparisonSlice";
 
 const Comparison = () => {
   //   const { selectedServices } = useAppSelector((state) => state.comparison);
@@ -51,7 +52,7 @@ const Comparison = () => {
           }`}
         >
           <IoIosGitCompare className="text-2xl" />
-          <Badge className="text-white bg-primaryMat hover:bg-primaryMat text-[10px] py-[1px] px-[3px] w-fit h-fit top-[-7px] right-[5px] absolute">
+          <Badge className="text-white bg-[#EE3131] hover:bg-[#EE3131] text-[10px] py-[1px] px-[3px] w-fit h-fit top-[-7px] right-[5px] absolute">
             {selectedServices.length}
           </Badge>
         </Button>
@@ -90,7 +91,14 @@ const Comparison = () => {
                 </div>
                 <Button
                   variant="outline"
-                  //   onClick={() => dispatch(removeServiceFromCompare(service.id))}
+                  onClick={() =>
+                    dispatch(
+                      removeServiceFromCompare({
+                        userId,
+                        serviceId: service._id,
+                      })
+                    )
+                  }
                 >
                   Deleted
                 </Button>
