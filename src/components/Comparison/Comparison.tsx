@@ -32,14 +32,14 @@ const Comparison = () => {
   );
 
   // Trigger shake animation when selectedServices changes
-  //   useEffect(() => {
-  //     if (selectedServices.length > 0) {
-  //       setShake(true);
-  //       // Reset shake state after animation completes
-  //       const timer = setTimeout(() => setShake(false), 500); // match this to the CSS animation duration
-  //       return () => clearTimeout(timer);
-  //     }
-  //   }, [selectedServices]);
+  useEffect(() => {
+    if (selectedServices.length > 0) {
+      setShake(true);
+      // Reset shake state after animation completes
+      const timer = setTimeout(() => setShake(false), 500);
+      return () => clearTimeout(timer);
+    }
+  }, [selectedServices]);
 
   return (
     <Dialog>
