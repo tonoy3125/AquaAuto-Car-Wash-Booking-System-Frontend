@@ -5,6 +5,8 @@ import { SortOption } from "./AllService.constant";
 import { debounce } from "lodash";
 import Spinner from "@/components/Spinner/Spinner";
 import { Link, useSearchParams } from "react-router-dom";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 
 const AllServices = () => {
   const [searchParams] = useSearchParams();
@@ -36,7 +38,7 @@ const AllServices = () => {
   }
 
   const { data: serviceData, isLoading } = useGetAllServicesQuery(queryParams);
-  console.log(serviceData);
+  // console.log(serviceData);
 
   const selectedServiceData = serviceData?.data?.find(
     (service) => service.name === selectedService
@@ -150,39 +152,69 @@ const AllServices = () => {
           No Service Found
         </div>
       ) : (
-        <div className="flex flex-col lg:flex-row items-start gap-10 mt-3 sm:mt-5 md:mt-14 max-w-5xl mx-6 lg:mx-auto">
+        <div className="flex flex-col lg:flex-row items-start gap-10 mt-5 sm:mt-6 md:mt-8 lg:mt-14 max-w-5xl mx-6 lg:mx-auto">
           {/* Left side menu */}
-          <div className="w-full lg:w-[350px] bg-[#FFFFFF] shadow-lg rounded-[5px] pb-5 mt-12">
-            <ul>
-              {serviceData?.data?.map((service, index) => (
-                <li
-                  key={index}
-                  className={`cursor-pointer p-2 transition-colors duration-200 ${
-                    selectedService === service.name
-                      ? "text-[#EE3131] font-medium bg-[#F75D342E] border-l-4 border-[#EE3131]"
-                      : "text-[#777777]"
-                  } hover:text-[#EE3131] hover:bg-[#F75D342E]`}
-                  onClick={() => setSelectedService(service.name)}
-                  onMouseEnter={() => setHoveredService(service.name)}
-                  onMouseLeave={() => setHoveredService(null)}
+          <div className="flex flex-col-reverse lg:flex-col items-center">
+            <div className="w-full lg:w-[350px] bg-[#FFFFFF] shadow-lg rounded-[5px] pb-5 mt-4">
+              <ul>
+                {serviceData?.data?.map((service, index) => (
+                  <li
+                    key={index}
+                    className={`cursor-pointer p-2 transition-colors duration-200 ${
+                      selectedService === service.name
+                        ? "text-[#EE3131] font-medium bg-[#F75D342E] border-l-4 border-[#EE3131]"
+                        : "text-[#777777]"
+                    } hover:text-[#EE3131] hover:bg-[#F75D342E]`}
+                    onClick={() => setSelectedService(service.name)}
+                    onMouseEnter={() => setHoveredService(service.name)}
+                    onMouseLeave={() => setHoveredService(null)}
+                  >
+                    <div className="flex items-center gap-3 py-2 px-4">
+                      <img
+                        src={service.icon}
+                        alt=""
+                        style={{
+                          filter:
+                            selectedService === service.name ||
+                            hoveredService === service.name
+                              ? "invert(33%) sepia(83%) saturate(7498%) hue-rotate(346deg) brightness(99%) contrast(107%)" // Red color for selected or hovered
+                              : "invert(31%) sepia(0%) saturate(0%) hue-rotate(0deg) brightness(60%) contrast(85%)", // Gray color for default
+                        }}
+                      />
+                      <p className="font-poppins text-lg">{service.name}</p>
+                    </div>
+                  </li>
+                ))}
+              </ul>
+            </div>
+            <div className="mb-5 sm:mb-6 md:mb-7 lg:mb-0 lg:mt-20 font-poppins">
+              <h3 className="mb-2 text-lg font-medium ">Price Range</h3>
+              <div />
+              <div className="w-full flex-col gap-[10px]">
+                <div className="mt-2 flex items-center gap-[5px] w-full lg:w-[350px]">
+                  <Input
+                    placeholder="Min"
+                    type="number"
+                    min={0}
+                    // value={priceInputState[0] || ""}
+                    // onChange={(e) => handleChangePriceState(e.target.value, 0)}
+                  />
+                  <Input
+                    placeholder="Max"
+                    // value={priceInputState[1] || ""}
+                    min={0}
+                    type="number"
+                    // onChange={(e) => handleChangePriceState(e.target.value, 1)}
+                  />
+                </div>
+                <Button
+                  className="w-full bg-[#E81C2E] text-white mt-[10px]"
+                  // onClick={() => setPriceRange(priceInputState)}
                 >
-                  <div className="flex items-center gap-3 py-2 px-4">
-                    <img
-                      src={service.icon}
-                      alt=""
-                      style={{
-                        filter:
-                          selectedService === service.name ||
-                          hoveredService === service.name
-                            ? "invert(33%) sepia(83%) saturate(7498%) hue-rotate(346deg) brightness(99%) contrast(107%)" // Red color for selected or hovered
-                            : "invert(31%) sepia(0%) saturate(0%) hue-rotate(0deg) brightness(60%) contrast(85%)", // Gray color for default
-                      }}
-                    />
-                    <p className="font-poppins text-lg">{service.name}</p>
-                  </div>
-                </li>
-              ))}
-            </ul>
+                  Add
+                </Button>
+              </div>
+            </div>
           </div>
 
           {/* Right side content */}
@@ -193,7 +225,7 @@ const AllServices = () => {
               alt={selectedServiceData?.name}
               className="mt-4 w-full h-auto shadow-lg relative z-10"
             />
-            <div className="absolute top-[115px] sm:top-[150px] semi-sm:top-[180px] md:top-[390px] lg:top-[360px] right-0 z-0">
+            <div className="absolute top-[115px] sm:top-[150px] semi-sm:top-[180px] md:top-[390px] lg:top-[335px] right-0 z-0">
               <img src="https://i.ibb.co.com/Gxz2kMX/outline.png" alt="" />
             </div>
             <div className="mt-20 flex flex-col md:flex-row items-start lg:items-center justify-between">
@@ -229,7 +261,6 @@ const AllServices = () => {
                 cleanliness and care
               </p>
             </div>
-            {/* Sub Image */}
 
             {/* Suggested Service */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-4 mt-14">
