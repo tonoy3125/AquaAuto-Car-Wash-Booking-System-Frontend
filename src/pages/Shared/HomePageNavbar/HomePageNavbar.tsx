@@ -233,11 +233,6 @@ const HomePageNavbar = () => {
                 fresh look, inside and out.
               </p>
             </div>
-            <Link to="/services">
-              <button className="font-poppins border px-5 py-2 mt-5 rounded-md text-white">
-                Book Now
-              </button>
-            </Link>
           </div>
           <div className="absolute -bottom-12 lg:-bottom-4">
             <img src="https://i.ibb.co.com/Z24Rbv5/Ellipse-12-1.png" alt="" />

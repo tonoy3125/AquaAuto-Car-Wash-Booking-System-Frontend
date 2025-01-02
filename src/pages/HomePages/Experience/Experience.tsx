@@ -2,7 +2,7 @@ import { GiCheckMark } from "react-icons/gi";
 
 const Experience = () => {
   return (
-    <div className="mt-[900px] semi-sm:mt-[800px] md:mt-72 lg:max-w-6xl mx-auto relative mb-12 md:mb-14 lg:mb-60">
+    <div className=" lg:max-w-6xl mx-auto relative mb-12 md:mb-14 lg:mb-60">
       <div className="flex flex-col lg:flex-row md:items-start lg:items-center lg:justify-between gap-52 sm:gap-40 semi-sm:gap-32 md:gap-20 lg:gap-0 relative mx-5 lg:mx-0">
         {/* Main Image */}
         <div className="relative z-10">
