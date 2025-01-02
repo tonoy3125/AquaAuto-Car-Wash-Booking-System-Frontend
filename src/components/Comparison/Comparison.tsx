@@ -12,24 +12,24 @@ import {
 
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import { useEffect, useState } from "react";
-import { GoGitCompare } from "react-icons/go";
 import { Link } from "react-router-dom";
 import { Badge } from "../ui/badge";
+import { IoIosGitCompare } from "react-icons/io";
 
 const Comparison = () => {
-//   const { selectedServices } = useAppSelector((state) => state.comparison);
+  //   const { selectedServices } = useAppSelector((state) => state.comparison);
   const [shake, setShake] = useState(false);
   const dispatch = useAppDispatch();
 
   // Trigger shake animation when selectedServices changes
-//   useEffect(() => {
-//     if (selectedServices.length > 0) {
-//       setShake(true);
-//       // Reset shake state after animation completes
-//       const timer = setTimeout(() => setShake(false), 500); // match this to the CSS animation duration
-//       return () => clearTimeout(timer);
-//     }
-//   }, [selectedServices]);
+  //   useEffect(() => {
+  //     if (selectedServices.length > 0) {
+  //       setShake(true);
+  //       // Reset shake state after animation completes
+  //       const timer = setTimeout(() => setShake(false), 500); // match this to the CSS animation duration
+  //       return () => clearTimeout(timer);
+  //     }
+  //   }, [selectedServices]);
 
   return (
     <Dialog>
@@ -37,17 +37,17 @@ const Comparison = () => {
         <Button
           variant="default"
           id="compare"
-          className={`relative border-[1px] w-[50px] h-[50px] rounded-full border-[#9c9cad] ${
+          className={`relative border-[1px] w-[50px] h-[50px] rounded-full border-[#9c9cad] cursor-pointer ${
             shake ? "shake" : ""
           }`}
         >
-          <GoGitCompare />
+          <IoIosGitCompare className="text-2xl" />
           <Badge className="text-white bg-primaryMat hover:bg-primaryMat text-[10px] py-[1px] px-[3px] w-fit h-fit top-[-7px] right-[5px] absolute">
             {/* {selectedServices.length} */}
           </Badge>
         </Button>
       </DialogTrigger>
-      <DialogContent className="sm:max-w-[425px]  w-full overflow-auto">
+      <DialogContent className="sm:max-w-[425px]  w-full overflow-auto font-poppins">
         <DialogHeader>
           <DialogTitle>Compare your selected services</DialogTitle>
           <DialogDescription>

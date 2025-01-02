@@ -1,16 +1,57 @@
+import { selectCurrentUser } from "@/redux/features/auth/authSlice";
 import { useGetAllServicesQuery } from "@/redux/features/services/serviceApi";
+import {
+  addServiceToCompare,
+  removeServiceFromCompare,
+} from "@/redux/features/services/serviceComparisonSlice";
+import { useAppDispatch, useAppSelector } from "@/redux/hooks";
+import { TServiceData, TUserPayload } from "@/types";
 import { FaLongArrowAltRight } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 
 const OurServices = () => {
   const navigate = useNavigate();
   const queryParams = {};
+  const user = useAppSelector(selectCurrentUser) as TUserPayload | null; // Get current user's ID
+  const userId = user?.id as string;
+  const dispatch = useAppDispatch();
+  // Get the selected services from the Redux store
+  const selectedServices = useAppSelector(
+    (state) => state.comparison.selectedServices[userId] || []
+  );
 
   const { data: serviceData } = useGetAllServicesQuery(queryParams);
-  console.log(serviceData);
+  // console.log(serviceData);
 
   const handleLearnMore = (serviceName: string) => {
     navigate(`/services?selectedService=${serviceName}`);
+  };
+
+  // Add or remove a service from comparison
+  const handleAddToCompare = (service: TServiceData) => {
+    if (!userId) {
+      alert("Please log in to compare services.");
+      return;
+    }
+
+    const isAlreadySelected = selectedServices.some(
+      (s) => s._id === service._id
+    );
+    if (isAlreadySelected) {
+      dispatch(
+        removeServiceFromCompare({
+          userId,
+          serviceId: service._id,
+        })
+      );
+    } else {
+      dispatch(
+        addServiceToCompare({
+          userId,
+          service,
+        })
+      );
+    }
   };
 
   return (
@@ -85,8 +126,21 @@ const OurServices = () => {
                                 </span>
                                 <FaLongArrowAltRight className="text-lg" />
                               </button>
-                              <button className="font-poppins border px-2 py-1 rounded text-sm bg-[#EE3131] text-white">
-                                Add To Compare
+                              <button
+                                onClick={() => handleAddToCompare(service)}
+                                className={`font-poppins border px-2 py-1 rounded text-sm ${
+                                  selectedServices.find(
+                                    (s) => s._id === service._id
+                                  )
+                                    ? "bg-[#EE3131] text-white"
+                                    : "bg-white text-black"
+                                }`}
+                              >
+                                {selectedServices.find(
+                                  (s) => s._id === service._id
+                                )
+                                  ? "Remove"
+                                  : "Add To Compare"}
                               </button>
                             </div>
                           </div>
