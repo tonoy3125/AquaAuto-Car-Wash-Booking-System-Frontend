@@ -25,9 +25,13 @@ const AllServices = () => {
   const [selectedOption, setSelectedOption] = useState(() => {
     return localStorage.getItem("selectedSortOption") || "Featured";
   });
+  const [minPrice, setMinPrice] = useState<number | undefined>();
+  const [maxPrice, setMaxPrice] = useState<number | undefined>();
 
   const queryParams: any = {
     searchTerm,
+    ...(minPrice !== undefined && { minPrice }),
+    ...(maxPrice !== undefined && { maxPrice }),
   };
 
   // Add sorting
@@ -73,6 +77,22 @@ const AllServices = () => {
     const value = event.target.value;
     setSearchInput(value);
     debouncedSearch(value); // Call debounced function
+  };
+
+  const handlePriceFilter = () => {
+    // This will automatically update the query params and refetch the data
+    setMinPrice(Number(minPrice));
+    setMaxPrice(Number(maxPrice));
+  };
+
+  const handleClearFilters = () => {
+    // Reset all states to their default values
+    setSearchInput("");
+    setSearchTerm("");
+    setSortOption("Featured");
+    setSelectedOption("Featured");
+    setMinPrice(undefined);
+    setMaxPrice(undefined);
   };
 
   return (
@@ -196,25 +216,28 @@ const AllServices = () => {
                     placeholder="Min"
                     type="number"
                     min={0}
-                    // value={priceInputState[0] || ""}
-                    // onChange={(e) => handleChangePriceState(e.target.value, 0)}
+                    value={minPrice ?? ""}
+                    onChange={(e) => setMinPrice(Number(e.target.value))}
                   />
                   <Input
                     placeholder="Max"
-                    // value={priceInputState[1] || ""}
                     min={0}
                     type="number"
-                    // onChange={(e) => handleChangePriceState(e.target.value, 1)}
+                    value={maxPrice ?? ""}
+                    onChange={(e) => setMaxPrice(Number(e.target.value))}
                   />
                 </div>
                 <Button
-                  className="w-full bg-[#E81C2E] text-white mt-[10px]"
-                  // onClick={() => setPriceRange(priceInputState)}
+                  className="w-full bg-[#E81C2E] text-white mt-[10px] mb-5"
+                  onClick={handlePriceFilter}
                 >
                   Add
                 </Button>
               </div>
             </div>
+            <Button variant="outline" onClick={handleClearFilters}>
+              Clear Filters
+            </Button>
           </div>
 
           {/* Right side content */}
