@@ -230,8 +230,8 @@ const Membership = () => {
     tabs.find((tab) => tab.label === activeTab)?.plans || [];
 
   return (
-    <div className="bg-[#FDFDFE]">
-      <div className="max-w-7xl mx-auto">
+    <div className="bg-[#FDFDFE] pb-12 semi-sm:pb-16 md:pb-24">
+      <div className="max-w-6xl mx-auto">
         <h1 className="font-poppins text-xl sm:text-2xl semi-sm:text-3xl md:text-4xl font-bold text-center mb-5">
           Membership Plan
         </h1>
@@ -246,12 +246,12 @@ const Membership = () => {
         </p>
 
         {/* Tabs */}
-        <div className="flex justify-center mt-8 gap-4">
+        <div className="grid grid-cols-2 md:grid-cols-5 mt-8 gap-4 md:gap-3 lg:gap-4 mx-3 lg:mx-0">
           {tabs.map((tab) => (
             <button
               key={tab.label}
               onClick={() => setActiveTab(tab.label)}
-              className={`relative flex flex-col items-center py-7 px-10 rounded-[10px] ${
+              className={`relative flex flex-col items-center py-7 px-7 semi-sm:py-8 semi-sm:px-7 lg:py-10 lg:px-10 rounded-[10px] ${
                 activeTab === tab.label
                   ? "bg-red-500 text-white shadow-lg"
                   : "bg-[#FFF0F5] text-[#141C2A]"
@@ -277,7 +277,7 @@ const Membership = () => {
         </div>
 
         {/* Plans */}
-        <div className="grid md:grid-cols-4 gap-6 mt-10 font-poppins">
+        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mt-10 font-poppins mx-3 lg:mx-0">
           {activeTabPlans.map((plan, index) => (
             <div
               key={index}
