@@ -163,7 +163,7 @@ const Login = () => {
                 Remember password
               </label>
             </div>
-            <Link to="/reset-password">
+            <Link to="/forgot-password">
               <p
                 className="text-[#0D6EFD] hover:text-[#0257d5] text-end sm:text-center font-poppins text-base mt-3 underline"
                 style={{ letterSpacing: ".4px" }}

@@ -4,7 +4,6 @@ import Home from "../../pages/HomePages/Home/Home";
 import ErrorElement from "../../layout/ErrorElement/ErrorElement";
 import Login from "@/pages/Login/Login";
 import Register from "@/pages/Register/Register";
-import ResetPassword from "@/pages/ResetPassword/ResetPassword";
 import MyAccount from "@/pages/MyAccount/MyAccount";
 import Services from "@/pages/ServicesPage/Services/Services";
 import SingleService from "@/pages/ServicesPage/SingleService/SingleService";
@@ -22,9 +21,9 @@ import Bookings from "@/pages/BookingPage/Bookings/Bookings";
 import PastBookings from "@/pages/Dashboard/UserDashboardPages/PastBookings/PastBookings";
 import UpcomingBookings from "@/pages/Dashboard/UserDashboardPages/UpcomingBookings/UpcomingBookings";
 import AllReviews from "@/pages/AllReviews/AllReviews";
-
 import ContactUs from "@/pages/ContactUsPage/ContactUs/ContactUs";
 import AboutUs from "@/pages/AboutUsPage/AboutUs/AboutUs";
+import ForgotPassword from "@/pages/ForgotPassword/ForgotPassword";
 
 const router = createBrowserRouter([
   {
@@ -45,8 +44,8 @@ const router = createBrowserRouter([
         element: <Register />,
       },
       {
-        path: "/reset-password",
-        element: <ResetPassword />,
+        path: "/forgot-password",
+        element: <ForgotPassword />,
       },
       {
         path: "/account",

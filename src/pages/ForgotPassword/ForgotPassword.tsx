@@ -4,7 +4,7 @@ import { FieldValues, useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 
-const ResetPassword = () => {
+const ForgotPassword = () => {
   const navigate = useNavigate();
   const {
     register,
@@ -136,4 +136,4 @@ const ResetPassword = () => {
   );
 };
 
-export default ResetPassword;
+export default ForgotPassword;
