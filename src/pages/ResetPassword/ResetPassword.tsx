@@ -1,7 +1,43 @@
+import { useForgetPasswordMutation } from "@/redux/features/auth/authApi";
 import { Player } from "@lottiefiles/react-lottie-player";
-import { Link } from "react-router-dom";
+import { FieldValues, useForm } from "react-hook-form";
+import { Link, useNavigate } from "react-router-dom";
+import { toast } from "sonner";
 
 const ResetPassword = () => {
+  const navigate = useNavigate();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
+
+  const [forgetPassword] = useForgetPasswordMutation();
+
+  const onSubmit = async (data: FieldValues) => {
+    const toastId = toast.loading("Sending Email...");
+    try {
+      const userInfo = {
+        email: data?.email,
+      };
+      const res = await forgetPassword(userInfo).unwrap();
+      toast.success(
+        res.message ||
+          "We've sent you an email with a link to update your password.!",
+        {
+          id: toastId,
+          duration: 3000,
+        }
+      );
+      navigate("/login");
+    } catch (error: any) {
+      toast.error(error?.data?.message || "Something went wrong!", {
+        id: toastId,
+        duration: 3000,
+      });
+    }
+  };
+
   return (
     <div className="w-full flex flex-col lg:flex-row items-center gap-10 md:gap-16 lg:gap-40">
       <div className="relative lg:w-[50%] lg:h-[911px]">
@@ -52,7 +88,7 @@ const ResetPassword = () => {
         <h3 className="font-poppins font-bold text-3xl md:text-3xl text-black mb-6">
           Reset Password
         </h3>
-        <form>
+        <form onSubmit={handleSubmit(onSubmit)}>
           <h2 className="text-base font-normal text-[#4c4d4d] mb-7  font-poppins">
             Enter the email address associated with your account.
           </h2>
@@ -65,16 +101,21 @@ const ResetPassword = () => {
               type="email"
               id=""
               placeholder="Enter Your Email"
-              // {...register("email", {
-              //   required: "Email is Required",
-              // })}
+              {...register("email", {
+                required: "Email is Required",
+              })}
             />
+            {errors.email && (
+              <p className="text-red-500 text-sm font-poppins font-medium pt-2">
+                {String(errors.email.message)}
+              </p>
+            )}
           </div>
 
           <input
             className="w-[295px] sm:w-[350px] semi-sm:w-[390px] md:w-[630px] mx-auto py-3 bg-[#0d6efd] hover:bg-[#0257d5] text-base font-poppins text-[#fff] font-medium rounded-lg border border-[#43b9b2] mt-5 cursor-pointer"
             style={{ letterSpacing: ".3px" }}
-            type="button"
+            type="submit"
             value="Continue"
           />
           <p
