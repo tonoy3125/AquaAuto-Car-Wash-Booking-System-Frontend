@@ -24,6 +24,7 @@ import AllReviews from "@/pages/AllReviews/AllReviews";
 import ContactUs from "@/pages/ContactUsPage/ContactUs/ContactUs";
 import AboutUs from "@/pages/AboutUsPage/AboutUs/AboutUs";
 import ForgotPassword from "@/pages/ForgotPassword/ForgotPassword";
+import ResetPassword from "@/pages/ResetPassword/ResetPassword";
 
 const router = createBrowserRouter([
   {
@@ -46,6 +47,10 @@ const router = createBrowserRouter([
       {
         path: "/forgot-password",
         element: <ForgotPassword />,
+      },
+      {
+        path: "/reset-password",
+        element: <ResetPassword />,
       },
       {
         path: "/account",
