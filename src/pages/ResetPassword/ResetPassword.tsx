@@ -1,11 +1,66 @@
+import { useResetPasswordMutation } from "@/redux/features/auth/authApi";
+import { setUser } from "@/redux/features/auth/authSlice";
+import { useAppDispatch } from "@/redux/hooks";
+import { verifyToken } from "@/utils/verifyToken";
 import { Player } from "@lottiefiles/react-lottie-player";
 import { useState } from "react";
+import { FieldValues, useForm } from "react-hook-form";
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
-import { Link } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import { toast } from "sonner";
 
 const ResetPassword = () => {
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    watch,
+  } = useForm();
+
+  const navigate = useNavigate();
+  const dispatch = useAppDispatch();
   const [showNewPassword, setShowNewPassword] = useState(false);
   const [showConfirmNewPassword, setShowConfirmNewPassword] = useState(false);
+  const [resetPassword] = useResetPasswordMutation();
+  const location = useLocation();
+  const searchParams = new URLSearchParams(location.search); // Parse the query parameters
+  const email = searchParams.get("email"); // Get email from URL
+  const token = searchParams.get("token"); // Get token from URL
+  //   console.log(token);
+
+  const newPassword = watch("newPassword");
+
+  const onSubmit = async (data: FieldValues) => {
+    const toastId = toast.loading("Proceeding to Reset Password");
+    try {
+      const newUpdatedPassword = {
+        token,
+        newPassword: data?.newPassword,
+        confirmNewPassword: data?.confirmNewPassword,
+      };
+      const res = await resetPassword(newUpdatedPassword).unwrap();
+      console.log(res);
+      const user = verifyToken(res?.data?.accessToken);
+      //   console.log(user);
+      dispatch(
+        setUser({
+          user: { user, id: res?.data?.user?._id },
+          token: res?.data?.accessToken,
+        })
+      );
+      toast.success(res.message || "Password reset to the successfully!", {
+        id: toastId,
+        duration: 3000,
+      });
+      navigate("/account");
+    } catch (error: any) {
+      toast.error(error?.data?.message || "Something went wrong!", {
+        id: toastId,
+        duration: 3000,
+      });
+    }
+  };
+
   return (
     <div className="w-full flex flex-col lg:flex-row items-center gap-10 md:gap-16 lg:gap-40">
       <div className="relative lg:w-[50%] lg:h-[911px]">
@@ -56,9 +111,9 @@ const ResetPassword = () => {
         <h3 className="font-poppins font-bold text-3xl md:text-3xl text-black mb-6">
           Reset account password
         </h3>
-        <form>
+        <form onSubmit={handleSubmit(onSubmit)}>
           <h2 className="text-base font-normal text-[#4c4d4d] mb-7  font-poppins">
-            Enter a new password for shaifshajedt@gmail.com
+            Enter a new password for {email}
           </h2>
           <div className="mb-4 relative">
             <h2 className="text-base font-normal text-[#4c4d4d] mb-3  font-poppins">
@@ -69,9 +124,13 @@ const ResetPassword = () => {
               type={showNewPassword ? "text" : "password"}
               id=""
               placeholder="Enter New Password"
-              //   {...register("password", {
-              //     required: "Password is Required",
-              //   })}
+              {...register("newPassword", {
+                required: "Password Can't be Blank.",
+                minLength: {
+                  value: 6,
+                  message: "Password is too short (minimum is 6 characters)",
+                },
+              })}
             />
             <span
               className="absolute right-4 md:right-3 top-[52px] rtl:left-0 rtl:right-auto "
@@ -85,11 +144,11 @@ const ResetPassword = () => {
                 <AiOutlineEye className="text-xl"></AiOutlineEye>
               )}
             </span>
-            {/* {errors.password && (
+            {errors.newPassword && (
               <p className="text-red-500 text-sm font-poppins font-medium pt-2">
-                {String(errors.password.message)}
+                {String(errors.newPassword.message)}
               </p>
-            )} */}
+            )}
           </div>
 
           <div className="mb-4 relative">
@@ -101,9 +160,12 @@ const ResetPassword = () => {
               type={showConfirmNewPassword ? "text" : "password"}
               id=""
               placeholder="Enter New Password"
-              //   {...register("password", {
-              //     required: "Password is Required",
-              //   })}
+              {...register("confirmNewPassword", {
+                required: "Password confirmation can't be blank",
+                validate: (value) =>
+                  value === newPassword ||
+                  "The password confirmation must match the provided password",
+              })}
             />
             <span
               className="absolute right-4 md:right-3 top-[52px] rtl:left-0 rtl:right-auto "
@@ -117,11 +179,11 @@ const ResetPassword = () => {
                 <AiOutlineEye className="text-xl"></AiOutlineEye>
               )}
             </span>
-            {/* {errors.password && (
+            {errors.confirmNewPassword && (
               <p className="text-red-500 text-sm font-poppins font-medium pt-2">
-                {String(errors.password.message)}
+                {String(errors.confirmNewPassword.message)}
               </p>
-            )} */}
+            )}
           </div>
 
           <input
