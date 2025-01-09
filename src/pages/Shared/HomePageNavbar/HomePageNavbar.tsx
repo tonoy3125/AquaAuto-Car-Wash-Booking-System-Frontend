@@ -120,11 +120,20 @@ const HomePageNavbar = () => {
                           <a>Contact Us</a>
                         </li>
                       </NavLink>
-                      <NavLink to="/dashboard">
-                        <li className="hover:text-[#0E82FD] pt-2 pb-2 font-medium border-b-2 text-[#1F2937]">
-                          <a>Dashboard</a>
-                        </li>
-                      </NavLink>
+                      {/* Conditionally render dashboard based on user role */}
+                      {user?.user?.role === "admin" ? (
+                        <NavLink to="/admin/dashboard">
+                          <li className="hover:text-[#0E82FD] pt-2 pb-2 font-medium border-b-2 text-[#1F2937]">
+                            Admin Dashboard
+                          </li>
+                        </NavLink>
+                      ) : user?.user?.role === "user" ? (
+                        <NavLink to="/user/dashboard">
+                          <li className="hover:text-[#0E82FD] pt-2 pb-2 font-medium border-b-2 text-[#1F2937]">
+                            User Dashboard
+                          </li>
+                        </NavLink>
+                      ) : null}
                     </ul>
                   </div>
                 </div>
