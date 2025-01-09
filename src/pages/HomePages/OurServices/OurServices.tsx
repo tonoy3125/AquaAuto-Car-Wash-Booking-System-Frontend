@@ -92,7 +92,7 @@ const OurServices = () => {
               <div className="flex flex-col lg:flex-row items-center lg:items-start gap-5">
                 <div>
                   <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 lg:mb-32">
-                    {serviceData?.data?.map((service) => (
+                    {serviceData?.data?.slice(0, 6).map((service) => (
                       <div className="relative mb-24">
                         <div>
                           <img
