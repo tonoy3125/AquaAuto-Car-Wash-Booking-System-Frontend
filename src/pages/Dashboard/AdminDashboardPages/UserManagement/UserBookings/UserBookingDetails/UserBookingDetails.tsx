@@ -13,10 +13,9 @@ const UserBookingDetails: React.FC<TUserBookingDetailsProps> = ({
   open,
   setOpen,
   booking,
-  id,
 }) => {
-  const [loading, setLoading] = useState<boolean>(false);
-  console.log(booking);
+  const [loading] = useState<boolean>(false);
+
   return (
     <div>
       <Modal

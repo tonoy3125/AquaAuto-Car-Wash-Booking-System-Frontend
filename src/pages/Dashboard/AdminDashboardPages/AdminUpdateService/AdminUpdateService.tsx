@@ -20,7 +20,7 @@ const AdminUpdateService: React.FC<TAdminUpdateServiceProps> = ({
   service,
   id,
 }) => {
-  const [loading, setLoading] = useState<boolean>(false);
+  const [loading] = useState<boolean>(false);
   const [image, setImage] = useState<string | null>(null);
   const [selectedImage, setSelectedImage] = useState<File | null>(null);
   const [selectedIcon, setSelectedIcon] = useState<File | null>(null);

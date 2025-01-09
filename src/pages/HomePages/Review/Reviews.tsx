@@ -4,10 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import {
-  selectCurrentUser,
-  useCurrentToken,
-} from "@/redux/features/auth/authSlice";
+import { selectCurrentUser } from "@/redux/features/auth/authSlice";
 import {
   useCreateReviewMutation,
   useGetAllReviewsQuery,
@@ -20,7 +17,7 @@ import { getRatingCounts } from "@/utils/getRatingCount";
 
 import { formatDistanceToNow } from "date-fns";
 import { Star } from "lucide-react";
-import { FormEvent, useState } from "react";
+import { useState } from "react";
 import { FieldValues, useForm } from "react-hook-form";
 import { GoStar, GoStarFill } from "react-icons/go";
 import { MdArrowRight } from "react-icons/md";

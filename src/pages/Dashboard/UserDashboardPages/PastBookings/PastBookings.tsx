@@ -12,7 +12,7 @@ import { TMetaData, TServiceData, TUserPayload } from "@/types";
 import { TBookingData } from "@/types/bookingData.type";
 import { TSlotData } from "@/types/slotData.type";
 import { TUserData } from "@/types/userData.type";
-import { DatePicker, Select, Table, TableColumnsType, TableProps } from "antd";
+import { Table, TableColumnsType, TableProps } from "antd";
 import dayjs from "dayjs";
 import { useState } from "react";
 import { FiEye } from "react-icons/fi";
@@ -54,7 +54,7 @@ const PastBookings = () => {
   const user = useAppSelector(selectCurrentUser) as TUserPayload | null; // Get current user's ID
   // console.log(user);
   const userId = user?.id;
-  const [params, setParams] = useState<Record<string, string | undefined>>({});
+  const [params] = useState<Record<string, string | undefined>>({});
   const [selectedBooking, setSelectedBooking] = useState<TBookingData | null>(
     null
   );
@@ -64,7 +64,6 @@ const PastBookings = () => {
   const limit = 10;
   const {
     data: pastBookings,
-    isLoading,
     isFetching,
     refetch,
   } = useGetUserPastBookingQuery(
@@ -81,7 +80,7 @@ const PastBookings = () => {
   // Fetching Services
   const { data: servicesData } = useGetAllServicesQuery(queryParams);
   const services = servicesData?.data || [];
-  //   console.log(services);
+  console.log(services);
 
   //   console.log(isLoading, isFetching);
   const metaData: TMetaData | undefined = pastBookings?.meta;

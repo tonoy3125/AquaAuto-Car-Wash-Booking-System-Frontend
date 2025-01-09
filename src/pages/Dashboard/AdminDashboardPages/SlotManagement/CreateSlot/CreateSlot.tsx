@@ -8,22 +8,20 @@ import {
 import * as React from "react";
 import { addDays, format } from "date-fns";
 import { Calendar as CalendarIcon } from "lucide-react";
-
 import { cn } from "@/lib/utils";
-
 import { Calendar } from "@/components/ui/calendar";
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import { Button, TimePicker } from "antd";
 import { useGetAllServicesQuery } from "@/redux/features/services/serviceApi";
 import { useCreateSlotMutation } from "@/redux/features/slot/slotApi";
 import { Controller, useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { useAppSelector } from "@/redux/hooks";
 import { useCurrentToken } from "@/redux/features/auth/authSlice";
+import { Button, TimePicker } from "antd";
 
 const CreateSlot = () => {
   const [date, setDate] = React.useState<Date | null>(null);
@@ -45,9 +43,10 @@ const CreateSlot = () => {
   } = useForm();
 
   const onSubmit = async (data: any) => {
+    // console.log(data);
     const formattedDate = date ? format(date, "yyyy-MM-dd") : null;
-    const formattedStartTime = data.startTime?.format("hh:mm A");
-    const formattedEndTime = data.endTime?.format("hh:mm A");
+    const formattedStartTime = data.startTime?.format("HH:mm");
+    const formattedEndTime = data.endTime?.format("HH:mm");
 
     // Validate time range
     if (data.startTime && data.endTime && data.startTime >= data.endTime) {
@@ -67,6 +66,8 @@ const CreateSlot = () => {
         endTime: formattedEndTime,
         service: selectedService,
       };
+
+      // console.log(slotData);
 
       const res = await createSlot({ token, slotData }).unwrap();
       console.log(res);
@@ -139,7 +140,6 @@ const CreateSlot = () => {
             <Popover>
               <PopoverTrigger asChild>
                 <Button
-                  variant={"outline"}
                   className={cn(
                     "w-full justify-start text-left font-normal border border-gray-400 bg-white pt-5 pb-5",
                     !date && "text-muted-foreground"

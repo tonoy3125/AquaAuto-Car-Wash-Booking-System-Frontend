@@ -62,11 +62,11 @@ const UserBookings = () => {
   const { data: servicesData } = useGetAllServicesQuery(queryParams);
   const services = servicesData?.data || [];
 
-  const {
-    data: bookingData,
-    isLoading,
-    isFetching,
-  } = useGetAllBookingsQuery({ page: currentPage, limit, ...params });
+  const { data: bookingData, isFetching } = useGetAllBookingsQuery({
+    page: currentPage,
+    limit,
+    ...params,
+  });
   const [removeBooking] = useRemoveBookingMutation();
   const token = useAppSelector(useCurrentToken);
 

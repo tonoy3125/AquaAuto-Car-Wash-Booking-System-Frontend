@@ -15,7 +15,7 @@ const AdminUpdateProfile: React.FC<TUserUpdateProfileProps> = ({
 }) => {
   console.log(user);
   const id = user?.data?._id;
-  const [loading, setLoading] = useState<boolean>(false);
+  const [loading] = useState<boolean>(false);
   const [selectedImage, setSelectedImage] = useState<File | null>(null);
   const [currentImage, setCurrentImage] = useState<string | null>(
     user?.data?.image || null

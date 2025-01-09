@@ -9,7 +9,6 @@ import { TMetaData } from "@/types";
 import {
   Pagination,
   PaginationContent,
-  PaginationEllipsis,
   PaginationItem,
   PaginationLink,
   PaginationNext,
