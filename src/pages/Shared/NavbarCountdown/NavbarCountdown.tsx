@@ -54,9 +54,13 @@ const NavbarCountdown = () => {
 
   const { days, hours, minutes, seconds } = nextSlotCountdown;
 
-  return (
+  return bookings?.data?.length ? (
     <div className="text-base font-poppins font-medium text-white">
       Next Booking: {days}d {hours}h {minutes}m {seconds}s
+    </div>
+  ) : (
+    <div className="text-base font-poppins font-medium text-white">
+      No upcoming bookings
     </div>
   );
 };
