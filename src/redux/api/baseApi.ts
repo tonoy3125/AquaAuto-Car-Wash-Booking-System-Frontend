@@ -10,9 +10,9 @@ import { RootState } from "../store";
 import { logOut, setUser } from "../features/auth/authSlice";
 
 const baseQuery = fetchBaseQuery({
-  baseUrl:
-    // "https://car-wash-booking-system-six.vercel.app/api",
-    "http://localhost:5000/api",
+  baseUrl: 
+  "https://car-wash-booking-system-six.vercel.app/api",
+  // "http://localhost:5000/api",
   credentials: "include",
   prepareHeaders: (headers, { getState }) => {
     const token = (getState() as RootState).auth.token;
@@ -35,8 +35,8 @@ const baseQueryWithRefreshToken: BaseQueryFn<
     // sending refresh token
     console.log("Send refresh token");
     const res = await fetch(
-      // "https://car-wash-booking-system-six.vercel.app/api/auth/refresh-token",
-      "http://localhost:5000/api/auth/refresh-token",
+      "https://car-wash-booking-system-six.vercel.app/api/auth/refresh-token",
+      // "http://localhost:5000/api/auth/refresh-token",
       {
         method: "POST",
         credentials: "include",
