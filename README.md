@@ -136,16 +136,22 @@ npm run dev
 
 ## Usage
 
-- Upon accessing the homepage, users are welcomed by a visually striking hero section showcasing the brand and its key offerings. As they scroll down, they’ll find a category section with images or icons that let them quickly explore products. Clicking on a category takes them to the products page with the chosen filter applied.
+- Visit the homepage to explore key sections such as Services, Booking, and Login. The hero section provides a brief introduction and highlights the main offerings with visually appealing designs.
 
-- Featured products highlight popular items, showing images, names, and prices with a "View More" button. An "Explore More" option leads to the full product list. The benefits section outlines key product advantages, while an image gallery shows real-life use, creating a personal connection.
+- Navigate to the Services page to view a detailed list of car wash services. Use the search bar, filters (e.g., price, duration), and sorting options to find a service that fits your needs.
 
-- Navigation is simple with a responsive header featuring links to Home, Products, Cart, and Wishlist, and a footer with key links like contact info and terms of service.
+- Click on a service to open the Service Details page. Check the available time slots for the current date or use the calendar feature to explore availability on other dates. Select a suitable time slot to proceed with booking.
 
-- On the products page, users can view items in a grid or list format, each showing name, price, and images. They can search using a bar with real-time suggestions and filter by category or price range. Users can input custom price ranges and sort items by price. A "Clear Filters" button resets all selections.
+- On the Booking Page, review the selected service and time slot in the left section. Fill out the form on the right with your name and email (the selected time will be auto-filled). Click "Pay Now" to complete the payment via the secure AAMARPAY gateway. Upon successful payment, the slot will be marked as "booked," and you'll be redirected to the success page.
 
-- Clicking a product shows detailed info such as stock, description, and images. Users can add items to the cart or increase quantities if available. The cart page displays selected items, with options to adjust quantities or remove products. Pricing updates automatically, reflecting taxes and shipping. The checkout button stays active only when all items are in stock, redirecting to the final checkout process, where users fill in their details and choose between Cash on Delivery or Stripe for payment.
+- Go to the Review Section on the homepage to rate the site (1-5 stars) and write feedback. If you are not logged in, click the "Login" button to log in and return to leave a review. After submitting, view the average site rating and recent reviews.
 
-- Wishlist management allows users to easily add or remove items, with real-time updates. Wishlists persist across sessions, and buttons toggle based on product status.
+- Access the User Dashboard to update your personal information like name and email. This ensures your account stays current and accurate.
 
-- Admins manage products via a dashboard, where they can add, edit, or delete items. A table view lists products with options to update or remove them, ensuring smooth product management and user experience.
+- Check the Upcoming Bookings section in the user dashboard to see all your future bookings. Each booking card includes a countdown timer, showing how much time is left until the service begins.
+
+- In the Past Bookings section of the user dashboard, review your booking history displayed in a tabular format for easy access.
+
+- Admin users can log in to the Admin Dashboard to manage services. Use the "Add Service" button to open a form in a modal for adding new services. Update or delete existing services using action buttons in the service table. Confirm any deletions through the pop-up confirmation.
+
+- Admins can create and manage service slots, update their status (except for booked slots), and toggle between "AVAILABLE" and "CANCELLED." They can also view and manage user bookings in a tabular format and update user roles as needed.
