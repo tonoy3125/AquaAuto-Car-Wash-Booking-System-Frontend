@@ -9,6 +9,7 @@ import { useAppDispatch } from "@/redux/hooks";
 import { verifyToken } from "@/utils/verifyToken";
 import { setUser } from "@/redux/features/auth/authSlice";
 import { toast } from "sonner";
+import { loginCredentials } from "@/lib/credentials";
 const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
@@ -17,6 +18,7 @@ const Login = () => {
     register,
     handleSubmit,
     formState: { errors },
+    reset,
   } = useForm();
   const [login] = useLoginMutation();
 
@@ -101,6 +103,28 @@ const Login = () => {
           Log In
         </h3>
         <form onSubmit={handleSubmit(onSubmit)}>
+          <div className="flex font-poppins flex-col gap-[5px]">
+            <h3 className="block text-[18px] font-semibold mb-5">Quick Login </h3>
+            <div className="flex items-center justify-start  gap-[10px] flex-wrap mb-[20px]">
+              {loginCredentials.map(({ email, password, label }, i) => (
+                <button
+                  key={"login" + i}
+                  type="button"
+                  className="w-fit bg-[#fff] border-[1px] border-[#dae1e3] font-[700] text-[#1D1D1F] rounded-full px-[15px] py-[5px] text-[12px] active:scale-[0.8]"
+                  style={{ transition: "0.3s" }}
+                  onClick={() => {
+                    // Set form values when button is clicked
+                    reset({
+                      email: email,
+                      password: password,
+                    });
+                  }}
+                >
+                  {label}
+                </button>
+              ))}
+            </div>
+          </div>
           <div className="mb-5">
             <h2 className="text-base font-normal text-[#4c4d4d] mb-3  font-poppins">
               Email Address
