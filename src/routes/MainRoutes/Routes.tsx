@@ -25,6 +25,7 @@ import ContactUs from "@/pages/ContactUsPage/ContactUs/ContactUs";
 import AboutUs from "@/pages/AboutUsPage/AboutUs/AboutUs";
 import ForgotPassword from "@/pages/ForgotPassword/ForgotPassword";
 import ResetPassword from "@/pages/ResetPassword/ResetPassword";
+import AdminDashboard from "@/pages/Dashboard/AdminDashboardPages/AdminDashboard/AdminDashboard";
 
 const router = createBrowserRouter([
   {
@@ -87,6 +88,10 @@ const router = createBrowserRouter([
     errorElement: <ErrorElement />,
     element: <AdminDashboardLayout />,
     children: [
+      {
+        path: "adminDashboard",
+        element: <AdminDashboard />,
+      },
       {
         path: "adminProfile",
         element: <AdminProfile />,

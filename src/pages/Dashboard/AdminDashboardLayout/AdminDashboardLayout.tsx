@@ -66,6 +66,21 @@ const AdminDashboardLayout = () => {
             <ul className="menu mb-8 text-sm">
               <li>
                 <NavLink
+                  to="/admin/dashboard/adminDashboard"
+                  className={({ isActive }) =>
+                    `flex items-center gap-[14px] px-8 py-4 group  hover:bg-gray-100 ${
+                      isActive ? "text-blue-500 font-bold" : "text-gray-700"
+                    }`
+                  }
+                >
+                  <MdOutlineDashboardCustomize className="text-lg lg:text-2xl" />
+                  <span className="text-base font-poppins lg:text-lg font-semibold">
+                    Admin Dashboard
+                  </span>
+                </NavLink>
+              </li>
+              <li>
+                <NavLink
                   to="/admin/dashboard/adminProfile"
                   className={({ isActive }) =>
                     `flex items-center gap-[14px] px-8 py-4 group  hover:bg-gray-100 ${

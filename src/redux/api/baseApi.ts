@@ -11,8 +11,8 @@ import { logOut, setUser } from "../features/auth/authSlice";
 
 const baseQuery = fetchBaseQuery({
   baseUrl:
-    "https://car-wash-booking-system-six.vercel.app/api",
-    // "http://localhost:5000/api",
+    // "https://car-wash-booking-system-six.vercel.app/api",
+    "http://localhost:5000/api",
   credentials: "include",
   prepareHeaders: (headers, { getState }) => {
     const token = (getState() as RootState).auth.token;
@@ -74,6 +74,7 @@ export const baseApi = createApi({
     "Booking",
     "Payment",
     "Review",
+    "Statistics",
   ],
   endpoints: () => ({}),
 });

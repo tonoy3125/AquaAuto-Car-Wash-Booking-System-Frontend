@@ -104,7 +104,7 @@ const Login = () => {
         </h3>
         <form onSubmit={handleSubmit(onSubmit)}>
           <div className="flex font-poppins flex-col gap-[5px]">
-            <h3 className="block text-[18px] font-semibold mb-5">Quick Login </h3>
+            <h3 className="block text-[18px] font-semibold mb-5sign">Quick Login </h3>
             <div className="flex items-center justify-start  gap-[10px] flex-wrap mb-[20px]">
               {loginCredentials.map(({ email, password, label }, i) => (
                 <button
