@@ -1,6 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-"use client";
-
+import { useEffect, useState } from "react";
 import { Bar, BarChart, XAxis } from "recharts";
 import {
   Card,
@@ -17,8 +16,6 @@ import {
 } from "@/components/ui/chart";
 
 import { format, parseISO } from "date-fns";
-import { useSearchParams } from "next/navigation";
-import { useState } from "react";
 import "react-datepicker/dist/react-datepicker.css";
 import { DateRange } from "react-day-picker";
 
@@ -35,9 +32,17 @@ const chartConfig = {
 } satisfies ChartConfig;
 
 function PaymentStatistics() {
-  const searchParams = useSearchParams();
-  const getYear = searchParams.get("year");
-  const year = getYear ? Number(getYear) : new Date().getFullYear();
+  // Retrieve year from URL search params manually
+  const [year, setYear] = useState<number>(new Date().getFullYear());
+
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const yearParam = params.get("year");
+    if (yearParam) {
+      setYear(Number(yearParam));
+    }
+  }, []);
+
   const [selectedDateRange, setSelectedDateRange] = useState<
     DateRange | undefined
   >(undefined);
@@ -54,9 +59,7 @@ function PaymentStatistics() {
       if (!acc[month]) {
         acc[month] = 0;
       }
-
       acc[month] += transaction.amount;
-
       return acc;
     },
     {}
@@ -68,22 +71,21 @@ function PaymentStatistics() {
   }));
 
   if (isLoading) {
-    return <StatisticSkeleton />;
+    return <div>Loading...</div>;
   }
+
   const handleDateChange = (date: DateRange | undefined) => {
-    if (date) {
-      setSelectedDateRange(date);
-    } else {
-      setSelectedDateRange(undefined);
-    }
+    setSelectedDateRange(date);
   };
+
   return (
     <Card className="w-full">
       <CardHeader className="flex items-start justify-between space-y-0 border-b sm:flex-row px-6 py-5 sm:py-6 flex-wrap gap-[15px]">
         <div className="flex flex-col justify-center gap-1">
           <CardTitle>Payment - Statistics</CardTitle>
-
-          <CardDescription>Showing toal payment of year {year}</CardDescription>
+          <CardDescription>
+            Showing total payment of year {year}
+          </CardDescription>
         </div>
         <div className="relative w-auto">
           <DateRangePicker onChange={handleDateChange} />
